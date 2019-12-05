@@ -132,6 +132,10 @@
     <Content Include="EmployeeAccounts.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="EmployeeAccounts_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>EmployeeAccounts.mdf</DependentUpon>
+    </Content>
     <Resource Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
