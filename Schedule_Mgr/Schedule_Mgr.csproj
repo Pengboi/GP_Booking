@@ -132,10 +132,6 @@
     <Content Include="EmployeeAccounts.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="EmployeeAccounts_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>EmployeeAccounts.mdf</DependentUpon>
-    </Content>
     <Resource Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +148,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
