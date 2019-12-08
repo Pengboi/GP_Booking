@@ -10,40 +10,38 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using System.Data.SQLite;
+using System.Data;
+using System.Configuration;
 
 namespace Schedule_Mgr
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+   
     public partial class MainWindow : Window
     {
         private MediaPlayer mediaPlayer = new MediaPlayer();
+        
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private SqlConnection Database_Connect() {
-            //THIS SHOULD BE CHANGED TO WHERE DATABASE IS.
-            String SQLPath = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Lidio\\iCloudDrive\\Desktop\\" +
-                             "Software_Development\\GP_Booking\\Schedule_Mgr\\GP_Booking\\Schedule_Mgr\\EmployeeAccounts.mdf;" +
-                             "Integrated Security=True;" +
-                             "Connect Timeout=30";
-            SqlConnection connection = new SqlConnection(SQLPath);
-            return connection;
+        private static string LoadConnectionString(string id = "Default") 
+        {
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
         private bool Validate_Credentials(String user, String pass) {
-            SqlConnection connection = Database_Connect();
+            String SQLPath = LoadConnectionString();    //Retrieves path from App.config
+            SQLiteConnection connection = new SQLiteConnection(SQLPath);
+            string sqlQuery = $"SELECT Username, Password, Account_Type From Accounts;";
+
             connection.Open();
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "select Username, Password, Account_Type from [Table]";
-            cmd.Connection = connection;
+            var cmd = new SQLiteCommand(sqlQuery, connection);
+            SQLiteDataReader reader = cmd.ExecuteReader();
 
             Boolean validUser = false, validPass = false;
-            SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 if (reader["Username"].ToString().Equals(user))
@@ -52,7 +50,7 @@ namespace Schedule_Mgr
                     if (BCrypt.Net.BCrypt.Verify(pass, reader["Password"].ToString()))
                     {
                         validPass = true;
-                        if (!reader["Account_Type"].Equals(3))
+                        if (reader.GetInt32(reader.GetOrdinal("Account_Type")) != 3)
                         {
                             MessageBox.Show("Access denied. Your account does not have permission to access this application.", "Unauthorised User");
                             break;
@@ -67,12 +65,17 @@ namespace Schedule_Mgr
             else if (!validPass)
                 MessageBox.Show("The password is incorrect. Try again. If issues persist, contact the IT administrator", "Incorrect password.");
 
+            connection.Close();
+
             return false;
         }
 
         private void Login_Request(object sender, RoutedEventArgs e) {
             String username = UsernameBox.Text;
             String password = passwordBox.Password;
+
+            Console.WriteLine(BCrypt.Net.BCrypt.HashPassword(password));
+
             if (Validate_Credentials(username, password)) 
             {
                 MessageBox.Show("*Opens meme*");
