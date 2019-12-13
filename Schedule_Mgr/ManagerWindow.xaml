@@ -29,9 +29,40 @@
                       >
             </Calendar>
             <ListView x:Name="employeeList" MinWidth="300" MinHeight="300" HorizontalAlignment="Center" VerticalAlignment="Top"
-                      Margin="0,50,0,0" Background="White" Loaded="employeeList_GetDoctors">
-                
+                      Margin="0,50,0,0" BorderBrush="Black" Loaded="employeeList_GetDoctors">
             </ListView>
+            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="45,0,0,180"
+                   FontSize="20" FontWeight="Bold">Shift Start:</Label>
+            <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="50,0,0,150"
+                      Loaded="comboBox_SetTimes" FontSize="15">
+            </ComboBox>
+            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="50" Width="30" Margin="90,0,0,145"
+                   FontSize="25">:</Label>
+            <ComboBox x:Name="minsComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="110,0,0,150"
+                      FontSize="15">
+            </ComboBox>
+            
+            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="45,0,0,80"
+                   FontSize="20" FontWeight="Bold">Shift End:
+            </Label>
+            <ComboBox x:Name="hoursComboBox2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="50,0,0,60"
+                      FontSize="15">
+            </ComboBox>
+            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="50" Width="30" Margin="90,0,0,50"
+                   FontSize="25">:</Label>
+            <ComboBox x:Name="minsComboBox2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="110,0,0,60"
+                      FontSize="15">
+            </ComboBox>
+
+            <Button x:Name="updateShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,187,0"
+                    Height="65" Width="180" FontSize="25">Update Shift</Button>
+            <Button x:Name="deleteShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,187,0"
+                    Height="65" Width="180" FontSize="25" Background="#c0392b">Delete Shift</Button>
+            <Button x:Name="createAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,187,0"
+                    Height="65" Width="180" FontSize="15.5">Create Staff Account</Button>
+            <Button x:Name="deleteAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,350,187,0"
+                    Height="65" Width="180" FontSize="15.5" Background="#c0392b">Delete Staff Account</Button>
+            <Button VerticalAlignment="Bottom" Height="45" Width="300" Background="#c0392b" FontSize="30">Log Out</Button>
         </Grid>
     </Grid>
 

@@ -63,6 +63,36 @@ namespace Schedule_Mgr
             String sqlPath = LoadConnectionString();
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
             string sqlQuery = $"SELECT Firstname, Middlename, Lastname FROM Accounts WHERE Account_Type = 2;";
+
+            connection.Open();
+            var cmd = new SQLiteCommand(sqlQuery, connection);
+            SQLiteDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read()) 
+            {
+                string middlename = "";
+                if (!(reader["Middlename"] == null))
+                    middlename = reader["Middlename"].ToString();
+                
+                string name = "Dr. " + reader["Firstname"].ToString() + " " + middlename + " " + reader["Lastname"].ToString();
+
+                employeeList.Items.Add(name);
+            }
+        }
+
+
+        private void comboBox_SetTimes(object sender, RoutedEventArgs e) 
+        {
+            for (int i = 0; i < 25; i++) 
+            {
+                hoursComboBox.Items.Add(i.ToString("00"));
+                hoursComboBox2.Items.Add(i.ToString("00"));
+            }
+            for (int i = 0; i < 60; i = i + 5) 
+            {
+                minsComboBox.Items.Add(i.ToString("00"));
+                minsComboBox2.Items.Add(i.ToString("00"));
+            }
         }
     }
 }
