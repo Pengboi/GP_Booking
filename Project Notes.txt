@@ -1,0 +1,6 @@
+Project Notes
+
+Account types:
+	1:	Receiptionist
+	2:	Doctor
+	3:	HR/IT (Management accounts for scheduling access)

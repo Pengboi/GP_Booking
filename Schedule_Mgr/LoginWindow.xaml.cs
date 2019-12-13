@@ -121,10 +121,16 @@ namespace Schedule_Mgr
 
                 if (Validate_OTP(inputOTP, username)) 
                 {
-                    MessageBox.Show("*Opens page*");
                     // Memes basically.
                     mediaPlayer.Open(new Uri("C:\\Users\\Lidio\\iCloudDrive\\Desktop\\Software_Development\\GP_Booking\\Schedule_Mgr\\GP_Booking\\Schedule_Mgr\\Assets\\stop.mp3"));
                     mediaPlayer.Play();
+
+                    
+                    ManagerWindow managerWin = new ManagerWindow();
+                    this.Hide();
+                    this.Close();
+                    managerWin.ShowDialog();
+                    
 
                 }
             }

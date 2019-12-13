@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Login"
         WindowState="Maximized"
-        WindowStyle="None" Height="1080" Width="1920" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" >
+        Height="1080" Width="1920" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" >
     <Grid>
         <Image Source="Assets/Medicine.png" MaxWidth="210" MaxHeight="263"
                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="40,40"/>

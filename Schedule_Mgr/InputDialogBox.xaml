@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         WindowStyle="None"
+        Background="#8ec5fc"
         Title="InputDialogBox" Height="162" Width="250">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
