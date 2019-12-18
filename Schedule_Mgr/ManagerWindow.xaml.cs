@@ -34,6 +34,16 @@ namespace Schedule_Mgr
         }
 
 
+        private SQLiteConnection startConnection() 
+        {
+            string sqlPath = LoadConnectionString();
+            SQLiteConnection connection = new SQLiteConnection(sqlPath);
+            connection.Open();
+
+            return connection;
+        }
+
+
         private void calendar_CalendarFormat(object sender, RoutedEventArgs e) 
         {   
             calendar.DisplayDateStart = DateTime.Today;
@@ -72,17 +82,19 @@ namespace Schedule_Mgr
                 string name = "Dr. " + reader["Firstname"].ToString() + " " + middlename + " " + reader["Lastname"].ToString();
                 employeeList.Items.Add(name);
             }
+            reader.Close();
+            connection.Close();
         }
 
 
         private void comboBox_SetTimes(object sender, RoutedEventArgs e) 
         {
-            for (int i = 0; i < 24; i++) 
+            for (int i = 6; i <= 19; i++) 
             {
                 hoursComboBox.Items.Add(i.ToString("00"));
                 hoursComboBox2.Items.Add(i.ToString("00"));
             }
-            for (int i = 0; i < 60; i = i + 5) 
+            for (int i = 0; i <= 55; i = i + 5) 
             {
                 minsComboBox.Items.Add(i.ToString("00"));
                 minsComboBox2.Items.Add(i.ToString("00"));
@@ -97,7 +109,6 @@ namespace Schedule_Mgr
             { selectedDate = calendar.SelectedDate.Value; }
             else
             {
-                MessageBox.Show("Please select the date for your shift", "Could not create shift");
                 return DateTime.Parse("01/01/1990");
             }
             return selectedDate;
@@ -111,11 +122,8 @@ namespace Schedule_Mgr
                 doctor = employeeList.SelectedItems[0].ToString();
             else
             {
-                MessageBox.Show("Please select a doctor for your shift", "Could not create shift");
                 return null;
             }
-            // NO MIDDLE NAME EXAMPLE:   Dr. |Alison  Lee               | represents what string looks like after slicing that happens on line below
-            // MIDDLE NAME EXAMPLE   :   Dr. |Alison Madison Lee
             doctor = doctor.Remove(0, 4); //Removes "Dr. "
             string firstName = doctor.Substring(0, doctor.IndexOf(" "));
             string lastName = doctor.Substring(doctor.LastIndexOf(" "));
@@ -151,66 +159,164 @@ namespace Schedule_Mgr
         {
             string firstName = name.Substring(0, name.IndexOf(" "));
             string lastName = name.Substring(name.LastIndexOf(" ") + 1);
-            Console.WriteLine(firstName); Console.WriteLine(lastName) ;
+            string readerResult = "";
             string sqlQuery = $"SELECT Username FROM Accounts WHERE Firstname = '" + firstName + "'AND Lastname = '" + lastName + "';";
             var cmd = new SQLiteCommand(sqlQuery, conn);
             SQLiteDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read()) 
             {
-                return reader["Username"].ToString();
+                readerResult = reader["Username"].ToString();
             }
-            return null;
+            reader.Close();
+            return readerResult;
+        }
+
+
+        private bool shiftExists(string date, string username, SQLiteConnection conn) 
+        {
+            SQLiteCommand cmd = new SQLiteCommand(@"SELECT COUNT(*) FROM Schedule WHERE Date = @Date AND Username = @Username", conn);
+            cmd.Prepare();
+            cmd.Parameters.Add("@Date", DbType.String).Value = date;
+            cmd.Parameters.Add("@Username", DbType.String).Value = username;
+            int userExists = Convert.ToInt32(cmd.ExecuteScalar());
+
+            if (userExists != 0) 
+            {
+                return true;
+            }
+            return false;
         }
 
 
         private void updateShift(object sender, RoutedEventArgs e)
         {
-            DateTime shiftDate = getDate();
-            if (shiftDate == DateTime.Parse("01/01/1990"))
+            DateTime shiftDate = getDate().Date;
+            if (shiftDate == DateTime.Parse("01/01/1990")) 
+            {
+                MessageBox.Show("Please select the date for your shift", "Could not create shift");
                 return;
+            }
 
             string doctorSelected = getSelectedDoctor();
-            if (doctorSelected == null)
+            if (doctorSelected == null) 
+            {
+                MessageBox.Show("Please select a doctor for your shift", "Could not create shift");
                 return;
-
+            }
 
             string shiftStart = getShiftStart();
-            string shiftEnd = getShiftEnd();
-            
-            if ((string.IsNullOrEmpty(shiftStart)) || (string.IsNullOrEmpty(shiftEnd)))
+            if (string.IsNullOrEmpty(shiftStart))
                 return;
+            string shiftEnd = getShiftEnd();
+            if (string.IsNullOrEmpty(shiftEnd))
+                return;
+
             if (Int32.Parse(shiftStart) > Int32.Parse(shiftEnd))
             {
                 MessageBox.Show("Shift start CANNOT be after shift end", "Could not create shift");
                 return;
             }
 
-            String sqlPath = LoadConnectionString();
+            string sqlPath = LoadConnectionString();
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
             connection.Open();
             string doctorUsername = getDoctorUsername(doctorSelected, connection);
-            connection.Close();
-
-            //Parameters.Add used to prevent SQL injection based attacks.
-            SQLiteCommand cmd = new SQLiteCommand();
-            cmd.CommandText = @"INSERT INTO Schedule (Day, Username, Shift_Start, Shift_End) VALUES(@Day,@Username,@Shift_Start,@Shift_End)";
-            cmd.Parameters.Add(new SQLiteParameter("@Day", shiftDate.ToString()));
-            cmd.Parameters.Add(new SQLiteParameter("@Username", doctorUsername));
-            cmd.Parameters.Add(new SQLiteParameter("@Shift_Start", shiftStart));
-            cmd.Parameters.Add(new SQLiteParameter("@Shift_End", shiftEnd));
-            cmd.Connection = connection;
-
-            connection.Open();
-
-            int i = cmd.ExecuteNonQuery();
-            if (i == 1) 
+            if (shiftExists(shiftDate.ToString("dd/MM/yyyy"), doctorUsername, connection)) 
             {
-                MessageBox.Show("Shift created successfully", "Shift created");
+                MessageBox.Show("A shift already exists for this employee on the selected date. Please select another date or delete the existing shift for the employee", "Duplicate shift");
+                return;
+            }
+            //Parameters.Add used to prevent SQL injection based attacks.
+            SQLiteCommand cmd = new SQLiteCommand(@"INSERT INTO Schedule (Date, Username, Shift_Start, Shift_End) VALUES (@Date, @Username, @Shift_Start, @Shift_End)", connection);
+            cmd.Prepare();
+            cmd.Parameters.Add("@Date", DbType.String).Value = shiftDate.ToString("dd/MM/yyyy");
+            cmd.Parameters.Add("@Username", DbType.String).Value = doctorUsername;
+            cmd.Parameters.Add("@Shift_Start", DbType.String).Value = shiftStart;
+            cmd.Parameters.Add("@Shift_End", DbType.String).Value = shiftEnd;
+
+            cmd.ExecuteNonQuery();
+            MessageBox.Show("Shift created successfully", "Shift created");
+            connection.Close();
+        }
+
+
+        private void deleteShift(object sender, RoutedEventArgs e) 
+        {
+            DateTime shiftDate = getDate().Date;
+            if (shiftDate == DateTime.Parse("01/01/1990"))
+            {
+                MessageBox.Show("Please select the date of the shift you want to delete", "Could not delete shift");
+                return;
+            }
+            string doctorSelected = getSelectedDoctor();
+            if (doctorSelected == null)
+            {
+                MessageBox.Show("Please select the doctor whose shift you want to delete.", "Could not delete shift");
+                return;
+            }
+
+            SQLiteConnection connection = startConnection();
+            string doctorUsername = getDoctorUsername(doctorSelected, connection);
+            if (shiftExists(shiftDate.ToString("dd/MM/yyyy"), doctorUsername, connection))
+            {
+                SQLiteCommand cmd = new SQLiteCommand(@"DELETE FROM Schedule WHERE Date = @Date AND Username = @Username", connection);
+                cmd.Prepare();
+                cmd.Parameters.Add("@Date", DbType.String).Value = shiftDate.ToString("dd/MM/yyyy");
+                cmd.Parameters.Add("@Username", DbType.String).Value = doctorUsername;
+
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Shift for Dr." + doctorSelected + " scheduled on: "+ shiftDate.ToString("dd/MM/yyyy") + " deleted successfully", "Shift deleted");
                 connection.Close();
             }
+            else
+                MessageBox.Show("Shift does not exist", "Could not delete shift");
+            return;
+        }
+
+        private void createAccount(object sender, RoutedEventArgs e) 
+        {
+        }
+
+
+        private void deleteAccount(object sender, RoutedEventArgs e) 
+        {
+            if (getSelectedDoctor() == null) 
+            {
+                MessageBox.Show("Select the doctor whose profile you wish to delete.", "No Doctor Selected");
+                return;
+            }
             
-            
+            SQLiteConnection connection = startConnection();
+            string doctorUsername = getDoctorUsername(getSelectedDoctor(), connection);
+            MessageBoxResult messageBoxConfirmation = System.Windows.MessageBox.Show("Are you sure you would like to delete Dr. " + getSelectedDoctor() + "'s profile?",
+                                                                                     "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxConfirmation == MessageBoxResult.No)
+                return;
+            else
+            {
+                SQLiteCommand cmd = new SQLiteCommand(@"DELETE FROM Accounts WHERE Username = @Username", connection);
+                cmd.Prepare();
+                cmd.Parameters.Add("@Username", DbType.String).Value = doctorUsername;
+                cmd.ExecuteNonQuery();
+                connection.Close();
+
+                employeeList.DataContext = null;
+                employeeList.Items.Clear();
+
+                employeeList_GetDoctors(sender, e);
+                MessageBox.Show("Account Deleted successfully", "Account Deleted.");
+            }
+            return;
+        }
+
+
+        private void logOut(object sender, RoutedEventArgs e) 
+        {
+            LoginWindow loginWin = new LoginWindow();
+            this.Hide();
+            this.Close();
+            loginWin.ShowDialog();
         }
     }
 }

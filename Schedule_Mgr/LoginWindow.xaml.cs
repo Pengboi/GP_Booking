@@ -67,7 +67,8 @@ namespace Schedule_Mgr
                 MessageBox.Show("The account could not be found. Try again. If issues persist, contact the IT administrator", "User not found.");
             else if (!validPass)
                 MessageBox.Show("The password is incorrect. Try again. If issues persist, contact the IT administrator", "Incorrect password.");
-
+            
+            reader.Close();
             connection.Close();
 
             return false;
@@ -83,7 +84,7 @@ namespace Schedule_Mgr
 
             var cmd = new SQLiteCommand(sqlQuery, connection);
             String secretKey = cmd.ExecuteScalar().ToString();
-
+            connection.Close();
             return secretKey;
         }
 

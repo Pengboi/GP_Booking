@@ -57,12 +57,13 @@
             <Button x:Name="updateShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,187,0"
                     Height="65" Width="180" FontSize="25" Click="updateShift">Update Shift</Button>
             <Button x:Name="deleteShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,187,0"
-                    Height="65" Width="180" FontSize="25" Background="#c0392b">Delete Shift</Button>
+                    Height="65" Width="180" FontSize="25" Background="#c0392b" Click="deleteShift">Delete Shift</Button>
             <Button x:Name="createAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,187,0"
                     Height="65" Width="180" FontSize="15.5">Create Staff Account</Button>
             <Button x:Name="deleteAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,350,187,0"
-                    Height="65" Width="180" FontSize="15.5" Background="#c0392b">Delete Staff Account</Button>
-            <Button VerticalAlignment="Bottom" Height="45" Width="300" Background="#c0392b" FontSize="30">Log Out</Button>
+                    Height="65" Width="180" FontSize="15.5" Background="#c0392b" Click="deleteAccount">Delete Staff Account</Button>
+            <Button x:Name="logoutButton" VerticalAlignment="Bottom" Height="45" Width="300"
+                    Background="#c0392b" FontSize="30" Click="logOut">Log Out</Button>
         </Grid>
     </Grid>
 
