@@ -25,7 +25,7 @@
         </Rectangle>
         <Grid MinWidth="1300" MinHeight="650" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Calendar x:Name="calendar" HorizontalAlignment="Left" Margin="50,30,161,0" VerticalAlignment="Top"
-                      FirstDayOfWeek="Monday" Loaded="calendar_CalendarFormat"
+                      FirstDayOfWeek="Monday" Loaded="calendar_CalendarFormat" IsTodayHighlighted="False"
                       >
             </Calendar>
             <ListView x:Name="employeeList" MinWidth="300" MinHeight="300" HorizontalAlignment="Center" VerticalAlignment="Top"
@@ -55,7 +55,7 @@
             </ComboBox>
 
             <Button x:Name="updateShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,187,0"
-                    Height="65" Width="180" FontSize="25">Update Shift</Button>
+                    Height="65" Width="180" FontSize="25" Click="updateShift">Update Shift</Button>
             <Button x:Name="deleteShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,187,0"
                     Height="65" Width="180" FontSize="25" Background="#c0392b">Delete Shift</Button>
             <Button x:Name="createAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,187,0"
