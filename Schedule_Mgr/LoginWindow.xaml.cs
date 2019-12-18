@@ -28,6 +28,7 @@ namespace Schedule_Mgr
         public LoginWindow()
         {
             InitializeComponent();
+            
         }
 
         private static string LoadConnectionString(string id = "Default") 

@@ -276,6 +276,8 @@ namespace Schedule_Mgr
 
         private void createAccount(object sender, RoutedEventArgs e) 
         {
+            NewUser NewUserWin = new NewUser();
+            NewUserWin.ShowDialog();
         }
 
 

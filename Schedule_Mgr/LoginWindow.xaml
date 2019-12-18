@@ -34,8 +34,9 @@
         <Grid MinWidth="510" MinHeight="503" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Please Enter Credentials Below" FontSize="25" FontFamily="Arial"
                        HorizontalAlignment="Center" VerticalAlignment="Top" Margin="85"/>
-            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="400" MaxWidth="400" Margin="50, 0, 50, 0">
-                <TextBox x:Name="UsernameBox" materialDesign:HintAssist.Hint="Username"
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="400" MaxWidth="400" Margin="50, 0, 50, 0"
+                        FocusManager.FocusedElement="{Binding ElementName=UsernameBox}">
+                <TextBox x:Name="UsernameBox" materialDesign:HintAssist.Hint="Username" 
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="15" />
                 <PasswordBox x:Name="passwordBox" materialDesign:HintAssist.Hint="Password" 
                              Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 10, 30, 0" FontSize="15"/>
