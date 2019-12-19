@@ -7,9 +7,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Drawing;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Configuration;
+using System.Data;
+using System.Data.SQLite;
 using System.Windows.Shapes;
 using OtpNet;
 
@@ -24,6 +27,20 @@ namespace Schedule_Mgr
         {
             InitializeComponent();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+        }
+
+        private static string LoadConnectionString(string id = "Default")
+        {
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+        }
+
+        private SQLiteConnection startConnection()
+        {
+            string sqlPath = LoadConnectionString();
+            SQLiteConnection connection = new SQLiteConnection(sqlPath);
+            connection.Open();
+
+            return connection;
         }
 
         private string getHonorific() 
@@ -135,20 +152,78 @@ namespace Schedule_Mgr
             if (System.Text.RegularExpressions.Regex.IsMatch(passBox.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"))
             {
                 indicator.Text = "very strong";
-                indicator.Foreground = new SolidColorBrush(Color.FromRgb(155, 89, 182));
+                indicator.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(155, 89, 182));
             }
             else if (System.Text.RegularExpressions.Regex.IsMatch(passBox.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"))
             {
                 indicator.Text = "strong";
-                indicator.Foreground = new SolidColorBrush(Color.FromRgb(22, 160, 133));
+                indicator.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(22, 160, 133));
             }
             else 
             {
                 indicator.Text = "weak";
-                indicator.Foreground = new SolidColorBrush(Color.FromRgb(192, 57, 43));
+                indicator.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(192, 57, 43));
             }
         }
 
+        private bool isUniqueUsername(string name) 
+        {
+            SQLiteConnection connection = startConnection();
+            SQLiteCommand cmd = new SQLiteCommand(@"SELECT COUNT(*) FROM Accounts WHERE Username = @Username", connection);
+            cmd.Prepare();
+            cmd.Parameters.Add("@Username", DbType.String).Value = name;
+
+            int userExists = Convert.ToInt32(cmd.ExecuteScalar());
+            if (userExists == 0)
+            {
+                connection.Close();
+                return true;
+            }
+            connection.Close();
+            return false;
+        }
+
+        private string createUsername(string first, string middle, string last) 
+        {
+            string username = "";
+            // If first is longer than 3 characters, only first 3 letters of first name are used for the username.
+            if (first.Length > 3)
+                first = first.Substring(0, 3);
+            
+            if (string.IsNullOrEmpty(middle))
+                username = first + last;
+            else
+                username = first + middle.Substring(0) + last;
+
+            while (!isUniqueUsername(username)) 
+            {
+                Random rnd = new Random();
+                string rndString = rnd.Next(0, 1000).ToString();
+                username = username + rndString;
+            }
+            return username;
+        }
+
+        private void addRecordToDB(string user, string pass, string otp, string honorific, 
+            string fname, string mname, string lname, int accountType) 
+        {
+            SQLiteConnection connection = startConnection();
+            SQLiteCommand cmd = new SQLiteCommand(@"INSERT INTO Accounts (Username, Password, OTP_Token, Suffix, Firstname, Middlename, Lastname, Account_Type)
+                                VALUES (@user, @pass, @otp, @suffix, @firstname, @middlename, @lastname, @Account_Type)", connection);
+            cmd.Prepare();
+            cmd.Parameters.Add("@user", DbType.String).Value = user;
+            cmd.Parameters.Add("@pass", DbType.String).Value = pass;
+            cmd.Parameters.Add("@otp", DbType.String).Value = otp;
+            cmd.Parameters.Add("@suffix", DbType.String).Value = honorific;
+            cmd.Parameters.Add("@firstname", DbType.String).Value = fname;
+            cmd.Parameters.Add("@middlename", DbType.String).Value = mname;
+            cmd.Parameters.Add("@lastname", DbType.String).Value = lname;
+            cmd.Parameters.Add("@Account_Type", DbType.String).Value = accountType;
+
+            cmd.ExecuteNonQuery();
+            MessageBox.Show("Account Created Successfully", "Account created");
+            connection.Close();
+        }
 
         private void createAccountButton_Click(object sender, RoutedEventArgs e)
         {
@@ -158,38 +233,31 @@ namespace Schedule_Mgr
                 MessageBox.Show("Title is a required field. Please select a Title", "Error! Account could not be created.");
                 return;
             }
-
             int? userGender = getGender();
             if (userGender == -1) 
             {
                 MessageBox.Show("Gender is a required field. Please select a Gender", "Error! Account could not be created.");
                 return;
             }
-
             int? userAccountType = getAccountType();
             if (userAccountType == -1) 
             {
                 MessageBox.Show("Account Type is a required field. Please select an Account Type", "Error! Account could not be created.");
                 return;
             }
-
             string firstname = getFirstname();
-
             if (string.IsNullOrEmpty(firstname)) 
             {
                 MessageBox.Show("First name is a required field. Please enter your first name", "Error! Account could not be created.");
                 return;
             }
-
             string middlename = getMiddlename();
-
             string lastname = getLastname();
             if (string.IsNullOrEmpty(lastname)) 
             {
                 MessageBox.Show("Last name is a required field. Please enter your last name", "Error! Account could not be created.");
                 return;
             }
-
             string password = getPassword();
             if (password.Equals("nomatch")) 
             {
@@ -210,8 +278,9 @@ namespace Schedule_Mgr
                 return;
             }
 
-            // insert generate username code here
-
+            // will not exit function until unique username confirmed.
+            string username = createUsername(firstname, middlename, lastname);
+            MessageBox.Show(username); // REMOVE POST-DEBUG.
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
             //FORMAT FOR QRCODE
@@ -221,9 +290,26 @@ namespace Schedule_Mgr
             var otpKey = KeyGeneration.GenerateRandomKey(20);
             var otpKeyString = Base32Encoding.ToString(otpKey);
             var otpKeyBytes = Base32Encoding.ToBytes(otpKeyString);
-            Console.WriteLine(otpKeyString);
+            Console.WriteLine(otpKeyString); //This should be stored in DB
 
+            int accountType = Convert.ToInt32(userAccountType);
 
+            addRecordToDB(username, hashedPassword, otpKeyString, userHonorific, 
+                firstname, middlename, lastname, accountType);
+
+            
+            //Probably need another window to create and show the QR code & the video with instructions on how to 
+            //add TOTP to app. ----- add past this point
+            showQRCode(otpKeyString, username);
+        }
+
+        private void showQRCode(string key, string username) 
+        {
+            string qrString = "otpauth://totp/GP:" + username + "?secret=" + key + "&issuer=GP"; 
+            QRCoder.QRCodeGenerator qrGenerator = new QRCoder.QRCodeGenerator();
+            QRCoder.QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrString, QRCoder.QRCodeGenerator.ECCLevel.Q);
+            QRCoder.QRCode qrCode = new QRCoder.QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

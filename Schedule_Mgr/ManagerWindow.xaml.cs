@@ -63,7 +63,7 @@ namespace Schedule_Mgr
         }
 
 
-        private void employeeList_GetDoctors(object sender, RoutedEventArgs e) 
+        public void employeeList_GetDoctors(object sender, RoutedEventArgs e) 
         {
             String sqlPath = LoadConnectionString();
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
@@ -279,6 +279,9 @@ namespace Schedule_Mgr
         {
             NewUser NewUserWin = new NewUser();
             NewUserWin.ShowDialog();
+            employeeList.DataContext = null;
+            employeeList.Items.Clear();
+            employeeList_GetDoctors(sender, e);
         }
 
 
