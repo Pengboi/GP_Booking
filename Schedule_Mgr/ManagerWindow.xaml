@@ -24,45 +24,46 @@
             </Rectangle.Fill>
         </Rectangle>
         <Grid MinWidth="1300" MinHeight="650" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Calendar x:Name="calendar" HorizontalAlignment="Left" Margin="50,30,161,0" VerticalAlignment="Top"
+            <Calendar x:Name="calendar" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="120,50,0,0"
                       FirstDayOfWeek="Monday" Loaded="calendar_CalendarFormat" IsTodayHighlighted="False"
                       >
             </Calendar>
-            <ListView x:Name="employeeList" MinWidth="300" MinHeight="300" HorizontalAlignment="Center" VerticalAlignment="Top"
-                      Margin="0,50,0,0" BorderBrush="Black" Loaded="employeeList_GetDoctors">
+            <ListView x:Name="employeeList" MinWidth="300" MinHeight="450" HorizontalAlignment="Center" VerticalAlignment="Top"
+                      Margin="500,50,500,0" BorderBrush="Black" FontSize="15" Loaded="employeeList_GetDoctors" Height="470" >
             </ListView>
-            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="45,0,0,180"
+
+            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="120,0,0,155"
                    FontSize="20" FontWeight="Bold">Shift Start:</Label>
-            <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="50,0,0,150"
+            <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="120,0,0,130"
                       Loaded="comboBox_SetTimes" FontSize="15">
             </ComboBox>
-            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="50" Width="30" Margin="90,0,0,145"
+            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="50" Width="30" Margin="171,0,0,125"
                    FontSize="25">:</Label>
-            <ComboBox x:Name="minsComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="110,0,0,150"
-                      FontSize="15">
-            </ComboBox>
-            
-            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="45,0,0,80"
-                   FontSize="20" FontWeight="Bold">Shift End:
-            </Label>
-            <ComboBox x:Name="hoursComboBox2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="50,0,0,60"
-                      FontSize="15">
-            </ComboBox>
-            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="50" Width="30" Margin="90,0,0,50"
-                   FontSize="25">:</Label>
-            <ComboBox x:Name="minsComboBox2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="110,0,0,60"
+            <ComboBox x:Name="minsComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="183,0,0,130"
                       FontSize="15">
             </ComboBox>
 
-            <Button x:Name="updateShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,187,0"
-                    Height="65" Width="180" FontSize="25" Click="updateShift">Update Shift</Button>
-            <Button x:Name="deleteShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,187,0"
-                    Height="65" Width="180" FontSize="25" Background="#ff7675" Click="deleteShift">Delete Shift</Button>
-            <Button x:Name="createAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,187,0"
+            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="264,0,0,155"
+                   FontSize="20" FontWeight="Bold" RenderTransformOrigin="0.97,-1.56">Shift End:
+            </Label>
+            <ComboBox x:Name="hoursComboBox2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="264,0,0,130"
+                      FontSize="15" RenderTransformOrigin="3.275,-1">
+            </ComboBox>
+            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="50" Width="30" Margin="309,0,0,125"
+                   FontSize="25">:</Label>
+            <ComboBox x:Name="minsComboBox2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="325,0,0,130"
+                      FontSize="15">
+            </ComboBox>
+
+            <Button x:Name="updateShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,120,0"
+                    Height="65" Width="180" FontSize="15.5" Click="updateShift">Update Shift</Button>
+            <Button x:Name="deleteShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,120,0"
+                    Height="65" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteShift">Delete Shift</Button>
+            <Button x:Name="createAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,120,0"
                     Height="65" Width="180" FontSize="15.5" Click="createAccount">Create Staff Account</Button>
-            <Button x:Name="deleteAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,350,187,0"
+            <Button x:Name="deleteAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,350,120,0"
                     Height="65" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteAccount">Delete Staff Account</Button>
-            <Button x:Name="logoutButton" VerticalAlignment="Bottom" Height="45" Width="300"
+            <Button x:Name="logoutButton" VerticalAlignment="Bottom" Height="50" Width="300" Margin="0,0,0,50"
                     Background="#16a085" FontSize="30" Click="logOut">Log Out</Button>
         </Grid>
     </Grid>

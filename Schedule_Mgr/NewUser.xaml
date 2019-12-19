@@ -10,19 +10,22 @@
         Title="New User"
         WindowState="Normal"
         Topmost="True"
-        Height="690" Width="500" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" WindowStyle="None" >
+        Height="750" Width="800" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" WindowStyle="ToolWindow" >
 
-    <Grid>
+    <Grid Margin="10">
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+        </Grid.Effect>
         <Label Content="CREATE AN ACCOUNT" FontSize="25" Foreground="White" FontFamily="Arial Narrow" 
-               Margin="15, 5, 0, 0" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"/>
+               Margin="135, 5, 0, 0" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"/>
         <Label  FontSize="13" Foreground="White" FontFamily="Arial"
-               Margin="15,40,0,0">
-            <StackPanel Orientation="Horizontal">
+               Margin="2,35,0,0">
+            <StackPanel Orientation="Horizontal" Margin="135,0,0,0">
                 <TextBlock Foreground="White" Text="Please Enter All Required Fields Below"/>
                 <TextBlock Foreground="#c70039" Text=" *"/>
             </StackPanel>
         </Label>
-        <Rectangle MinWidth="500" MinHeight="620" VerticalAlignment="Bottom" HorizontalAlignment="Center" >
+        <Rectangle MinWidth="490" MinHeight="620" VerticalAlignment="Bottom" HorizontalAlignment="Center" >
             <Rectangle.Effect>
                 <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
                                   ShadowDepth="3" Opacity="0.8"/>
@@ -35,45 +38,62 @@
             </Rectangle.Fill>
         </Rectangle>
         <Grid MinWidth="500" MinHeight="620" VerticalAlignment="Bottom" HorizontalAlignment="Center" >
-            <StackPanel VerticalAlignment="Center" MinHeight="200" MinWidth="200" Margin="50,80,50,150" Height="400"
+            <StackPanel VerticalAlignment="Center" MinHeight="200" MinWidth="200" Margin="50,20,50,100" Height="500"
                         FocusManager.FocusedElement="{Binding ElementName=firstnameBox}">
-                <StackPanel Orientation="Horizontal" Margin="50,20,50,0">
-                    <TextBlock Foreground="Black" Text="Title :" Margin="0,15,0,0"></TextBlock>
-                    <TextBlock Foreground="Black" Text=" *" Margin="0,10,0,0"></TextBlock>
-                    <ComboBox Margin="10,0,30,0" HorizontalAlignment="Left" Width="40" Height="40">
+                <StackPanel Orientation="Horizontal" Margin="50,0,0,0" Height="62">
+                    <TextBlock Foreground="Black" Text="Title :" Margin="0,30,0,0" FontSize="15"></TextBlock>
+                    <TextBlock Foreground="Black" Text=" *" Margin="0,25,0,0"></TextBlock>
+                    <ComboBox x:Name="honorificComboBox" Margin="15,10,30,0" HorizontalAlignment="Left" Width="50"
+                              Height="40">
                         <ComboBoxItem>Mr.</ComboBoxItem>
                         <ComboBoxItem>Miss.</ComboBoxItem>
                         <ComboBoxItem>Mrs.</ComboBoxItem>
                         <ComboBoxItem>Dr.</ComboBoxItem>
                     </ComboBox>
-                    <TextBlock Foreground="Black" Text="Account Type : *" Margin="0,13,0,0"></TextBlock>
-                    <ComboBox Margin="10,0,30,0" HorizontalAlignment="Left" Width="88" Height="40"
-                              SelectionChanged="ComboBox_SelectionChanged">
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="40,0,0,0" Height="62">
+                    <TextBlock Foreground="Black" Text="Gender : *" Margin="10,20,0,0" FontSize="15"></TextBlock>
+                    <ComboBox x:Name="genderComboBox" Margin="15,10,30,0" HorizontalAlignment="Left" Width="80"
+                              Height="40">
+                        <ComboBoxItem>Female</ComboBoxItem>
+                        <ComboBoxItem>Male</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Margin="40,0,0,0" Height="62">
+                    <TextBlock Foreground="Black" Text="Account Type : *" Margin="10,13,0,0" FontSize="15"></TextBlock>
+                    <ComboBox x:Name="accountTypeBox" Margin="10,10,30,0" HorizontalAlignment="Left" 
+                              Width="130" Height="40" SelectionChanged="AccountType_SelectionChanged">
                         <ComboBoxItem>Receptionist</ComboBoxItem>
                         <ComboBoxItem>Doctor</ComboBoxItem>
                         <ComboBoxItem>HR and Management</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
-                
-                <TextBox x:Name="firstnameBox" materialDesign:HintAssist.Hint="First Name *" MaxWidth="300"
-                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="11"/>
-                <TextBox x:Name="middleNameBox" materialDesign:HintAssist.Hint="Middle Name" MaxWidth="300"
-                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="11"/>
-                <TextBox x:Name="lastnameBox" materialDesign:HintAssist.Hint="Last Name *" MaxWidth="300"
-                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="11"/>
-                <PasswordBox x:Name="passwordBox"  materialDesign:HintAssist.Hint="Password *" MaxWidth="300" 
-                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 10, 30, 0" />
-                <PasswordBox x:Name="passwordBox2"  materialDesign:HintAssist.Hint="Retype Password *" MaxWidth="300" 
+
+                <TextBox x:Name="firstnameBox" materialDesign:HintAssist.Hint="First Name *" MaxWidth="300" TextChanged="nameBox_TextChanged"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="15"/>
+                <TextBox x:Name="middleNameBox" materialDesign:HintAssist.Hint="Middle Name" MaxWidth="300" TextChanged="nameBox_TextChanged"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="15"/>
+                <TextBox x:Name="lastnameBox" materialDesign:HintAssist.Hint="Last Name *" MaxWidth="300" TextChanged="nameBox_TextChanged"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="15"/>
+                <PasswordBox x:Name="passwordBox"  materialDesign:HintAssist.Hint="Password *" MaxWidth="300" PasswordChanged="passwordBox_PasswordChanged"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 10, 30, 0" FontSize="15" />
+                <PasswordBox x:Name="passwordBox2"  materialDesign:HintAssist.Hint="Retype Password *" MaxWidth="300" FontSize="15" 
                              Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 10, 30, 0" />
 
-                <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0" MinWidth="200">
-                    <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="50,70,0,0" Width="130"
-                        Background="#16a085" Content="Create Account" FontSize="14"></Button>
-                    <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="40,0,0,0" Width="130"
-                            Background="#ff7675" Content="Cancel" FontSize="14"/>
-
-                </StackPanel>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0" MinWidth="490" >
+                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="100,40,0,50" Width="130" Height="50"
+                        Background="#16a085" Content="Create Account" FontSize="14" Click="createAccountButton_Click"></Button>
+                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="40,0,0,50" Width="130" Height="50"
+                            Background="#ff7675" Content="Cancel" FontSize="14" Click="cancelButton_Click"/>
+
+            </StackPanel>
+            <TextBlock HorizontalAlignment="Left" Margin="100,470,0,0" VerticalAlignment="Top"
+                       TextWrapping="Wrap" Text="Password Strength:" />
+            <TextBlock x:Name="indicator" HorizontalAlignment="Left" Margin="210,470,0,0" VerticalAlignment="Top"
+                       TextWrapping="Wrap" />
 
         </Grid>
     </Grid>

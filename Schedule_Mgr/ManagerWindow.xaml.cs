@@ -84,6 +84,7 @@ namespace Schedule_Mgr
             }
             reader.Close();
             connection.Close();
+            
         }
 
 
