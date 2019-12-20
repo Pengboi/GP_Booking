@@ -117,6 +117,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ShowQRWindow.xaml.cs">
+      <DependentUpon>ShowQRWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="InputDialogBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -141,6 +144,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewUserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ShowQRWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,6 +187,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Apeture.png" />
+    <Content Include="Assets\blank.mp4" />
     <Content Include="Assets\stop.mp3" />
     <Content Include="Employee_Accounts\EmployeeAccounts.db" />
     <Resource Include="LICENSE.txt" />

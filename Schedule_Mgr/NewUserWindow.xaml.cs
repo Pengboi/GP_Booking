@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Drawing;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Configuration;
@@ -204,19 +203,23 @@ namespace Schedule_Mgr
             return username;
         }
 
-        private void addRecordToDB(string user, string pass, string otp, string honorific, 
+        private void addRecordToDB(string user, string pass, string otp, string gender, string honorific, 
             string fname, string mname, string lname, int accountType) 
         {
             SQLiteConnection connection = startConnection();
-            SQLiteCommand cmd = new SQLiteCommand(@"INSERT INTO Accounts (Username, Password, OTP_Token, Suffix, Firstname, Middlename, Lastname, Account_Type)
-                                VALUES (@user, @pass, @otp, @suffix, @firstname, @middlename, @lastname, @Account_Type)", connection);
+            SQLiteCommand cmd = new SQLiteCommand(@"INSERT INTO Accounts (Username, Password, OTP_Token, Gender, Suffix, Firstname, Middlename, Lastname, Account_Type)
+                                VALUES (@user, @pass, @otp, @gender, @suffix, @firstname, @middlename, @lastname, @Account_Type)", connection);
             cmd.Prepare();
             cmd.Parameters.Add("@user", DbType.String).Value = user;
             cmd.Parameters.Add("@pass", DbType.String).Value = pass;
             cmd.Parameters.Add("@otp", DbType.String).Value = otp;
+            cmd.Parameters.Add("@gender", DbType.String).Value = gender;
             cmd.Parameters.Add("@suffix", DbType.String).Value = honorific;
             cmd.Parameters.Add("@firstname", DbType.String).Value = fname;
-            cmd.Parameters.Add("@middlename", DbType.String).Value = mname;
+            if (string.IsNullOrEmpty(mname))
+                cmd.Parameters.Add("@middlename", DbType.String).Value = null;
+            else
+                cmd.Parameters.Add("@middlename", DbType.String).Value = mname;
             cmd.Parameters.Add("@lastname", DbType.String).Value = lname;
             cmd.Parameters.Add("@Account_Type", DbType.String).Value = accountType;
 
@@ -293,24 +296,22 @@ namespace Schedule_Mgr
             Console.WriteLine(otpKeyString); //This should be stored in DB
 
             int accountType = Convert.ToInt32(userAccountType);
+            string gender = userGender == 0 ? "female" : "male"; 
 
-            addRecordToDB(username, hashedPassword, otpKeyString, userHonorific, 
+            addRecordToDB(username, hashedPassword, otpKeyString, gender, userHonorific, 
                 firstname, middlename, lastname, accountType);
 
             
             //Probably need another window to create and show the QR code & the video with instructions on how to 
             //add TOTP to app. ----- add past this point
-            showQRCode(otpKeyString, username);
+            ShowQRWindow ShowQRWindow = new ShowQRWindow(otpKeyString, username);
+            this.Hide();
+            this.Close();
+            ShowQRWindow.ShowDialog();
+            
         }
 
-        private void showQRCode(string key, string username) 
-        {
-            string qrString = "otpauth://totp/GP:" + username + "?secret=" + key + "&issuer=GP"; 
-            QRCoder.QRCodeGenerator qrGenerator = new QRCoder.QRCodeGenerator();
-            QRCoder.QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrString, QRCoder.QRCodeGenerator.ECCLevel.Q);
-            QRCoder.QRCode qrCode = new QRCoder.QRCode(qrCodeData);
-            Bitmap qrCodeImage = qrCode.GetGraphic(20);
-        }
+
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
