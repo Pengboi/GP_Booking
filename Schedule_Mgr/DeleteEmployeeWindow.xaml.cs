@@ -144,18 +144,27 @@ namespace Schedule_Mgr
                 bool foundAccount = false;
                 while (!foundAccount) 
                 {
-                    InputDialogBox inputDialog = new InputDialogBox("Enter The Account Name", 50);
+                    InputDialogBox inputDialog = new InputDialogBox("Enter The Account Username:", 50);
                     if (inputDialog.ShowDialog() == true)
                         username = inputDialog.Answer;
-                    cmd = new SQLiteCommand(@"SELECT COUNT(*) FROM Accounts WHERE Username = @user", connection);
+                    cmd = new SQLiteCommand(@"SELECT COUNT(*) FROM Accounts WHERE Username = @user AND Firstname = @fname" + 
+                        ((!string.IsNullOrEmpty(middlename) ? " AND Middlename = @mname" : "")) + " AND Lastname = @lname", connection);
                     cmd.Prepare();
                     cmd.Parameters.Add("@user", DbType.String).Value = username;
-                    int userExists = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.Parameters.Add("@fname", DbType.String).Value = firstname;
+                    if (!string.IsNullOrEmpty(middlename))
+                     cmd.Parameters.Add("@mname", DbType.String).Value = middlename;
+                    cmd.Parameters.Add("@lname", DbType.String).Value = lastname;
 
+                    int userExists = Convert.ToInt32(cmd.ExecuteScalar());
                     if (userExists == 1)
                         foundAccount = true;
-                    else
-                        MessageBox.Show("User not found. Confirm username of account and try again later.", "");
+                    else 
+                    {
+                        MessageBox.Show("User not found. Confirm username of the account and try again later.", "Error!");
+                        return;
+                    }
+                        
                 }
                 cmd = new SQLiteCommand(@"DELETE FROM Accounts WHERE Username = @Username", connection);
                 cmd.Prepare();
