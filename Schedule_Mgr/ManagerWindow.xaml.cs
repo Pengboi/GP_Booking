@@ -63,11 +63,11 @@ namespace Schedule_Mgr
         }
 
 
-        public void employeeList_GetDoctors(object sender, RoutedEventArgs e) 
+        public void doctorList_GetDoctors(object sender, RoutedEventArgs e) 
         {
             String sqlPath = LoadConnectionString();
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
-            string sqlQuery = $"SELECT Firstname, Middlename, Lastname FROM Accounts WHERE Account_Type = 2;";
+            string sqlQuery = $"SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Account_Type = 2;";
 
             connection.Open();
             var cmd = new SQLiteCommand(sqlQuery, connection);
@@ -78,9 +78,9 @@ namespace Schedule_Mgr
                 string middlename = "";
                 if (!(reader["Middlename"] == null))
                     middlename = reader["Middlename"].ToString();
-                
-                string name = "Dr. " + reader["Firstname"].ToString() + " " + middlename + " " + reader["Lastname"].ToString();
-                employeeList.Items.Add(name);
+
+                string name = reader["Suffix"].ToString() + " " + reader["Firstname"].ToString() + " " + (!(string.IsNullOrWhiteSpace(middlename)) ? middlename + " " : "") + reader["Lastname"].ToString();
+                doctorList.Items.Add(name);
             }
             reader.Close();
             connection.Close();
@@ -119,8 +119,8 @@ namespace Schedule_Mgr
         private string getSelectedDoctor() 
         {
             string doctor;
-            if (employeeList.SelectedItems.Count == 1)
-                doctor = employeeList.SelectedItems[0].ToString();
+            if (doctorList.SelectedItems.Count == 1)
+                doctor = doctorList.SelectedItems[0].ToString();
             else
             {
                 return null;
@@ -279,40 +279,20 @@ namespace Schedule_Mgr
         {
             NewUser NewUserWin = new NewUser();
             NewUserWin.ShowDialog();
-            employeeList.DataContext = null;
-            employeeList.Items.Clear();
-            employeeList_GetDoctors(sender, e);
+            doctorList.DataContext = null;
+            doctorList.Items.Clear();
+            doctorList_GetDoctors(sender, e);
+            return;
         }
 
 
         private void deleteAccount(object sender, RoutedEventArgs e) 
         {
-            if (getSelectedDoctor() == null) 
-            {
-                MessageBox.Show("Select the doctor whose profile you wish to delete.", "No Doctor Selected");
-                return;
-            }
-            
-            SQLiteConnection connection = startConnection();
-            string doctorUsername = getDoctorUsername(getSelectedDoctor(), connection);
-            MessageBoxResult messageBoxConfirmation = System.Windows.MessageBox.Show("Are you sure you would like to delete Dr. " + getSelectedDoctor() + "'s profile?",
-                                                                                     "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
-            if (messageBoxConfirmation == MessageBoxResult.No)
-                return;
-            else
-            {
-                SQLiteCommand cmd = new SQLiteCommand(@"DELETE FROM Accounts WHERE Username = @Username", connection);
-                cmd.Prepare();
-                cmd.Parameters.Add("@Username", DbType.String).Value = doctorUsername;
-                cmd.ExecuteNonQuery();
-                connection.Close();
-
-                employeeList.DataContext = null;
-                employeeList.Items.Clear();
-
-                employeeList_GetDoctors(sender, e);
-                MessageBox.Show("Account Deleted successfully", "Account Deleted.");
-            }
+            DeleteEmployeeWindow DelEmployeeWin = new DeleteEmployeeWindow();
+            DelEmployeeWin.ShowDialog();
+            doctorList.DataContext = null;
+            doctorList.Items.Clear();
+            doctorList_GetDoctors(sender, e);
             return;
         }
 

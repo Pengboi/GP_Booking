@@ -296,7 +296,7 @@ namespace Schedule_Mgr
             Console.WriteLine(otpKeyString); //This should be stored in DB
 
             int accountType = Convert.ToInt32(userAccountType);
-            string gender = userGender == 0 ? "female" : "male"; 
+            string gender = userGender == 0 ? "Female" : "Male"; 
 
             addRecordToDB(username, hashedPassword, otpKeyString, gender, userHonorific, 
                 firstname, middlename, lastname, accountType);

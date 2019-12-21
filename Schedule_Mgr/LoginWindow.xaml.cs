@@ -117,15 +117,15 @@ namespace Schedule_Mgr
             if (Validate_Credentials(username, password)) 
             {
                 String inputOTP = "";
-                InputDialogBox inputDialog = new InputDialogBox("Enter Your OTP Code:", "");
+                InputDialogBox inputDialog = new InputDialogBox("Enter Your OTP Code:", 6);
                 if (inputDialog.ShowDialog() == true)
                     inputOTP = inputDialog.Answer;
 
                 if (Validate_OTP(inputOTP, username)) 
                 {
                     // Memes basically.
-                    mediaPlayer.Open(new Uri("Assets\\stop.mp3"));
-                    mediaPlayer.Play();
+                    //mediaPlayer.Open(new Uri("Assets\\stop.mp3"));
+                    //mediaPlayer.Play();
 
                     
                     ManagerWindow managerWin = new ManagerWindow();

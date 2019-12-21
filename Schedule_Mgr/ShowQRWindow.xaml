@@ -7,18 +7,34 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Schedule_Mgr"
         mc:Ignorable="d"
-        Height="500" Width="900" WindowStyle="ToolWindow" Topmost="True" 
+        Height="600" Width="900" WindowStyle="ToolWindow" Topmost="True" 
         Background="#ecf0f1" Cursor="Arrow" ResizeMode="NoResize">
     <Grid>
         <Image x:Name="QRImage"
             HorizontalAlignment="Right" Height="180" Width="180" Margin="0,0,15,15" VerticalAlignment="Bottom" />
         <MediaElement x:Name="tutorialVideo" 
-            HorizontalAlignment="Center" Height="240" Margin="0,20,0,0" VerticalAlignment="Top" Width="460"/>
+            HorizontalAlignment="Center" Height="305" Margin="0,50,0,0" VerticalAlignment="Top" Width="650">
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="MediaElement.Loaded">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <MediaTimeline Source="Assets\tutorial.mp4" Storyboard.TargetName="tutorialVideo"  
+                                RepeatBehavior="Forever" />
+
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
         <Label Content="Scan" FontSize="40" FontWeight="DemiBold" Foreground="black"
-               HorizontalAlignment="Left" Margin="586,277,0,0" VerticalAlignment="Top"/>
+               HorizontalAlignment="Left" Margin="586,277,0,150" VerticalAlignment="Bottom"/>
         <Label Content="QR:" FontSize="40" FontWeight="DemiBold" Foreground="black"
-               HorizontalAlignment="Left" Margin="607,317,0,0" VerticalAlignment="Top"/>
-        <Image Source="Assets\\Apeture.png"
-            HorizontalAlignment="Left" Height="80" Margin="597,378,0,0" VerticalAlignment="Top" Width="80"/>
+               HorizontalAlignment="Left" Margin="607,317,0,110" VerticalAlignment="Bottom"/>
+        <Image Source="Assets\Apeture.png"
+            HorizontalAlignment="Left" Height="80" Margin="619,0,0,41" VerticalAlignment="Bottom" Width="80"/>
+        <Label Content="Video Tutorial:" FontSize="40" FontWeight="DemiBold"
+               HorizontalAlignment="Left" Margin="180,0,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

@@ -30,8 +30,6 @@ namespace Schedule_Mgr
             this.username = username;
             ImageSource QRCode = GenerateQRCode(key, username);
             QRImage.Source = QRCode;
-            tutorialVideo.Source = (new Uri("C:\\Users\\Lidio\\iCloudDrive\\Desktop\\Software_Development\\GP_Booking\\Schedule_Mgr\\GP_Booking\\Schedule_Mgr\\Assets\\blank.mp4"));
-
         }
 
 

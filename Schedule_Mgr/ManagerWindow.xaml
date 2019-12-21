@@ -28,8 +28,8 @@
                       FirstDayOfWeek="Monday" Loaded="calendar_CalendarFormat" IsTodayHighlighted="False"
                       >
             </Calendar>
-            <ListView x:Name="employeeList" MinWidth="300" MinHeight="450" HorizontalAlignment="Center" VerticalAlignment="Top"
-                      Margin="500,50,500,0" BorderBrush="Black" FontSize="15" Loaded="employeeList_GetDoctors" Height="470" >
+            <ListView x:Name="doctorList" MinWidth="300" MinHeight="450" HorizontalAlignment="Center" VerticalAlignment="Top"
+                      Margin="500,50,500,0" BorderBrush="Black" FontSize="15" Loaded="doctorList_GetDoctors" Height="470" >
             </ListView>
 
             <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="120,0,0,155"

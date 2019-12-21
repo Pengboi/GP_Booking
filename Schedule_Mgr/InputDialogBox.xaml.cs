@@ -19,12 +19,12 @@ namespace Schedule_Mgr
     /// </summary>
     public partial class InputDialogBox : Window
     {
-        public InputDialogBox(string question, string defaultAnswer = "")
+        public InputDialogBox(string question, int answerLength)
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             OTPQuestion.Content = question;
-            OTPAnswer.Text = defaultAnswer;
+            OTPAnswer.MaxLength = answerLength;
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)

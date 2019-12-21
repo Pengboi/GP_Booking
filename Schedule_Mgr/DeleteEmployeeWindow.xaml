@@ -1,0 +1,55 @@
+﻿<Window x:Class="Schedule_Mgr.DeleteEmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Schedule_Mgr"
+        mc:Ignorable="d"
+        Title="Delete User"
+        WindowState="Normal"
+        Topmost="True"
+        Height="750" Width="800" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" WindowStyle="ToolWindow" >
+    <Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,35,0,0">
+            <Image Height="20" Width="20" Margin="-10,0,0,0" Source="Assets/searchicon.png"></Image>
+            <TextBox x:Name="searchbox" Margin="5,0,0,0" FontSize="16" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="140"
+                     GotFocus="searchbox_GotFocus" LostFocus="searchbox_LostFocus" TextChanged="searchbox_TextChanged" />
+            
+        </StackPanel>
+        <Label Content="Receptionists:" FontSize="20" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="37,100,0,0"/>
+        <ListView x:Name="receptionistList" HorizontalAlignment="Left" Height="450" Margin="40,0,0,0" VerticalAlignment="Center" Width="220"
+                  Loaded="receptionistList_Loaded" SelectionChanged="receptionistList_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="Doctors:" FontSize="20" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="290,100,0,0"/>
+        <ListView x:Name="doctorsList" HorizontalAlignment="Center" Height="450" Margin="0,0,0,0" VerticalAlignment="Center" Width="220"
+                  SelectionChanged="doctorsList_SelectionChanged" Loaded="doctorsList_Loaded">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="HR &amp; Management:" FontSize="20" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="550,100,0,0"/>
+        <ListView x:Name="HRMList" HorizontalAlignment="Right" Height="450" Margin="0,0,20,00" VerticalAlignment="Center" Width="220"
+                  Loaded="HRMList_Loaded" SelectionChanged="HRMList_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button HorizontalAlignment="Center" Margin="0,0,0,40" VerticalAlignment="Bottom" Height="60" Width="165"
+                Content="Delete Account" FontSize="17" FontWeight="Bold" Background="#ff7675" Click="deleteButton_Click"/>
+
+
+
+
+    </Grid>
+</Window>
