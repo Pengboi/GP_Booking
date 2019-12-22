@@ -40,7 +40,7 @@ namespace Schedule_Mgr
         }
 
 
-        private SQLiteConnection startConnection() 
+        private SQLiteConnection startConnection()
         {
             string sqlPath = LoadConnectionString();
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
@@ -50,17 +50,17 @@ namespace Schedule_Mgr
         }
 
 
-        private void calendar_CalendarFormat(object sender, RoutedEventArgs e) 
-        {   
+        private void calendar_CalendarFormat(object sender, RoutedEventArgs e)
+        {
             calendar.DisplayDateStart = DateTime.Today;
             calendar.DisplayDateEnd = DateTime.Today.AddDays(14);
 
             DateTime selectedDay = DateTime.Today;
             DateTime maxDay = DateTime.Today.AddDays(14);
 
-            while (selectedDay != maxDay) 
+            while (selectedDay != maxDay)
             {
-                if ((selectedDay.DayOfWeek == DayOfWeek.Saturday) || (selectedDay.DayOfWeek == DayOfWeek.Sunday)) 
+                if ((selectedDay.DayOfWeek == DayOfWeek.Saturday) || (selectedDay.DayOfWeek == DayOfWeek.Sunday))
                 {
                     calendar.BlackoutDates.Add(new CalendarDateRange(selectedDay));
                 }
@@ -71,7 +71,7 @@ namespace Schedule_Mgr
 
 
 
-        public void doctorList_GetDoctors(object sender, RoutedEventArgs e) 
+        public void doctorList_GetDoctors(object sender, RoutedEventArgs e)
         {
             SQLiteConnection connection = startConnection();
             string sqlQuery = $"SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Account_Type = 2;";
@@ -79,7 +79,7 @@ namespace Schedule_Mgr
             var cmd = new SQLiteCommand(sqlQuery, connection);
             SQLiteDataReader reader = cmd.ExecuteReader();
 
-            while (reader.Read()) 
+            while (reader.Read())
             {
                 string middlename = "";
                 if (!(reader["Middlename"] == null))
@@ -90,18 +90,18 @@ namespace Schedule_Mgr
             }
             reader.Close();
             connection.Close();
-            
+
         }
 
 
-        private void comboBox_SetTimes(object sender, RoutedEventArgs e) 
+        private void comboBox_SetTimes(object sender, RoutedEventArgs e)
         {
-            for (int i = 6; i <= 19; i++) 
+            for (int i = 6; i <= 19; i++)
             {
                 hoursComboBox.Items.Add(i.ToString("00"));
                 hoursComboBox2.Items.Add(i.ToString("00"));
             }
-            for (int i = 0; i <= 55; i = i + 5) 
+            for (int i = 0; i <= 55; i = i + 5)
             {
                 minsComboBox.Items.Add(i.ToString("00"));
                 minsComboBox2.Items.Add(i.ToString("00"));
@@ -109,7 +109,7 @@ namespace Schedule_Mgr
         }
 
 
-        private DateTime getDate() 
+        private DateTime getDate()
         {
             DateTime selectedDate;
             if (calendar.SelectedDate.HasValue)
@@ -122,7 +122,7 @@ namespace Schedule_Mgr
         }
 
 
-        private string getSelectedDoctor() 
+        private string getSelectedDoctor()
         {
             string doctor;
             if (doctorList.SelectedItems.Count == 1)
@@ -139,8 +139,27 @@ namespace Schedule_Mgr
             return doctor;
         }
 
+        private string getSelectedShift()
+        {
+            string doctor;
+            if (dailyScheduleGrid.SelectedItems.Count == 1)
+            {
+                var selectedDoctor = dailyScheduleGrid.SelectedItem as ShiftRow;
+                doctor = selectedDoctor.DoctorHeader.ToString();
+            }
+            else
+            {
+                return null;
+            }
+            doctor = doctor.Remove(0, 4); //Removes "Dr. "
+            string firstName = doctor.Substring(0, doctor.IndexOf(" "));
+            string lastName = doctor.Substring(doctor.LastIndexOf(" "));
+            doctor = firstName + lastName;
 
-        private string getShiftStart() 
+            return doctor;
+        }
+
+        private string getShiftStart()
         {
             if ((hoursComboBox.SelectedIndex == -1) || (minsComboBox.SelectedIndex == -1))
             {
@@ -151,7 +170,7 @@ namespace Schedule_Mgr
         }
 
 
-        private string getShiftEnd() 
+        private string getShiftEnd()
         {
             if ((hoursComboBox2.SelectedIndex == -1) || (minsComboBox2.SelectedIndex == -1))
             {
@@ -162,7 +181,7 @@ namespace Schedule_Mgr
         }
 
 
-        private string getDoctorUsername(string name, SQLiteConnection conn) 
+        private string getDoctorUsername(string name, SQLiteConnection conn)
         {
             string firstName = name.Substring(0, name.IndexOf(" "));
             string lastName = name.Substring(name.LastIndexOf(" ") + 1);
@@ -171,7 +190,7 @@ namespace Schedule_Mgr
             var cmd = new SQLiteCommand(sqlQuery, conn);
             SQLiteDataReader reader = cmd.ExecuteReader();
 
-            while (reader.Read()) 
+            while (reader.Read())
             {
                 readerResult = reader["Username"].ToString();
             }
@@ -180,7 +199,7 @@ namespace Schedule_Mgr
         }
 
 
-        private bool shiftExists(string date, string username, SQLiteConnection conn) 
+        private bool shiftExists(string date, string username, SQLiteConnection conn)
         {
             SQLiteCommand cmd = new SQLiteCommand(@"SELECT COUNT(*) FROM Schedule WHERE Date = @Date AND Username = @Username", conn);
             cmd.Prepare();
@@ -188,7 +207,7 @@ namespace Schedule_Mgr
             cmd.Parameters.Add("@Username", DbType.String).Value = username;
             int userExists = Convert.ToInt32(cmd.ExecuteScalar());
 
-            if (userExists != 0) 
+            if (userExists != 0)
             {
                 return true;
             }
@@ -199,14 +218,14 @@ namespace Schedule_Mgr
         private void updateShift(object sender, RoutedEventArgs e)
         {
             DateTime shiftDate = getDate().Date;
-            if (shiftDate == DateTime.Parse("01/01/1990")) 
+            if (shiftDate == DateTime.Parse("01/01/1990"))
             {
                 MessageBox.Show("Please select the date for your shift", "Could not create shift");
                 return;
             }
 
             string doctorSelected = getSelectedDoctor();
-            if (doctorSelected == null) 
+            if (doctorSelected == null)
             {
                 MessageBox.Show("Please select a doctor for your shift", "Could not create shift");
                 return;
@@ -229,7 +248,7 @@ namespace Schedule_Mgr
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
             connection.Open();
             string doctorUsername = getDoctorUsername(doctorSelected, connection);
-            if (shiftExists(shiftDate.ToString("dd/MM/yyyy"), doctorUsername, connection)) 
+            if (shiftExists(shiftDate.ToString("dd/MM/yyyy"), doctorUsername, connection))
             {
                 MessageBox.Show("A shift already exists for this employee on the selected date. Please select another date or delete the existing shift for the employee", "Duplicate shift");
                 return;
@@ -250,7 +269,7 @@ namespace Schedule_Mgr
         }
 
 
-        private void deleteShift(object sender, RoutedEventArgs e) 
+        private void deleteShift(object sender, RoutedEventArgs e)
         {
             DateTime shiftDate = getDate().Date;
             if (shiftDate == DateTime.Parse("01/01/1990"))
@@ -258,10 +277,10 @@ namespace Schedule_Mgr
                 MessageBox.Show("Please select the date of the shift you want to delete", "Could not delete shift");
                 return;
             }
-            string doctorSelected = getSelectedDoctor();
+            string doctorSelected = getSelectedShift();
             if (doctorSelected == null)
             {
-                MessageBox.Show("Please select the doctor whose shift you want to delete.", "Could not delete shift");
+                MessageBox.Show("Please select the shift you want to delete.", "Could not delete shift");
                 return;
             }
 
@@ -275,7 +294,7 @@ namespace Schedule_Mgr
                 cmd.Parameters.Add("@Username", DbType.String).Value = doctorUsername;
 
                 cmd.ExecuteNonQuery();
-                MessageBox.Show("Shift for Dr." + doctorSelected + " scheduled on: "+ shiftDate.ToString("dd/MM/yyyy") + " deleted successfully", "Shift deleted");
+                MessageBox.Show("Shift for Dr." + doctorSelected + " scheduled on: " + shiftDate.ToString("dd/MM/yyyy") + " deleted successfully", "Shift deleted");
             }
             else
                 MessageBox.Show("Shift does not exist", "Could not delete shift");
@@ -285,7 +304,7 @@ namespace Schedule_Mgr
             return;
         }
 
-        private void createAccount(object sender, RoutedEventArgs e) 
+        private void createAccount(object sender, RoutedEventArgs e)
         {
             NewUser NewUserWin = new NewUser();
             NewUserWin.ShowDialog();
@@ -296,7 +315,7 @@ namespace Schedule_Mgr
         }
 
 
-        private void deleteAccount(object sender, RoutedEventArgs e) 
+        private void deleteAccount(object sender, RoutedEventArgs e)
         {
             DeleteEmployeeWindow DelEmployeeWin = new DeleteEmployeeWindow();
             DelEmployeeWin.ShowDialog();
@@ -307,7 +326,7 @@ namespace Schedule_Mgr
         }
 
 
-        private void logOut(object sender, RoutedEventArgs e) 
+        private void logOut(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWin = new LoginWindow();
             this.Hide();
@@ -339,7 +358,7 @@ namespace Schedule_Mgr
             updateDailySchedule();
         }
 
-        private void updateDailySchedule() 
+        private void updateDailySchedule()
         {
             dailyScheduleGrid.Items.Clear();
             DateTime selectedDate = getDate().Date;
