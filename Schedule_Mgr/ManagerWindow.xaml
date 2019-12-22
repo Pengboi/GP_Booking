@@ -11,7 +11,7 @@
         WindowState="Maximized"
         Height="1080" Width="1920" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" >
     <Grid>
-        <Rectangle MinWidth="1300" MinHeight="650" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <Rectangle MinWidth="900" MinHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,600,0" >
             <Rectangle.Effect>
                 <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
                                   ShadowDepth="3" Opacity="0.8"/>
@@ -23,49 +23,117 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Grid MinWidth="1300" MinHeight="650" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Calendar x:Name="calendar" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="120,50,0,0"
+        <Grid MinWidth="900" MinHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="207,176,807,175" Width="900" >
+
+            <Label HorizontalAlignment="Left" Margin="0,15,0,0" VerticalAlignment="Top" Width="900"
+                   HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="40" >Schedule Manager</Label>
+
+            <Calendar x:Name="calendar" HorizontalAlignment="Right"  VerticalAlignment="Top" Margin="0,100,50,0"
                       FirstDayOfWeek="Monday" Loaded="calendar_CalendarFormat" IsTodayHighlighted="False"
+                      SelectedDatesChanged="calendar_SelectedDatesChanged" Height="380" 
                       >
             </Calendar>
-            <ListView x:Name="doctorList" MinWidth="300" MinHeight="450" HorizontalAlignment="Center" VerticalAlignment="Top"
-                      Margin="500,50,500,0" BorderBrush="Black" FontSize="15" Loaded="doctorList_GetDoctors" Height="470" >
+
+            <ListView x:Name="doctorList" Width="300" Height="470" HorizontalAlignment="Center" VerticalAlignment="Top"
+                      Margin="0,100,125,0" BorderBrush="Black" FontSize="15" Loaded="doctorList_GetDoctors">
             </ListView>
 
-            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="120,0,0,155"
+            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="567,0,0,160"
                    FontSize="20" FontWeight="Bold">Shift Start:</Label>
-            <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="120,0,0,130"
+            <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="44" Width="40" Margin="571,0,0,130"
                       Loaded="comboBox_SetTimes" FontSize="15">
             </ComboBox>
-            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="50" Width="30" Margin="171,0,0,125"
+            <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50" Width="30" Margin="0,0,247,120"
                    FontSize="25">:</Label>
-            <ComboBox x:Name="minsComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="183,0,0,130"
+            <ComboBox x:Name="minsComboBox" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="44" Width="40" Margin="0,0,217,130"
                       FontSize="15">
             </ComboBox>
 
-            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="264,0,0,155"
+            <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Height ="50" Margin="0,0,60,160"
                    FontSize="20" FontWeight="Bold" RenderTransformOrigin="0.97,-1.56">Shift End:
             </Label>
-            <ComboBox x:Name="hoursComboBox2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="264,0,0,130"
+            <ComboBox x:Name="hoursComboBox2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="44" Width="40" Margin="0,0,115,130"
                       FontSize="15" RenderTransformOrigin="3.275,-1">
             </ComboBox>
-            <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="50" Width="30" Margin="309,0,0,125"
+            <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50" Width="30" Margin="0,0,80,120"
                    FontSize="25">:</Label>
-            <ComboBox x:Name="minsComboBox2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="45" Width="40" Margin="325,0,0,130"
+            <ComboBox x:Name="minsComboBox2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="44" Width="40" Margin="0,0,52,130"
                       FontSize="15">
             </ComboBox>
 
-            <Button x:Name="updateShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,120,0"
-                    Height="65" Width="180" FontSize="15.5" Click="updateShift">Update Shift</Button>
-            <Button x:Name="deleteShiftButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,120,0"
-                    Height="65" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteShift">Delete Shift</Button>
-            <Button x:Name="createAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,120,0"
-                    Height="65" Width="180" FontSize="15.5" Click="createAccount">Create Staff Account</Button>
-            <Button x:Name="deleteAccountButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,350,120,0"
-                    Height="65" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteAccount">Delete Staff Account</Button>
-            <Button x:Name="logoutButton" VerticalAlignment="Bottom" Height="50" Width="300" Margin="0,0,0,50"
-                    Background="#16a085" FontSize="30" Click="logOut">Log Out</Button>
+            <Button x:Name="createAccountButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,100,0,0"
+                    Height="46" Width="180" FontSize="15.5" Click="createAccount">Create Staff Account</Button>
+            <Button x:Name="deleteAccountButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,180,0,0"
+                    Height="46" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteAccount">Delete Staff Account</Button>
+
+            <Button x:Name="updateShiftButton" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,50,35"
+                    Height="46" Width="180" FontSize="15.5" Click="updateShift">Update Shift</Button>
+
         </Grid>
+
+        <Rectangle MinWidth="500" MinHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="900,0,0,0" >
+            <Rectangle.Effect>
+                <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
+                                  ShadowDepth="3" Opacity="0.8"/>
+            </Rectangle.Effect>
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF8EC5FC" Offset="0.003"/>
+                    <GradientStop Color="#FFE0C3FC" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Grid MinWidth="500" MinHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1157,176,257,175" Width="500">
+
+            <Label HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" Width="500"
+                   HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="40" >Daily Schedule</Label>
+
+            <DataGrid x:Name="dailyScheduleGrid" HorizontalAlignment="Left" Margin="20,130,20,0" VerticalAlignment="Top" Height="400" MinWidth="450"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      IsReadOnly="True" GridLinesVisibility="Vertical" HeadersVisibility="All" Width="480">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="260" Header="Doctor" Binding="{Binding Path=DoctorHeader}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment"
+                                Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn MinWidth="100" Header="Shift Start" Binding="{Binding Path=ShiftStartHeader}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment"
+                                Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn MinWidth="100" Header="Shift End" Binding="{Binding Path=ShiftEndHeader}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment"
+                                Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button x:Name="deleteShiftButton" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,100"
+                    Height="46" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteShift">Delete Shift</Button>
+        </Grid>
+        <Button x:Name="logoutButton" VerticalAlignment="Bottom" Height="50" Width="300" Margin="1357,0,257,100"
+                    Background="#16a085" FontSize="30" Click="logOut">Log Out</Button>
+
+
     </Grid>
 
 </Window>
+
+
+		
+
+        
