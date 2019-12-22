@@ -135,7 +135,11 @@
                     Height="46" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteShift">Delete Shift</Button>
         </Grid>
         <Button x:Name="logoutButton" VerticalAlignment="Bottom" Height="50" Width="300" Margin="1357,0,257,100"
-                    Background="#16a085" FontSize="30" Click="logOut">Log Out</Button>
+                    Background="#16a085" FontSize="30" Click="logOut">
+            <Button.Effect>
+                <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="5"
+                                  ShadowDepth="3" Opacity="0.8"/>
+            </Button.Effect>Log Out</Button>
 
 
     </Grid>
