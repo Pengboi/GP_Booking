@@ -32,10 +32,15 @@
                       FirstDayOfWeek="Monday" Loaded="calendar_CalendarFormat" IsTodayHighlighted="False"
                       SelectedDatesChanged="calendar_SelectedDatesChanged" Height="380" 
                       >
+                <Calendar.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
+                                  ShadowDepth="3" Opacity="0.8"/>
+                </Calendar.Effect>
             </Calendar>
 
             <ListView x:Name="doctorList" Width="300" Height="470" HorizontalAlignment="Center" VerticalAlignment="Top"
-                      Margin="0,100,125,0" BorderBrush="Black" FontSize="15" Loaded="doctorList_GetDoctors">
+                      Margin="0,100,125,0" BorderBrush="Black" FontSize="15" Loaded="doctorList_GetDoctors" >
+                
             </ListView>
 
             <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="567,0,0,160"
@@ -86,11 +91,15 @@
         <Grid MinWidth="500" MinHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1157,176,257,175" Width="500">
 
             <Label HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" Width="500"
-                   HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="40" >Daily Schedule</Label>
-
-            <DataGrid x:Name="dailyScheduleGrid" HorizontalAlignment="Left" Margin="20,130,20,0" VerticalAlignment="Top" Height="400" MinWidth="450"
+                   HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="40" >Doctors Daily Schedule</Label>
+            
+            <DataGrid x:Name="dailyScheduleGrid" HorizontalAlignment="Left" Margin="20,130,20,0" VerticalAlignment="Top" Height="400" MinWidth="460"
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                      IsReadOnly="True" GridLinesVisibility="Vertical" HeadersVisibility="All" Width="480">
+                      IsReadOnly="True" GridLinesVisibility="Vertical" HeadersVisibility="All">
+                <DataGrid.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="90" RenderingBias="Quality" BlurRadius="10"
+                                  ShadowDepth="3" Opacity="0.8"/>
+                </DataGrid.Effect>
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="260" Header="Doctor" Binding="{Binding Path=DoctorHeader}">
@@ -102,7 +111,7 @@
                         </DataGridTextColumn.HeaderStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn MinWidth="100" Header="Shift Start" Binding="{Binding Path=ShiftStartHeader}">
+                    <DataGridTextColumn MinWidth="95" Header="Shift Start" Binding="{Binding Path=ShiftStartHeader}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="HorizontalContentAlignment"
@@ -111,7 +120,7 @@
                         </DataGridTextColumn.HeaderStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn MinWidth="100" Header="Shift End" Binding="{Binding Path=ShiftEndHeader}">
+                    <DataGridTextColumn MinWidth="95" Header="Shift End" Binding="{Binding Path=ShiftEndHeader}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="HorizontalContentAlignment"
