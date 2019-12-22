@@ -27,6 +27,12 @@ namespace Schedule_Mgr
         {
             InitializeComponent();
         }
+        public class ShiftRow
+        {
+            public string DoctorHeader { get; set; }
+            public string ShiftStartHeader { get; set; }
+            public string ShiftEndHeader { get; set; }
+        }
 
         private static string LoadConnectionString(string id = "Default")
         {
@@ -63,13 +69,13 @@ namespace Schedule_Mgr
         }
 
 
+
+
         public void doctorList_GetDoctors(object sender, RoutedEventArgs e) 
         {
-            String sqlPath = LoadConnectionString();
-            SQLiteConnection connection = new SQLiteConnection(sqlPath);
+            SQLiteConnection connection = startConnection();
             string sqlQuery = $"SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Account_Type = 2;";
 
-            connection.Open();
             var cmd = new SQLiteCommand(sqlQuery, connection);
             SQLiteDataReader reader = cmd.ExecuteReader();
 
@@ -239,6 +245,8 @@ namespace Schedule_Mgr
             cmd.ExecuteNonQuery();
             MessageBox.Show("Shift created successfully", "Shift created");
             connection.Close();
+
+            updateDailySchedule();
         }
 
 
@@ -268,10 +276,12 @@ namespace Schedule_Mgr
 
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Shift for Dr." + doctorSelected + " scheduled on: "+ shiftDate.ToString("dd/MM/yyyy") + " deleted successfully", "Shift deleted");
-                connection.Close();
             }
             else
                 MessageBox.Show("Shift does not exist", "Could not delete shift");
+            connection.Close();
+
+            updateDailySchedule();
             return;
         }
 
@@ -303,6 +313,55 @@ namespace Schedule_Mgr
             this.Hide();
             this.Close();
             loginWin.ShowDialog();
+        }
+
+
+        private string getDoctorName(string username, SQLiteConnection connection)
+        {
+            string doctorName = "";
+            SQLiteCommand cmd = new SQLiteCommand($"SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Username = @Username", connection);
+            cmd.Prepare();
+            cmd.Parameters.Add("@Username", DbType.String).Value = username;
+            SQLiteDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string middlename = "";
+                if (!(reader["Middlename"] == null))
+                    middlename = reader["Middlename"].ToString();
+
+                doctorName = reader["Suffix"].ToString() + " " + reader["Firstname"].ToString() + " " + (!(string.IsNullOrWhiteSpace(middlename)) ? middlename + " " : "") + reader["Lastname"].ToString();
+            }
+            return doctorName;
+        }
+
+        private void calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            updateDailySchedule();
+        }
+
+        private void updateDailySchedule() 
+        {
+            dailyScheduleGrid.Items.Clear();
+            DateTime selectedDate = getDate().Date;
+
+            SQLiteConnection connection = startConnection();
+            SQLiteCommand cmd = new SQLiteCommand(@"SELECT Username, Shift_Start, Shift_End FROM Schedule WHERE Date = @Date", connection);
+            cmd.Prepare();
+            cmd.Parameters.Add("@Date", DbType.String).Value = selectedDate.ToString("dd/MM/yyyy");
+
+            SQLiteDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string doctorName = getDoctorName(reader["Username"].ToString(), connection);
+                string shiftStart = reader["Shift_Start"].ToString().Insert(2, ":");
+                string shiftEnd = reader["Shift_End"].ToString().Insert(2, ":");
+                string mergedInline = doctorName + " " + shiftStart + " " + shiftEnd;
+                var doctorShiftRow = new ShiftRow { DoctorHeader = doctorName, ShiftStartHeader = shiftStart, ShiftEndHeader = shiftEnd };
+                dailyScheduleGrid.Items.Add(doctorShiftRow);
+            }
+            reader.Close();
+            connection.Close();
+            return;
         }
     }
 }

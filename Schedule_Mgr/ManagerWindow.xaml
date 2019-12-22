@@ -26,10 +26,11 @@
         <Grid MinWidth="1300" MinHeight="650" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Calendar x:Name="calendar" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="120,50,0,0"
                       FirstDayOfWeek="Monday" Loaded="calendar_CalendarFormat" IsTodayHighlighted="False"
+                      SelectedDatesChanged="calendar_SelectedDatesChanged" 
                       >
             </Calendar>
             <ListView x:Name="doctorList" MinWidth="300" MinHeight="450" HorizontalAlignment="Center" VerticalAlignment="Top"
-                      Margin="500,50,500,0" BorderBrush="Black" FontSize="15" Loaded="doctorList_GetDoctors" Height="470" >
+                      Margin="500,50,500,0" BorderBrush="Black" FontSize="15" Loaded="doctorList_GetDoctors">
             </ListView>
 
             <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="120,0,0,155"
@@ -65,6 +66,44 @@
                     Height="65" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteAccount">Delete Staff Account</Button>
             <Button x:Name="logoutButton" VerticalAlignment="Bottom" Height="50" Width="300" Margin="0,0,0,50"
                     Background="#16a085" FontSize="30" Click="logOut">Log Out</Button>
+
+            <Label HorizontalAlignment="Left" Margin="918,431,0,0" VerticalAlignment="Top" Width="353" Height="30"
+                   HorizontalContentAlignment="Center" FontWeight="DemiBold" FontSize="14" >Daily Schedule</Label>
+            <DataGrid x:Name="dailyScheduleGrid" HorizontalAlignment="Left" Margin="918,461,0,0" VerticalAlignment="Top" Height="166" Width="353"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      IsReadOnly="True" GridLinesVisibility="Vertical" HeadersVisibility="All">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="200" Header="Doctor" Binding="{Binding Path=DoctorHeader}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment"
+                                Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn MinWidth="70" Header="Shift Start" Binding="{Binding Path=ShiftStartHeader}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment"
+                                Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn MinWidth="70" Header="Shift End" Binding="{Binding Path=ShiftEndHeader}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment"
+                                Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+
+            </DataGrid>
+
         </Grid>
     </Grid>
 
