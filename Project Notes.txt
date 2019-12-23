@@ -4,3 +4,14 @@ Account types:
 	1:	Receiptionist
 	2:	Doctor
 	3:	HR/IT (Management accounts for scheduling access)
+
+
+AMD Notes:
+
+When naming files within Models, Views, ViewModels Folders,
+Caliburn.Micro Library seeks files within these folders and depending on naming
+conventions, the complier is able to understand the functions of each file.
+
+Views =	666 OVO XO UI/UX Xperia Xperience XP
+ViewModels = UI LOGIC
+Models = Backend / Business Logic
