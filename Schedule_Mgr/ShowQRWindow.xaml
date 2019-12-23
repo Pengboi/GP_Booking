@@ -34,7 +34,7 @@
                HorizontalAlignment="Left" Margin="607,317,0,110" VerticalAlignment="Bottom"/>
         <Image Source="Assets\Apeture.png"
             HorizontalAlignment="Left" Height="80" Margin="619,0,0,41" VerticalAlignment="Bottom" Width="80"/>
-        <Label Content="Video Tutorial:" FontSize="40" FontWeight="DemiBold"
+        <Label Content="Video tutorial:" FontSize="40" FontWeight="DemiBold"
                HorizontalAlignment="Left" Margin="180,0,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

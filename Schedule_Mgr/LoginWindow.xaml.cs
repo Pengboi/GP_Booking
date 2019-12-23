@@ -123,16 +123,10 @@ namespace Schedule_Mgr
 
                 if (Validate_OTP(inputOTP, username)) 
                 {
-                    // Memes basically.
-                    //mediaPlayer.Open(new Uri("Assets\\stop.mp3"));
-                    //mediaPlayer.Play();
-
-                    
                     ManagerWindow managerWin = new ManagerWindow();
+                    managerWin.Show();
                     this.Hide();
                     this.Close();
-                    managerWin.ShowDialog();
-                    
 
                 }
             }
