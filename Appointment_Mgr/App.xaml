@@ -1,9 +1,20 @@
 ﻿<Application x:Class="Appointment_Mgr.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Appointment_Mgr"
-             StartupUri="MainWindow.xaml">
+             xmlns:local="clr-namespace:Appointment_Mgr" >
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.amber.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.deeppurple.xaml" />
+                <ResourceDictionary>
+                    <!--Using Caliburn.Micro library, Application startup is set to bootstrapper instead of typical start up (see SMG App.xaml)-->
+                    <local:Bootstrapper x:Key="Bootstrapper" />
+                </ResourceDictionary> 
+                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
