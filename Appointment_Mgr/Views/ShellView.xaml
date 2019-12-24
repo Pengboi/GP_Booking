@@ -5,28 +5,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Appointment_Mgr.Views"
         mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Background="#f5f6fa"
-        Title="ShellView" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Height="600" Width="1080" MinHeight="600" MinWidth="1080"
+        Title="ShellView"
+        FontSize="15"  WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="20" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
-        <Label x:Name="WelcomeMessage" Grid.Row="3" Grid.Column="3" FontSize="32">Testing</Label>
+        <Rectangle Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"
+            MinWidth="1920" MinHeight="80" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" >
+            <Rectangle.Effect>
+                <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
+                                  ShadowDepth="3" Opacity="0.8"/>
+            </Rectangle.Effect>
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#D3CCE3" Offset="0.003"/>
+                    <GradientStop Color="#E9E4F0" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+            </Grid.RowDefinitions>
+            <!-- Top Row UI Elements. -->
+            <Image x:Name="LoginImage" Source="pack://application:,,,/Assets/Login-icon.png" Grid.Row="0"
+               Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
+            <Label x:Name="LoginMessage" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0"
+               FontSize="20" FontWeight="DemiBold">Login</Label>
+            <Label x:Name="LiveClock" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,30,0" FontSize="35">15:45</Label>
+            <Label x:Name="LiveDate" Grid.Row="0" HorizontalAlignment="Right" Margin="0,45,32,0" FontSize="20">05/09/16</Label>
+        </Grid>
+
         
+        <Label x:Name="GreetingMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,250"
+                   FontWeight="Bold" FontSize="32">Testing</Label>
+
+        <Button Width="260" Height="90" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Width="197">
+                <Image HorizontalAlignment="Left"  Height="50" Margin="-20,0,0,0" Source="pack://application:,,,/Assets/Book-icon.png" />
+                <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold">Book Appointment</TextBlock>
+            </StackPanel>
+        </Button>
+
+        <Button Width="260" Height="90" Margin="0,230,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Width="197">
+                <Image HorizontalAlignment="Left"  Height="50" Margin="-20,0,0,0" Source="pack://application:,,,/Assets/Clock-icon.png" />
+                <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold">Check In</TextBlock>
+            </StackPanel>
+        </Button>
+
     </Grid>
 </Window>
