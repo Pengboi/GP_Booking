@@ -45,7 +45,7 @@ namespace Appointment_Mgr.ViewModels
        public string LiveClock 
        {
             get { return _liveClock; }
-            set { _liveClock = value; }
+            set { _liveClock = value; NotifyOfPropertyChange(() => _live); }
        }
 
         public string LiveDate
@@ -71,14 +71,15 @@ namespace Appointment_Mgr.ViewModels
         }
         void updateTimeComponents(object sender, EventArgs e)
         {
-            LiveClock = DateTime.Now.ToString("HH:mm");
-            LiveDate = DateTime.Now.ToString("dd/MM/yy");
-            GreetingMessage = "Good " + getGreeting() + ".";
+            _liveClock = DateTime.Now.ToString("HH:mm");
+            LiveClock = _liveClock;
+            _liveDate = DateTime.Now.ToString("dd/MM/yy");
+            LiveDate = _liveDate;
         }
 
         public ShellViewModel() 
         {
-            DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Render);
+            DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Send);
             timer.Interval = TimeSpan.FromMilliseconds(1);
             timer.Tick += updateTimeComponents;
             timer.Start();

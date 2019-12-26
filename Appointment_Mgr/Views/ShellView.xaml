@@ -7,12 +7,12 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Background="#f5f6fa"
-        Height="600" Width="1080" MinHeight="600" MinWidth="1080"
+        Height="1080" Width="1920"
         Title="ShellView"
         FontSize="15"  WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <Rectangle Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"
-            MinWidth="1920" MinHeight="80" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" >
+            MinWidth="1920" MinHeight="100" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" >
             <Rectangle.Effect>
                 <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
                                   ShadowDepth="3" Opacity="0.8"/>
@@ -28,10 +28,9 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
 
-
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
+                <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
             <!-- Top Row UI Elements. -->
             <Image x:Name="LoginImage" Source="pack://application:,,,/Assets/Login-icon.png" Grid.Row="0"
@@ -43,8 +42,8 @@
         </Grid>
 
         
-        <Label x:Name="GreetingMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,250"
-                   FontWeight="Bold" FontSize="32">Testing</Label>
+        <Label x:Name="GreetingMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,400"
+                   FontWeight="Bold" FontSize="62">Testing</Label>
 
         <Button Width="260" Height="90" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" Width="197">
