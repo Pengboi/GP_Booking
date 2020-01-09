@@ -44,6 +44,7 @@ namespace Appointment_Mgr.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
         }
 
@@ -62,18 +63,22 @@ namespace Appointment_Mgr.ViewModel
                 return ServiceLocator.Current.GetInstance<LoginViewModel>();
             }
         }
-
-        public HomeViewModel Home 
-        {
-            get 
-            {
-                return ServiceLocator.Current.GetInstance<HomeViewModel>();
-            }
-        }
         
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
         }
+
+        public static HomeViewModel Home
+        {
+            get { return ServiceLocator.Current.GetInstance<HomeViewModel>(); }
+        }
+
+        public static void CleanUpHome()
+        {
+            SimpleIoc.Default.Unregister<HomeViewModel>();
+            SimpleIoc.Default.Register<HomeViewModel>();
+        }
+
     }
 }

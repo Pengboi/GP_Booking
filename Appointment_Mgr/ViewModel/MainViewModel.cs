@@ -23,7 +23,8 @@ namespace Appointment_Mgr.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
-        private string _greetingMessage = "Good " + getGreeting() + "."; private string _userLogin = "Login"; private string _currentView = "Home";
+        private string _greetingMessage = "Good " + getGreeting() + "."; private string _userLogin = "Login";
+        private ViewModelBase _currentViewModel;
         private DispatcherTimer timer;
 
         public static string getGreeting()
@@ -86,14 +87,19 @@ namespace Appointment_Mgr.ViewModel
             }
         }
 
-        public string CurrentView 
+        public ViewModelBase CurrentViewModel 
         {
-            get { return this._currentView; }
-            set
+            get { return _currentViewModel; }
+            set 
             {
-                this.CurrentView = value;
-                RaisePropertyChanged("CurrentView");
+                _currentViewModel = value;
+                RaisePropertyChanged(() => CurrentViewModel);
             }
+        }
+
+        public ViewModelBase HomeVM 
+        {
+            get { return (ViewModelBase)ViewModelLocator.Home; }
         }
 
         /// <summary>
@@ -126,7 +132,7 @@ namespace Appointment_Mgr.ViewModel
 
                 //add go to view part here.
                 //https://stackoverflow.com/questions/16993918/mvvm-light-messenger-sending-and-registering-objects/16993997#16993997
-                CurrentView = _currentView;
+                CurrentViewModel = HomeVM;
             }
             ShowLoginCommand = new RelayCommand(LoginCommandMethod);
         }

@@ -70,5 +70,6 @@ namespace Appointment_Mgr.ViewModel
                 timer.Start();
             }
         }
+
     }
 }

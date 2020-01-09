@@ -31,6 +31,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!-- Top Row UI Elements. -->
             <Button Width="141" Height="50" HorizontalAlignment="Left" Margin="20,0,0,0" Command="{Binding ShowLoginCommand}" >
@@ -44,27 +45,13 @@
             <Label x:Name="LiveClock" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,30,0" FontSize="35" Content="{Binding LiveClock}"></Label>
             <Label x:Name="LiveDate" Grid.Row="0" HorizontalAlignment="Right" Margin="0,45,30,0" FontSize="20" Content="{Binding LiveDate}"></Label>
         </Grid>
-        
-        <!-- Transfering below to seperate UserControl: HomeView -->
 
-        <Label x:Name="GreetingMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,400"
-                   FontWeight="Bold" FontSize="62" Content="{Binding GreetingMessage}" ></Label>
-
-        <Button Width="260" Height="90" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Width="197">
-                <Image HorizontalAlignment="Left"  Height="50" Margin="-20,0,0,0" Source="pack://application:,,,/Assets/Book-icon.png" />
-                <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold">Book Appointment</TextBlock>
-            </StackPanel>
-        </Button>
-
-        <Button Width="260" Height="90" Margin="0,230,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Width="197">
-                <Image HorizontalAlignment="Left"  Height="50" Margin="-20,0,0,0" Source="pack://application:,,,/Assets/Clock-icon.png" />
-                <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold">Check In</TextBlock>
-            </StackPanel>
-        </Button>
-        
-        <!-- End of to be transferred elements -->
-        <ContentControl x:Name="CurrentView" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ContentControl Grid.Row="2" Content="{Binding CurrentViewModel}" />
+        </Grid>
     </Grid>
 </Window>
