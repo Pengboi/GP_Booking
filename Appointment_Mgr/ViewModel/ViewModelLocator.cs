@@ -62,6 +62,14 @@ namespace Appointment_Mgr.ViewModel
                 return ServiceLocator.Current.GetInstance<LoginViewModel>();
             }
         }
+
+        public HomeViewModel Home 
+        {
+            get 
+            {
+                return ServiceLocator.Current.GetInstance<HomeViewModel>();
+            }
+        }
         
         public static void Cleanup()
         {

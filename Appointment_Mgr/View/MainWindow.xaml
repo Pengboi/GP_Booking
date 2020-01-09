@@ -33,7 +33,7 @@
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
             <!-- Top Row UI Elements. -->
-            <Button Width="141" Height="50" HorizontalAlignment="Left" Margin="20,0,0,0" Click="LoginCommand">
+            <Button Width="141" Height="50" HorizontalAlignment="Left" Margin="20,0,0,0" Command="{Binding ShowLoginCommand}" >
                 <StackPanel Orientation="Horizontal" Margin="-15,0,0,0" Width="140" Height="40">
                     <Image x:Name="LoginImage" Source="pack://application:,,,/Assets/Login-icon.png" Grid.Row="0"
                         Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -41,12 +41,11 @@
                         FontSize="20" FontWeight="DemiBold" Content="{Binding UserLogin}"></Label>
                 </StackPanel>
             </Button>
-            
-           
             <Label x:Name="LiveClock" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,30,0" FontSize="35" Content="{Binding LiveClock}"></Label>
             <Label x:Name="LiveDate" Grid.Row="0" HorizontalAlignment="Right" Margin="0,45,30,0" FontSize="20" Content="{Binding LiveDate}"></Label>
         </Grid>
-
+        
+        <!-- Transfering below to seperate UserControl: HomeView -->
 
         <Label x:Name="GreetingMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,400"
                    FontWeight="Bold" FontSize="62" Content="{Binding GreetingMessage}" ></Label>
@@ -64,7 +63,8 @@
                 <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold">Check In</TextBlock>
             </StackPanel>
         </Button>
-
         
+        <!-- End of to be transferred elements -->
+        <ContentControl x:Name="CurrentView" />
     </Grid>
 </Window>

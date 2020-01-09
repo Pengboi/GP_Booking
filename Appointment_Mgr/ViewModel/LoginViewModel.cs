@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.ComponentModel;
 using System.Windows.Threading;
@@ -25,6 +26,7 @@ namespace Appointment_Mgr.ViewModel
         /// </summary>
         public LoginViewModel() 
         {
+            MessengerInstance.Register<NotificationMessage>(this, NotifyMe);
             if (IsInDesignMode) 
             {
                 LoginButton = _loginButton;
@@ -35,5 +37,11 @@ namespace Appointment_Mgr.ViewModel
             }
         }
         public string LoginButton { get; set; }
+
+        public void NotifyMe(NotificationMessage notificationMessage)
+        {
+            string notification = notificationMessage.Notification;
+            //do your work
+        }
     }
 }

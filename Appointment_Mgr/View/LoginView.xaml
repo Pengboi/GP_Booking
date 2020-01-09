@@ -29,12 +29,15 @@
                         MaxWidth="500" Margin="50, 0, 50, 0"
                         FocusManager.FocusedElement="{Binding ElementName=UsernameBox}">
 
-                <TextBox x:Name="UsernameBox" materialDesign:HintAssist.Hint="Username" 
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="15" />
-                <PasswordBox x:Name="passwordBox" materialDesign:HintAssist.Hint="Password" 
-                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 50, 30, 0" FontSize="15"/>
+                <TextBox x:Name="UsernameBox" 
+                         materialDesign:HintAssist.Hint="Username"  materialDesign:HintAssist.FloatingScale="0.8" materialDesign:HintAssist.Foreground="Black"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="18" />
+                <PasswordBox x:Name="passwordBox" 
+                              materialDesign:HintAssist.Hint="Password"  materialDesign:HintAssist.FloatingScale="0.8" materialDesign:HintAssist.Foreground="Black"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 50, 30, 0" FontSize="18"/>
             </StackPanel>
-            <Button x:Name="LoginButton" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+            <Button x:Name="LoginButton"
+                    HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                     MinWidth="230" MinHeight="60" Margin="146,0,146,79"
                     FontWeight="DemiBold" FontSize="20" Content="{Binding LoginButton}" />
         </Grid>

@@ -23,8 +23,8 @@ namespace Appointment_Mgr.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
-        private string _greetingMessage = "Good " + getGreeting() + "."; private string _userLogin = "Login";
-        public DispatcherTimer timer;
+        private string _greetingMessage = "Good " + getGreeting() + "."; private string _userLogin = "Login"; private string _currentView = "Home";
+        private DispatcherTimer timer;
 
         public static string getGreeting()
         {
@@ -48,9 +48,9 @@ namespace Appointment_Mgr.ViewModel
             get { return this._clockTime; }
             set
             {
-                if (_clockTime == value)
+                if (this._clockTime == value)
                     return;
-                _clockTime = value;
+                this._clockTime = value;
                 RaisePropertyChanged("LiveClock");
             }
         }
@@ -59,9 +59,9 @@ namespace Appointment_Mgr.ViewModel
             get { return this._dateValue; }
             set
             {
-                if (_dateValue == value)
+                if (this._dateValue == value)
                     return;
-                _dateValue = value;
+                this._dateValue = value;
                 RaisePropertyChanged("LiveDate");
             }
         }
@@ -70,9 +70,9 @@ namespace Appointment_Mgr.ViewModel
             get { return this._greetingMessage; }
             set
             {
-                if (_greetingMessage == "Good " + value + ".")
+                if (this._greetingMessage == "Good " + value + ".")
                     return;
-                _greetingMessage = "Good " + value + ".";
+                this._greetingMessage = "Good " + value + ".";
                 RaisePropertyChanged("GreetingMessage");
             }
         }
@@ -81,17 +81,25 @@ namespace Appointment_Mgr.ViewModel
             get { return this._userLogin; }
             set
             {
-                _userLogin = value;
+                this._userLogin = value;
                 RaisePropertyChanged("UserLogin");
             }
         }
 
-        public RelayCommand BookAppointmentCommand { get; private set; }
+        public string CurrentView 
+        {
+            get { return this._currentView; }
+            set
+            {
+                this.CurrentView = value;
+                RaisePropertyChanged("CurrentView");
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel() : base()
+        public MainViewModel()
         {
             if (IsInDesignMode)
             {
@@ -115,12 +123,24 @@ namespace Appointment_Mgr.ViewModel
                 };
                 timer.Start();
                 UserLogin = _userLogin;
-            }
 
+                //add go to view part here.
+                //https://stackoverflow.com/questions/16993918/mvvm-light-messenger-sending-and-registering-objects/16993997#16993997
+                CurrentView = _currentView;
+            }
+            ShowLoginCommand = new RelayCommand(LoginCommandMethod);
+        }
+
+        public RelayCommand ShowLoginCommand { private set; get; }
+        public RelayCommand BookAppointmentCommand { get; private set; }
+
+        public void LoginCommandMethod()
+        {
+            MessengerInstance.Send<NotificationMessage>(new NotificationMessage("LoginView"));
         }
 
 
-        
+
 
     }
 }

@@ -30,16 +30,11 @@ namespace Appointment_Mgr.View
 
         private void NotificationMessageReceived(NotificationMessage msg)
         {
-            if (msg.Notification == "ShowBookAppt")
+            if (msg.Notification == "LoginView")
             {
-                var login = new LoginView();
+                var loginView = new LoginView();
+                loginView.ShowDialog();
             }
-        }
-
-        private void LoginCommand(object sender, RoutedEventArgs e)
-        {
-            LoginView login = new LoginView();
-            login.ShowDialog();
         }
     }
 }
