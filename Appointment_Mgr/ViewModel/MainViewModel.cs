@@ -1,6 +1,9 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.ComponentModel;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace Appointment_Mgr.ViewModel
@@ -23,10 +26,72 @@ namespace Appointment_Mgr.ViewModel
         private string _greetingMessage = "Good " + getGreeting() + "."; private string _userLogin = "Login";
         public DispatcherTimer timer;
 
+        public static string getGreeting()
+        {
+            TimeSpan morning = new TimeSpan(0, 0, 0);
+            TimeSpan afternoon = new TimeSpan(12, 0, 0);
+            TimeSpan now = DateTime.Now.TimeOfDay;
+
+            if ((now > morning) && (now < afternoon))
+            {
+                return "Morning";
+            }
+            else
+            {
+                return "Afternoon";
+            }
+        }
+
+        public string Title { get; set; }
+        public string LiveClock
+        {
+            get { return this._clockTime; }
+            set
+            {
+                if (_clockTime == value)
+                    return;
+                _clockTime = value;
+                RaisePropertyChanged("LiveClock");
+            }
+        }
+        public string LiveDate
+        {
+            get { return this._dateValue; }
+            set
+            {
+                if (_dateValue == value)
+                    return;
+                _dateValue = value;
+                RaisePropertyChanged("LiveDate");
+            }
+        }
+        public string GreetingMessage
+        {
+            get { return this._greetingMessage; }
+            set
+            {
+                if (_greetingMessage == "Good " + value + ".")
+                    return;
+                _greetingMessage = "Good " + value + ".";
+                RaisePropertyChanged("GreetingMessage");
+            }
+        }
+        public string UserLogin
+        {
+            get { return this._userLogin; }
+            set
+            {
+                _userLogin = value;
+                RaisePropertyChanged("UserLogin");
+            }
+        }
+
+        public RelayCommand BookAppointmentCommand { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel() : base()
         {
             if (IsInDesignMode)
             {
@@ -51,66 +116,11 @@ namespace Appointment_Mgr.ViewModel
                 timer.Start();
                 UserLogin = _userLogin;
             }
+
         }
 
-        public string Title { get; set; }
-        public string LiveClock
-        {
-            get { return this._clockTime; }
-            set
-            {
-                if (_clockTime == value)
-                    return;
-                _clockTime = value;
-                RaisePropertyChanged("LiveClock");
-            }
-        }
-        public string LiveDate 
-        {
-            get { return this._dateValue; }
-            set
-            {
-                if (_dateValue == value)
-                    return;
-                _dateValue = value;
-                RaisePropertyChanged("LiveDate");
-            }
-        }
-        public string GreetingMessage 
-        {
-            get { return this._greetingMessage; }
-            set
-            {
-                if (_greetingMessage == "Good " + value + ".")
-                    return;
-                _greetingMessage = "Good " + value + ".";
-                RaisePropertyChanged("GreetingMessage");
-            }
-        }
-        public string UserLogin
-        {
-            get { return this._userLogin; }
-            set 
-            {
-                _userLogin = value;
-                RaisePropertyChanged("UserLogin");
-            }
-        }
-        public static string getGreeting()
-        {
-            TimeSpan morning = new TimeSpan(10, 0, 0);
-            TimeSpan afternoon = new TimeSpan(12, 0, 0);
-            TimeSpan now = DateTime.Now.TimeOfDay;
 
-            if ((now > morning) && (now < afternoon))
-            {
-                return "Morning";
-            }
-            else
-            {
-                return "Afternoon";
-            }
-        }
+        
 
     }
 }

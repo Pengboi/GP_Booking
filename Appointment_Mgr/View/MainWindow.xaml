@@ -1,4 +1,4 @@
-﻿<Window x:Class="Appointment_Mgr.MainWindow"
+﻿<Window x:Class="Appointment_Mgr.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -33,10 +33,16 @@
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
             <!-- Top Row UI Elements. -->
-            <Image x:Name="LoginImage" Source="pack://application:,,,/Assets/Login-icon.png" Grid.Row="0"
-               Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
-            <Label x:Name="UserLogin" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0"
-               FontSize="20" FontWeight="DemiBold" Content="{Binding UserLogin}"></Label>
+            <Button Width="141" Height="50" HorizontalAlignment="Left" Margin="20,0,0,0" Click="LoginCommand">
+                <StackPanel Orientation="Horizontal" Margin="-15,0,0,0" Width="140" Height="40">
+                    <Image x:Name="LoginImage" Source="pack://application:,,,/Assets/Login-icon.png" Grid.Row="0"
+                        Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Label x:Name="UserLogin" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"
+                        FontSize="20" FontWeight="DemiBold" Content="{Binding UserLogin}"></Label>
+                </StackPanel>
+            </Button>
+            
+           
             <Label x:Name="LiveClock" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,30,0" FontSize="35" Content="{Binding LiveClock}"></Label>
             <Label x:Name="LiveDate" Grid.Row="0" HorizontalAlignment="Right" Margin="0,45,30,0" FontSize="20" Content="{Binding LiveDate}"></Label>
         </Grid>
@@ -58,5 +64,7 @@
                 <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold">Check In</TextBlock>
             </StackPanel>
         </Button>
+
+        
     </Grid>
 </Window>

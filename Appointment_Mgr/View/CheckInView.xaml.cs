@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Appointment_Mgr
+namespace Appointment_Mgr.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CheckInView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CheckInView : UserControl
     {
-        public MainWindow()
+        public CheckInView()
         {
             InitializeComponent();
         }
