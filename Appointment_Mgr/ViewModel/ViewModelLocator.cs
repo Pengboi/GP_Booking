@@ -47,6 +47,7 @@ namespace Appointment_Mgr.ViewModel
             
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<DialogBoxViewModel>();
+            SimpleIoc.Default.Register<AlertBoxViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
             
@@ -70,6 +71,11 @@ namespace Appointment_Mgr.ViewModel
         public Dialog.DialogBoxViewModel DialogBox 
         {
             get { return ServiceLocator.Current.GetInstance<Dialog.DialogBoxViewModel>(); }
+        }
+
+        public Dialog.AlertBoxViewModel AlertBox 
+        {
+            get { return ServiceLocator.Current.GetInstance<Dialog.AlertBoxViewModel>(); }
         }
 
         public static void Cleanup()

@@ -54,6 +54,8 @@ namespace Appointment_Mgr.Model
 
         public bool verifyPassword() 
         {
+            if (string.IsNullOrWhiteSpace(this._password))
+                return false;
             SQLiteConnection conn = startConnection();
             string cmdString = $"SELECT Password FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);

@@ -15,23 +15,14 @@ using System.Windows.Shapes;
 
 namespace Appointment_Mgr.Dialog
 {
-    /// <summary>
+    /// <summary>   
     /// Interaction logic for ErrorMessageTemplate.xaml
     /// </summary>
-    public partial class DialogBoxView : Window
+    public partial class DialogBoxView : Window, IDialogWindow
     {
         public DialogBoxView()
         {
             InitializeComponent();
-            Messenger.Default.Register<NotificationMessage>(this, CloseDialog);
-        }
-
-        private void CloseDialog(NotificationMessage msg)
-        {
-            if (msg.Notification == "CloseDialog")
-            {
-                this.Close();
-            }
         }
     }
 }

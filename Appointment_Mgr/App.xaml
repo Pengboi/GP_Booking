@@ -28,7 +28,10 @@
                             <DataTemplate DataType="{x:Type dialog:DialogBoxViewModel}">
                                 <dialog:DialogBoxView/>
                             </DataTemplate>
-                </ResourceDictionary>
+                            <DataTemplate DataType="{x:Type dialog:AlertBoxViewModel}">
+                                <dialog:AlertBoxView />
+                            </DataTemplate>
+                        </ResourceDictionary>
                         <!-- Material Design library -->
                         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />

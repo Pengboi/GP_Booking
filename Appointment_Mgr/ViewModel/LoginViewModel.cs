@@ -27,8 +27,9 @@ namespace Appointment_Mgr.ViewModel
         private string _username;
         private string _buttonText = "Sign in";
         
-        ICommand AlertCommand { get; set; }
-        ICommand ErrorCommand { get; set; }
+        public ICommand AlertCommand { get; private set; }
+        public ICommand ErrorCommand { get; private set; }
+        public ICommand OtpCommand { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -36,6 +37,8 @@ namespace Appointment_Mgr.ViewModel
         public LoginViewModel() 
         {
             AlertCommand = new RelayCommand(ShowAlert);
+            ErrorCommand = new RelayCommand(ShowError);
+            OtpCommand = new RelayCommand(ShowOtp);
 
             MessengerInstance.Register<NotificationMessage>(this, NotifyMe);
             if (IsInDesignMode) 
@@ -47,6 +50,16 @@ namespace Appointment_Mgr.ViewModel
                 ButtonText = _buttonText;
             }
             SignInClick = new RelayCommand(SignInValidation);
+        }
+
+        private void ShowOtp()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ShowError()
+        {
+            throw new NotImplementedException();
         }
 
         private void ShowAlert()
