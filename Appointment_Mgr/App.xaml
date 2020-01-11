@@ -4,27 +4,37 @@
              StartupUri="View/MainWindow.xaml" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:Appointment_Mgr.View" 
-             xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel" 
+             xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel"
+             xmlns:model="clr-namespace:Appointment_Mgr.Model"
+             xmlns:dialog="clr-namespace:Appointment_Mgr.Dialog"
              d1p1:Ignorable="d" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
-  <Application.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary>
-            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel" />
-            <DataTemplate DataType="{x:Type vm:MainViewModel}">
-                <views:MainWindow />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:HomeViewModel}">
-                <views:HomeView />
-            </DataTemplate>
-        </ResourceDictionary>
-        <!-- Material Design library -->
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.amber.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.deeppurple.xaml" />
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-  </Application.Resources>
+            <Application.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary>
+                            <!-- ViewModelLocator defined -->
+                            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel" />
+                            <!-- ViewModel DataTemplates -->
+                            <DataTemplate DataType="{x:Type vm:MainViewModel}">
+                                <views:MainWindow />
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type vm:HomeViewModel}">
+                                <views:HomeView />
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+                                <views:LoginView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type dialog:DialogBoxViewModel}">
+                                <dialog:DialogBoxView/>
+                            </DataTemplate>
+                </ResourceDictionary>
+                        <!-- Material Design library -->
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.amber.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.deeppurple.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Application.Resources>
 </Application>

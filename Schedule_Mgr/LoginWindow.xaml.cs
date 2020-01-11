@@ -22,13 +22,10 @@ namespace Schedule_Mgr
    
     public partial class LoginWindow : Window
     {
-        private MediaPlayer mediaPlayer = new MediaPlayer();
         
-
         public LoginWindow()
         {
             InitializeComponent();
-            
         }
 
         private static string LoadConnectionString(string id = "Default") 
@@ -39,6 +36,8 @@ namespace Schedule_Mgr
         private bool Validate_Credentials(String user, String pass) {
             String sqlPath = LoadConnectionString();    //Retrieves path from App.config
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
+
+            //Can refactor to select user, pass, account type from Accounts WHERE username = args user ---> check other code behinds on how to
             string sqlQuery = $"SELECT Username, Password, Account_Type From Accounts;";
 
             connection.Open();
@@ -99,9 +98,7 @@ namespace Schedule_Mgr
             var totpCode = totp.ComputeTotp();
 
             if (inputOTP == totpCode)
-            {
                 return true;
-            }
             else
                 MessageBox.Show("Incorrect code was entered. Try again, if issues persist - contact the IT administrator.", "Incorrect code.");
             passwordBox.Clear();

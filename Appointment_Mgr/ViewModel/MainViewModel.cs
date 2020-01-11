@@ -23,25 +23,10 @@ namespace Appointment_Mgr.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
-        private string _greetingMessage = "Good " + getGreeting() + "."; private string _userLogin = "Login";
+        private string _userLogin = "Login";
         private ViewModelBase _currentViewModel;
         private DispatcherTimer timer;
 
-        public static string getGreeting()
-        {
-            TimeSpan morning = new TimeSpan(0, 0, 0);
-            TimeSpan afternoon = new TimeSpan(12, 0, 0);
-            TimeSpan now = DateTime.Now.TimeOfDay;
-
-            if ((now > morning) && (now < afternoon))
-            {
-                return "Morning";
-            }
-            else
-            {
-                return "Afternoon";
-            }
-        }
 
         public string Title { get; set; }
         public string LiveClock
@@ -64,17 +49,6 @@ namespace Appointment_Mgr.ViewModel
                     return;
                 this._dateValue = value;
                 RaisePropertyChanged("LiveDate");
-            }
-        }
-        public string GreetingMessage
-        {
-            get { return this._greetingMessage; }
-            set
-            {
-                if (this._greetingMessage == "Good " + value + ".")
-                    return;
-                this._greetingMessage = "Good " + value + ".";
-                RaisePropertyChanged("GreetingMessage");
             }
         }
         public string UserLogin
@@ -112,7 +86,6 @@ namespace Appointment_Mgr.ViewModel
                 Title = "GP Booking (Design Mode)";
                 LiveClock = "15:45";
                 LiveDate = "05/09/16";
-                GreetingMessage = "Placeholder";
                 UserLogin = _userLogin;
 
             }
@@ -125,13 +98,10 @@ namespace Appointment_Mgr.ViewModel
                 {
                     LiveClock = DateTime.Now.ToString("HH:mm");
                     LiveDate = DateTime.Now.ToString("dd/MM/yy");
-                    GreetingMessage = getGreeting();
                 };
                 timer.Start();
                 UserLogin = _userLogin;
 
-                //add go to view part here.
-                //https://stackoverflow.com/questions/16993918/mvvm-light-messenger-sending-and-registering-objects/16993997#16993997
                 CurrentViewModel = HomeVM;
             }
             ShowLoginCommand = new RelayCommand(LoginCommandMethod);
@@ -144,9 +114,5 @@ namespace Appointment_Mgr.ViewModel
         {
             MessengerInstance.Send<NotificationMessage>(new NotificationMessage("LoginView"));
         }
-
-
-
-
     }
 }

@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Appointment_Mgr.View"
+             xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel"
              mc:Ignorable="d" 
-             Background="#ffffff"
+             Background="Black"
              d:DesignHeight="523" d:DesignWidth="530"
-             Height="520" Width="510" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+             Height="530" Width="520" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
              DataContext="{Binding Login, Source={StaticResource Locator}}">
     <Grid>
-        
-        <Rectangle MinWidth="510" MinHeight="503" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <Rectangle MinWidth="510" MinHeight="523" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <Rectangle.Effect>
                 <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
                                   ShadowDepth="3" Opacity="0.8"/>
@@ -24,6 +24,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
+
         <Grid MinWidth="510" MinHeight="503" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="400" Height="200"
                         MaxWidth="500" Margin="50, 0, 50, 0"
@@ -31,15 +32,18 @@
 
                 <TextBox x:Name="UsernameBox" 
                          materialDesign:HintAssist.Hint="Username"  materialDesign:HintAssist.FloatingScale="0.8" materialDesign:HintAssist.Foreground="Black"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="18" />
-                <PasswordBox x:Name="passwordBox" 
-                              materialDesign:HintAssist.Hint="Password"  materialDesign:HintAssist.FloatingScale="0.8" materialDesign:HintAssist.Foreground="Black"
-                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 50, 30, 0" FontSize="18"/>
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="18" Text="{Binding Username}" />
+                <PasswordBox x:Name="PasswordBox" 
+                             PasswordChanged="PasswordBox_PasswordChanged"
+                             materialDesign:HintAssist.Hint="Password"  materialDesign:HintAssist.FloatingScale="0.8" materialDesign:HintAssist.Foreground="Black"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 50, 30, 0" FontSize="18" Password=""/>
             </StackPanel>
             <Button x:Name="LoginButton"
                     HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                     MinWidth="230" MinHeight="60" Margin="146,0,146,79"
-                    FontWeight="DemiBold" FontSize="20" Content="{Binding LoginButton}" />
+                    FontWeight="DemiBold" FontSize="20" Content="{Binding ButtonText}" Command="{Binding SignInClick}" >
+                
+            </Button>
         </Grid>
     </Grid>
 </Window>

@@ -14,15 +14,15 @@
 
         <Button Width="260" Height="90" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" Width="197">
-                <Image HorizontalAlignment="Left"  Height="50" Margin="-20,0,0,0" Source="pack://application:,,,/Assets/Book-icon.png" />
-                <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold">Book Appointment</TextBlock>
+                <Image HorizontalAlignment="Left"  Height="50" Margin="-20,0,0,0" Source="{Binding AppointmentButtonImg}" />
+                <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold" Text="{Binding BookAppointment}"></TextBlock>
             </StackPanel>
         </Button>
 
         <Button Width="260" Height="90" Margin="0,230,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" Width="197">
-                <Image HorizontalAlignment="Left"  Height="50" Margin="-20,0,0,0" Source="pack://application:,,,/Assets/Clock-icon.png" />
-                <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold">Check In</TextBlock>
+                <Image HorizontalAlignment="Left"  Height="50" Margin="-20,0,0,0" Source="{Binding CheckInButtonImg}" />
+                <TextBlock Margin="0,15,0,0" FontSize="17" HorizontalAlignment="Center" FontWeight="Bold" Text="{Binding CheckIn}"></TextBlock>
             </StackPanel>
         </Button>
         

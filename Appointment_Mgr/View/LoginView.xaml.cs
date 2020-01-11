@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Appointment_Mgr.ViewModel;
+using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,32 @@ namespace Appointment_Mgr.View
         public LoginView()
         {
             InitializeComponent();
+            // NON MVVM --> Used here due to weaknesses in WPF framework with XAML ---> Unable to currently call messagebox from ViewModel 
+            // so MVVM is seem as guide during this project as oppose to STRICT rules to be adhered to. MVVM to reduce coupling, not eliminate.
+                // Receives error message and sends to GetErrorMessage to find appropriate message
+            Messenger.Default.Register<NotificationMessage>(this, GetErrorMessage);
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            // Not using Secure String --> as attacks are only possible if user has access to RAM, too long to fix. Unfeasable.
+            if (this.DataContext != null)
+            { ((dynamic)this.DataContext).Password = ((PasswordBox)sender).Password; }
+        }
+
+        private void GetErrorMessage(NotificationMessage msg)
+        {
+            if (msg.Notification == "Error401") 
+            {
+                MessageBox.Show("Incorrect password. Please try again. If issues persist, please contact the IT administrator" +
+                    " or speak to a member of HR", "Password Incorrect");
+            }
+            if (msg.Notification == "Error404")
+            {
+                MessageBox.Show("The account could not be found. Please check your username & try again. If issues" +
+                    " persist, please contact the IT administrator or speak to a member of HR", "User Not Found");
+            }
+
         }
     }
 }

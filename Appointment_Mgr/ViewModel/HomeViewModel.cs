@@ -23,7 +23,34 @@ namespace Appointment_Mgr.ViewModel
     public class HomeViewModel : ViewModelBase
     {
         private string _greetingMessage = "Good " + getGreeting() + ".";
+        private string _appointmentButtonImage = "pack://application:,,,/Assets/Book-icon.png", _checkInButtonImage = "pack://application:,,,/Assets/Clock-icon.png";
+        private string _bookAppointment = "Book Appointment"; private string _checkIn = "Check In";
         private DispatcherTimer timer;
+
+        public HomeViewModel()
+        {
+            AppointmentButtonImg = _appointmentButtonImage;
+            CheckInButtonImg = _checkInButtonImage;
+
+            if (IsInDesignMode)
+            {
+                GreetingMessage = "Placeholder";
+                BookAppointment = "Placeholder";
+                CheckIn = "Placeholder";
+            }
+            else
+            {
+                timer = new DispatcherTimer(DispatcherPriority.Render);
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Tick += (sender, args) =>
+                {
+                    GreetingMessage = getGreeting();
+                };
+                timer.Start();
+                BookAppointment = _bookAppointment;
+                CheckIn = _checkIn;
+            }
+        }
 
         public static string getGreeting()
         {
@@ -53,23 +80,26 @@ namespace Appointment_Mgr.ViewModel
             }
         }
 
-        public HomeViewModel() 
+        public string BookAppointment 
         {
-            if (IsInDesignMode)
-            {
-                GreetingMessage = "Placeholder";
-            }
-            else
-            {
-                timer = new DispatcherTimer(DispatcherPriority.Render);
-                timer.Interval = TimeSpan.FromSeconds(1);
-                timer.Tick += (sender, args) =>
-                {
-                    GreetingMessage = getGreeting();
-                };
-                timer.Start();
-            }
+            get { return this._bookAppointment; }
+            set { _bookAppointment = value; }
         }
+        public string AppointmentButtonImg 
+        {
+            get { return this._appointmentButtonImage; }
+            set { _appointmentButtonImage = value; }
+        } 
 
+        public string CheckIn
+        {
+            get { return this._checkIn; }
+            set { _checkIn = value; }
+        }
+        public string CheckInButtonImg
+        {
+            get { return this._checkInButtonImage; }
+            set { _checkInButtonImage = value; }
+        }
     }
 }
