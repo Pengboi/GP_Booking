@@ -11,10 +11,12 @@ namespace Appointment_Mgr.Dialog
     public class AlertBoxViewModel : DialogBoxViewModelBase<DialogResults>
     {
         public ICommand OKCommand { get; private set; }
+        public string MessageImage { get; private set; }
 
         public AlertBoxViewModel() 
         {
             OKCommand = new RelayCommand<IDialogWindow>(OK);
+            MessageImage = "pack://application:,,,/Assets/Attention-icon.png";
 
         }
 
