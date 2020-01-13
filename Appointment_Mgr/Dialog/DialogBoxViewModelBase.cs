@@ -20,10 +20,10 @@ namespace Appointment_Mgr.Dialog
         { get; set; }
         public string Message
         { get; set; }
-        public T DialogResult 
+        public string DialogResult 
         { get; set; }
 
-        public void CloseDialogWithResult(IDialogWindow dialog, T result) 
+        public void CloseDialogWithResult(IDialogWindow dialog, string result) 
         {
             DialogResult = result;
             Console.WriteLine(result); //DEBUG

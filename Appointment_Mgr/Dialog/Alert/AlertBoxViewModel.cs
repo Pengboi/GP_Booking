@@ -25,7 +25,7 @@ namespace Appointment_Mgr.Dialog
 
         private void OK(IDialogWindow window) 
         {
-            CloseDialogWithResult(window, DialogResults.Undefined);
+            CloseDialogWithResult(window, "OK");
         }
     }
 }

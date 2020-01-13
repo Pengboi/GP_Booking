@@ -148,7 +148,9 @@ namespace Appointment_Mgr.Dialog.OTP
 
         private void OK(IDialogWindow window)
         {
-            CloseDialogWithResult(window, DialogResults.Undefined);
+            string inputtedCode = NumberBox1 + NumberBox2 + NumberBox3 +
+                                  NumberBox4 + NumberBox5 + NumberBox6;
+            CloseDialogWithResult(window, inputtedCode);
         }
     }
 }

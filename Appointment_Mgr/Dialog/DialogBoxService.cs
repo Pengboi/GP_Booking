@@ -9,7 +9,7 @@ namespace Appointment_Mgr.Dialog
 {
     public class DialogBoxService : IDialogBoxService
     {
-        public T OpenDialog<T>(DialogBoxViewModelBase<T> viewModel)
+        public string OpenDialog<T>(DialogBoxViewModelBase<T> viewModel)
         {
             IDialogWindow window = new DialogBoxView();
             window.DataContext = viewModel;

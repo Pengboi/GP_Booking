@@ -8,6 +8,7 @@ using System.Security;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
 using Appointment_Mgr.Dialog;
+using OtpNet;
 
 namespace Appointment_Mgr.ViewModel
 {
@@ -39,10 +40,8 @@ namespace Appointment_Mgr.ViewModel
         public LoginViewModel() 
         {
             ErrorCommand = new RelayCommand(Error);
-            OtpCommand = new RelayCommand(Otp);
             _dialogService = new DialogBoxService();
 
-            MessengerInstance.Register<NotificationMessage>(this, NotifyMe);
             if (IsInDesignMode) 
             {
                 ButtonText = _buttonText;
@@ -54,10 +53,11 @@ namespace Appointment_Mgr.ViewModel
             SignInClick = new RelayCommand(SignInValidation);
         }
 
-        private void Otp()
+        private string Otp()
         {
             var dialog = new Dialog.OTP.OTPBoxViewModel("", "Input your OTP code below:");
             var result = _dialogService.OpenDialog(dialog);
+            return result;
         }
 
         private void Error()
@@ -92,12 +92,6 @@ namespace Appointment_Mgr.ViewModel
 
         public RelayCommand SignInClick { private set; get; }
 
-        public void NotifyMe(NotificationMessage notificationMessage)
-        {
-            string notification = notificationMessage.Notification;
-            //do your work
-        }
-
         public void SignInValidation()
         {
             StaffUser staffUser = new StaffUser(Username, Password);
@@ -105,8 +99,22 @@ namespace Appointment_Mgr.ViewModel
             {
                 if (staffUser.verifyPassword())
                 {
-                    string otpCode = staffUser.getOTP();
-                    Otp();
+                    string inputtedCode = Otp();
+
+                    string otpToken = staffUser.getOTP();
+                    var bytes = Base32Encoding.ToBytes(otpToken);
+                    var totp = new Totp(bytes);
+                    var totpCode = totp.ComputeTotp();
+                    
+                    if (totpCode == inputtedCode)
+                    {
+                        Alert("It works!", "So you got the code right.");
+                    }
+                    else 
+                    {
+                        Alert("One-Time Password Incorrect", "The inputted code is incorrect. Please verify your TOTP and " +
+                            "retry. If issues persist, please contact the IT administrator or speak to a member of HR.");
+                    }
                 }
                 else
                     Alert("Password Incorrect", "Incorrect password. Please try again. If issues persist, please contact" +
