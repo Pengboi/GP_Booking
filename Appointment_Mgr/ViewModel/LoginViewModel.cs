@@ -7,6 +7,7 @@ using Appointment_Mgr.Model;
 using System.Security;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
+using Appointment_Mgr.Dialog;
 
 namespace Appointment_Mgr.ViewModel
 {
@@ -26,7 +27,8 @@ namespace Appointment_Mgr.ViewModel
     {
         private string _username;
         private string _buttonText = "Sign in";
-        
+        private Dialog.IDialogBoxService _dialogService;
+
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
         public ICommand OtpCommand { get; private set; }
@@ -36,9 +38,9 @@ namespace Appointment_Mgr.ViewModel
         /// </summary>
         public LoginViewModel() 
         {
-            AlertCommand = new RelayCommand(ShowAlert);
-            ErrorCommand = new RelayCommand(ShowError);
-            OtpCommand = new RelayCommand(ShowOtp);
+            ErrorCommand = new RelayCommand(Error);
+            OtpCommand = new RelayCommand(Otp);
+            _dialogService = new DialogBoxService();
 
             MessengerInstance.Register<NotificationMessage>(this, NotifyMe);
             if (IsInDesignMode) 
@@ -52,19 +54,21 @@ namespace Appointment_Mgr.ViewModel
             SignInClick = new RelayCommand(SignInValidation);
         }
 
-        private void ShowOtp()
+        private void Otp()
+        {
+            var dialog = new Dialog.OTP.OTPBoxViewModel("", "Input your OTP code below:");
+            var result = _dialogService.OpenDialog(dialog);
+        }
+
+        private void Error()
         {
             throw new NotImplementedException();
         }
 
-        private void ShowError()
+        private void Alert(string title, string message)
         {
-            throw new NotImplementedException();
-        }
-
-        private void ShowAlert()
-        {
-            throw new NotImplementedException();
+            var dialog = new AlertBoxViewModel(title, message);
+            var result = _dialogService.OpenDialog(dialog);
         }
 
         public string Username 
@@ -97,17 +101,22 @@ namespace Appointment_Mgr.ViewModel
         public void SignInValidation()
         {
             StaffUser staffUser = new StaffUser(Username, Password);
-            if (staffUser.userExists()) 
+            if (staffUser.userExists())
             {
-                if (staffUser.verifyPassword()) 
+                if (staffUser.verifyPassword())
                 {
-                    // Open 2 auth window
+                    string otpCode = staffUser.getOTP();
+                    Otp();
                 }
                 else
-                    MessengerInstance.Send<NotificationMessage>(new NotificationMessage("Error401"));
+                    Alert("Password Incorrect", "Incorrect password. Please try again. If issues persist, please contact" +
+                        " the IT administrator or speak to a member of HR.");
             }
             else
-                MessengerInstance.Send<NotificationMessage>(new NotificationMessage("Error404"));
+            {
+                Alert("User Not Found", "The account could not be found. Please check your username & try again. If issues" +
+                    " persist, please contact the IT administrator or speak to a member of HR.");
+            }
         }
     }
 }

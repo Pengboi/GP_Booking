@@ -17,7 +17,7 @@ namespace Appointment_Mgr.Dialog
             return viewModel.DialogResult;
         }
 
-        public bool ShowMessage(string title, string message, MessageType messageType)
+        public bool ShowMessage(string title, string message)
         {
             throw new NotImplementedException();
         }

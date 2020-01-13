@@ -8,8 +8,7 @@ namespace Appointment_Mgr.Dialog
 {
     public abstract class DialogBoxViewModelBase<T>
     {
-        public DialogBoxViewModelBase() : this(string.Empty, string.Empty) { }
-        public DialogBoxViewModelBase(string title) : this(title, string.Empty) { }
+
         public DialogBoxViewModelBase(string title, string message)
         {
             Title = title;
@@ -27,6 +26,7 @@ namespace Appointment_Mgr.Dialog
         public void CloseDialogWithResult(IDialogWindow dialog, T result) 
         {
             DialogResult = result;
+            Console.WriteLine(result); //DEBUG
 
             if (dialog != null)
                 dialog.DialogResult = true;

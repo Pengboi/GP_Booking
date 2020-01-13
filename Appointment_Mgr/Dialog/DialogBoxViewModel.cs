@@ -28,8 +28,6 @@ namespace Appointment_Mgr.Dialog
         { get; set; }
         public string Message
         { get; set; }
-        public string MessageImage 
-        { get; set; }
         public string ButtonText
         { get; set; }
         public RelayCommand ButtonClick { private set; get; }

@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:Appointment_Mgr.View"
+        xmlns:local="clr-namespace:Appointment_Mgr.Dialog"
         mc:Ignorable="d"
         ResizeMode="NoResize"
         Height="250" Width="550"
         WindowStartupLocation="CenterScreen"
-        DataContext="{Binding DialogBox, Source={StaticResource Locator}}"
-        Title="{Binding Title}" Content="{Binding ButtonClick, Mode=OneWay}"/>
+        Title="{Binding Title}">
+    <ContentControl x:Name="ContentPeresenter" Content="{Binding}"/>
+</Window>

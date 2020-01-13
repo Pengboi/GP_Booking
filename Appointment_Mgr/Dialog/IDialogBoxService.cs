@@ -10,6 +10,8 @@ namespace Appointment_Mgr.Dialog
     public interface IDialogBoxService
     {
         T OpenDialog<T>(DialogBoxViewModelBase<T> viewModel);
+        
         //bool ShowMessage(string title, string message, MessageType messageType);
     }
+
 }

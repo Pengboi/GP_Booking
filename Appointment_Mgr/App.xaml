@@ -7,6 +7,7 @@
              xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel"
              xmlns:model="clr-namespace:Appointment_Mgr.Model"
              xmlns:dialog="clr-namespace:Appointment_Mgr.Dialog"
+             xmlns:otp="clr-namespace:Appointment_Mgr.Dialog.OTP"
              d1p1:Ignorable="d" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
             <Application.Resources>
@@ -30,6 +31,9 @@
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type dialog:AlertBoxViewModel}">
                                 <dialog:AlertBoxView />
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type otp:OTPBoxViewModel}">
+                                <otp:OTPBoxView/>
                             </DataTemplate>
                         </ResourceDictionary>
                         <!-- Material Design library -->

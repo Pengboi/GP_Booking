@@ -21,14 +21,15 @@ namespace Appointment_Mgr.View
     /// Interaction logic for LoginView.xaml
     /// </summary>
     public partial class LoginView
-    {
+    {   
+        // NOTE --> All commented out code has been replaced with custom dialog box. Code just serves as legacy for indication on if alt solution needed.
         public LoginView()
         {
             InitializeComponent();
             // NON MVVM --> Used here due to weaknesses in WPF framework with XAML ---> Unable to currently call messagebox from ViewModel 
             // so MVVM is seem as guide during this project as oppose to STRICT rules to be adhered to. MVVM to reduce coupling, not eliminate.
                 // Receives error message and sends to GetErrorMessage to find appropriate message
-            Messenger.Default.Register<NotificationMessage>(this, GetErrorMessage);
+        //    Messenger.Default.Register<NotificationMessage>(this, GetErrorMessage);
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
@@ -38,19 +39,16 @@ namespace Appointment_Mgr.View
             { ((dynamic)this.DataContext).Password = ((PasswordBox)sender).Password; }
         }
 
-        private void GetErrorMessage(NotificationMessage msg)
-        {
-            if (msg.Notification == "Error401") 
-            {
-                MessageBox.Show("Incorrect password. Please try again. If issues persist, please contact the IT administrator" +
-                    " or speak to a member of HR", "Password Incorrect");
-            }
-            if (msg.Notification == "Error404")
-            {
-                MessageBox.Show("The account could not be found. Please check your username & try again. If issues" +
-                    " persist, please contact the IT administrator or speak to a member of HR", "User Not Found");
-            }
-
-        }
+        //private void GetErrorMessage(NotificationMessage msg)
+        //{
+        //   if (msg.Notification == "Error401") 
+        //    {
+        //        MessageBox.Show();
+        //    }
+        //    if (msg.Notification == "Error404")
+        //    {
+        //    }
+        //
+        //}
     }
 }

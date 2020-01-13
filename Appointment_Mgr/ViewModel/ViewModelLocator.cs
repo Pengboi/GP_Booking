@@ -16,6 +16,7 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Appointment_Mgr.Dialog;
+using Appointment_Mgr.Dialog.OTP;
 //using Microsoft.Practices.ServiceLocation;
 
 namespace Appointment_Mgr.ViewModel
@@ -46,8 +47,12 @@ namespace Appointment_Mgr.ViewModel
 
             
             SimpleIoc.Default.Register<MainViewModel>();
+
+            SimpleIoc.Default.Register<IDialogBoxService, DialogBoxService>();
             SimpleIoc.Default.Register<DialogBoxViewModel>();
             SimpleIoc.Default.Register<AlertBoxViewModel>();
+            SimpleIoc.Default.Register<OTPBoxViewModel>();
+
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
             
@@ -68,14 +73,9 @@ namespace Appointment_Mgr.ViewModel
             get { return ServiceLocator.Current.GetInstance<HomeViewModel>(); }
         }
 
-        public Dialog.DialogBoxViewModel DialogBox 
+        public AlertBoxViewModel AlertBox 
         {
-            get { return ServiceLocator.Current.GetInstance<Dialog.DialogBoxViewModel>(); }
-        }
-
-        public Dialog.AlertBoxViewModel AlertBox 
-        {
-            get { return ServiceLocator.Current.GetInstance<Dialog.AlertBoxViewModel>(); }
+            get { return ServiceLocator.Current.GetInstance<AlertBoxViewModel>(); }
         }
 
         public static void Cleanup()
