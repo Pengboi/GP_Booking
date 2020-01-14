@@ -1,11 +1,10 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using System.Windows;
-using GalaSoft.MvvmLight.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -18,13 +17,22 @@ using System.Windows.Shapes;
 namespace Appointment_Mgr.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for HomeTooltipView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class HomeToolbarView : UserControl
     {
-        public MainWindow()
+        public HomeToolbarView()
         {
             InitializeComponent();
+            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+        }
+        private void NotificationMessageReceived(NotificationMessage msg)
+        {
+            if (msg.Notification == "LoginView")
+            {
+                var loginView = new LoginView();
+                loginView.ShowDialog();
+            }
         }
     }
 }

@@ -10,6 +10,8 @@ using System.Windows.Input;
 using Appointment_Mgr.Dialog;
 using OtpNet;
 
+using Appointment_Mgr.Helper;
+
 namespace Appointment_Mgr.ViewModel
 {
     /// <summary>
@@ -24,7 +26,7 @@ namespace Appointment_Mgr.ViewModel
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
-    public class LoginViewModel : ViewModelBase
+    public class LoginViewModel : ViewModelBase 
     {
         private string _username;
         private string _buttonText = "Sign in";
@@ -33,6 +35,45 @@ namespace Appointment_Mgr.ViewModel
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
         public ICommand OtpCommand { get; private set; }
+
+        private string Otp()
+        {
+            var dialog = new Dialog.OTP.OTPBoxViewModel("", "Input your OTP code below:");
+            var result = _dialogService.OpenDialog(dialog);
+            return result;
+        }
+
+        private void Error()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Alert(string title, string message)
+        {
+            var dialog = new AlertBoxViewModel(title, message);
+            var result = _dialogService.OpenDialog(dialog);
+        }
+
+        public string Username
+        {
+            get { return _username; }
+            set
+            {
+                _username = value;
+                RaisePropertyChanged(() => Username);
+            }
+        }
+        public string Password { private get; set; }
+        public string ButtonText
+        {
+            get { return _buttonText; }
+            set
+            {
+                _buttonText = value;
+            }
+        }
+
+        public RelayCommand SignInClick { private set; get; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -53,44 +94,6 @@ namespace Appointment_Mgr.ViewModel
             SignInClick = new RelayCommand(SignInValidation);
         }
 
-        private string Otp()
-        {
-            var dialog = new Dialog.OTP.OTPBoxViewModel("", "Input your OTP code below:");
-            var result = _dialogService.OpenDialog(dialog);
-            return result;
-        }
-
-        private void Error()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Alert(string title, string message)
-        {
-            var dialog = new AlertBoxViewModel(title, message);
-            var result = _dialogService.OpenDialog(dialog);
-        }
-
-        public string Username 
-        {
-            get { return _username; }
-            set 
-            {
-                _username = value;
-                RaisePropertyChanged(() => Username);
-            }
-        }
-        public string Password { private get; set; }
-        public string ButtonText 
-        {
-            get { return _buttonText; }
-            set 
-            {
-                _buttonText = value;
-            }
-        }
-
-        public RelayCommand SignInClick { private set; get; }
 
         public void SignInValidation()
         {
@@ -116,8 +119,10 @@ namespace Appointment_Mgr.ViewModel
                     
                     if (totpCode == inputtedCode)
                     {
-                        Alert("It works!", "So you got the code right.");
-                        //This is where we are meant to get the toolbar to change based on if they are a doctor or not
+                        //Returns user signed in to MainViewModel
+                        Messenger.Default.Send<StaffUser>(new StaffUser(staffUser.getUsername(), ""));
+                        //Closes LoginView window
+                        Messenger.Default.Send<NotificationMessage>(new NotificationMessage(""));
                     }
                     else 
                     {

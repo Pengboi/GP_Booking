@@ -1,16 +1,18 @@
 ﻿<Window x:Class="Appointment_Mgr.View.LoginView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:Appointment_Mgr.View"
-             xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel"
-             mc:Ignorable="d" 
-             Background="Black"
-             d:DesignHeight="523" d:DesignWidth="530"
-             Height="530" Width="520" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
-             DataContext="{Binding Login, Source={StaticResource Locator}}">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Appointment_Mgr.View"
+        xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        x:Name="Login"
+        mc:Ignorable="d" 
+        Background="Black"
+        d:DesignHeight="523" d:DesignWidth="530"
+        Height="530" Width="520" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Login, Source={StaticResource Locator}}">
     <Grid>
         <Rectangle MinWidth="510" MinHeight="523" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <Rectangle.Effect>
@@ -32,17 +34,26 @@
 
                 <TextBox x:Name="UsernameBox" 
                          materialDesign:HintAssist.Hint="Username"  materialDesign:HintAssist.FloatingScale="0.8" materialDesign:HintAssist.Foreground="Black"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="18" Text="{Binding Username}" />
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="18" Text="{Binding Username}" >
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding Path=SignInClick}" Key="Enter" />
+                    </TextBox.InputBindings>
+                </TextBox>
+
                 <PasswordBox x:Name="PasswordBox" 
                              PasswordChanged="PasswordBox_PasswordChanged"
                              materialDesign:HintAssist.Hint="Password"  materialDesign:HintAssist.FloatingScale="0.8" materialDesign:HintAssist.Foreground="Black"
-                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 50, 30, 0" FontSize="18" Password=""/>
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 50, 30, 0" FontSize="18" Password="">
+                    <PasswordBox.InputBindings>
+                        <KeyBinding Command="{Binding Path=SignInClick}" Key="Enter" />
+                    </PasswordBox.InputBindings>
+                </PasswordBox>
             </StackPanel>
             <Button x:Name="LoginButton"
                     HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                     MinWidth="230" MinHeight="60" Margin="146,0,146,79"
                     FontWeight="DemiBold" FontSize="20" Content="{Binding ButtonText}" Command="{Binding SignInClick}" >
-                
+
             </Button>
         </Grid>
     </Grid>

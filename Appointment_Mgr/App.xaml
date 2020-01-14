@@ -10,38 +10,49 @@
              xmlns:otp="clr-namespace:Appointment_Mgr.Dialog.OTP"
              d1p1:Ignorable="d" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
-            <Application.Resources>
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary>
-                            <!-- ViewModelLocator defined -->
-                            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel" />
-                            <!-- ViewModel DataTemplates -->
-                            <DataTemplate DataType="{x:Type vm:MainViewModel}">
-                                <views:MainWindow />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type vm:HomeViewModel}">
-                                <views:HomeView />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type vm:LoginViewModel}">
-                                <views:LoginView/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type dialog:DialogBoxViewModel}">
-                                <dialog:DialogBoxView/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type dialog:AlertBoxViewModel}">
-                                <dialog:AlertBoxView />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type otp:OTPBoxViewModel}">
-                                <otp:OTPBoxView/>
-                            </DataTemplate>
-                        </ResourceDictionary>
-                        <!-- Material Design library -->
-                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
-                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.amber.xaml" />
-                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.deeppurple.xaml" />
-                    </ResourceDictionary.MergedDictionaries>
+                    <!-- ViewModelLocator defined -->
+                    <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel" />
+                    
+                    <!-- ViewModel DataTemplates -->
+                    <!-- Bootstrapper / Main ViewModel-->
+                    <DataTemplate DataType="{x:Type vm:MainViewModel}">
+                        <views:MainWindow />
+                    </DataTemplate>
+                    
+                    <!-- Home Page Toolbar + Main window View + VM DataTemplates-->
+                    <DataTemplate DataType="{x:Type vm:HomeViewModel}">
+                        <views:HomeView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:HomeToolbarViewModel}">
+                        <views:HomeToolbarView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ReceptionistToolbarViewModel}">
+                        <views:ReceptionistToolbarView />
+                    </DataTemplate>
+                    
+                    <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+                        <views:LoginView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type dialog:DialogBoxViewModel}">
+                        <dialog:DialogBoxView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type dialog:AlertBoxViewModel}">
+                        <dialog:AlertBoxView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type otp:OTPBoxViewModel}">
+                        <otp:OTPBoxView/>
+                    </DataTemplate>
                 </ResourceDictionary>
-            </Application.Resources>
+                <!-- Material Design library -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.amber.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.deeppurple.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

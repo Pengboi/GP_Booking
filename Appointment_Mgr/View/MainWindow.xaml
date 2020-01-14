@@ -10,7 +10,7 @@
         FontSize="15"  WindowStartupLocation="CenterScreen" WindowState="Maximized" 
         Height="1080" Width="1920" MinHeight="800" MinWidth="1024"
         >
-    <Grid>
+        <Grid>
         <Rectangle Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"
             MinWidth="1920" MinHeight="100" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" >
             <Rectangle.Effect>
@@ -34,17 +34,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!-- Top Row UI Elements. -->
-            <Button Width="141" Height="50" HorizontalAlignment="Left" Margin="20,0,0,0" Command="{Binding ShowLoginCommand}" >
-                <StackPanel Orientation="Horizontal" Margin="-15,0,0,0" Width="140" Height="40">
-                    <Image x:Name="LoginImage" Source="pack://application:,,,/Assets/Login-icon.png" Grid.Row="0"
-                        Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Label x:Name="UserLogin" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"
-                        FontSize="20" FontWeight="DemiBold" Content="{Binding UserLogin}"></Label>
-                </StackPanel>
-            </Button>
-            <Label x:Name="LiveClock" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,30,0" FontSize="35" Content="{Binding LiveClock}"></Label>
-            <Label x:Name="LiveDate" Grid.Row="0" HorizontalAlignment="Right" Margin="0,45,30,0" FontSize="20" Content="{Binding LiveDate}"></Label>
-            
+            <ContentControl Grid.Row="0" Content="{Binding CurrentToolbarViewModel}"/>
         </Grid>
 
         <Grid>

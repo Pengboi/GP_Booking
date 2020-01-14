@@ -22,6 +22,7 @@ namespace Appointment_Mgr.ViewModel
     /// </summary>
     public class HomeViewModel : ViewModelBase
     {
+        public string _loggedIn = "";
         private string _greetingMessage = "Good " + getGreeting() + ".";
         private string _appointmentButtonImage = "pack://application:,,,/Assets/Book-icon.png", _checkInButtonImage = "pack://application:,,,/Assets/Clock-icon.png";
         private string _bookAppointment = "Book Appointment"; private string _checkIn = "Check In";

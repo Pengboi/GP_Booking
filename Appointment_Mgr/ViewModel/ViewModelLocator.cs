@@ -48,11 +48,8 @@ namespace Appointment_Mgr.ViewModel
             
             SimpleIoc.Default.Register<MainViewModel>();
 
-            SimpleIoc.Default.Register<IDialogBoxService, DialogBoxService>();
-            SimpleIoc.Default.Register<DialogBoxViewModel>();
-            SimpleIoc.Default.Register<AlertBoxViewModel>();
-            SimpleIoc.Default.Register<OTPBoxViewModel>();
 
+            SimpleIoc.Default.Register<HomeToolbarViewModel>();
             SimpleIoc.Default.Register<ReceptionistToolbarViewModel>();
 
             SimpleIoc.Default.Register<HomeViewModel>();
@@ -75,22 +72,27 @@ namespace Appointment_Mgr.ViewModel
             get { return ServiceLocator.Current.GetInstance<HomeViewModel>(); }
         }
 
-        public ReceptionistToolbarViewModel ReceptionistToolbar 
+        public static HomeToolbarViewModel HomeToolbar 
+        {
+            get { return ServiceLocator.Current.GetInstance<HomeToolbarViewModel>(); }
+        }
+
+        public static ReceptionistToolbarViewModel ReceptionistToolbar 
         {
             get { return ServiceLocator.Current.GetInstance<ReceptionistToolbarViewModel>(); }
         }
 
-        public AlertBoxViewModel AlertBox 
-        {
-            get { return ServiceLocator.Current.GetInstance<AlertBoxViewModel>(); }
-        }
 
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
         }
 
-       
+        public static void CleanUpHomeToolbar() 
+        {
+            SimpleIoc.Default.Unregister<HomeToolbarViewModel>();
+            SimpleIoc.Default.Unregister<HomeToolbarViewModel>();
+        }
 
         public static void CleanUpHome()
         {

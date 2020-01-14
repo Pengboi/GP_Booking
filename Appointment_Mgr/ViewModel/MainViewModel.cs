@@ -1,3 +1,5 @@
+using Appointment_Mgr.Model;
+using Appointment_Mgr.Dialog;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -22,35 +24,11 @@ namespace Appointment_Mgr.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
         private string _userLogin = "Login";
-        private ViewModelBase _currentViewModel;
-        private DispatcherTimer timer;
-
+        private ViewModelBase _currentViewModel, _currentToolbarViewModel;
 
         public string Title { get; set; }
-        public string LiveClock
-        {
-            get { return this._clockTime; }
-            set
-            {
-                if (this._clockTime == value)
-                    return;
-                this._clockTime = value;
-                RaisePropertyChanged("LiveClock");
-            }
-        }
-        public string LiveDate
-        {
-            get { return this._dateValue; }
-            set
-            {
-                if (this._dateValue == value)
-                    return;
-                this._dateValue = value;
-                RaisePropertyChanged("LiveDate");
-            }
-        }
+ 
         public string UserLogin
         {
             get { return this._userLogin; }
@@ -58,6 +36,24 @@ namespace Appointment_Mgr.ViewModel
             {
                 this._userLogin = value;
                 RaisePropertyChanged("UserLogin");
+                if (this._userLogin == "logout")
+                {
+                    //code that opens home toolbar VM here
+                }
+                else
+                {
+                    //code that opens receptionist or doctor toolbar VM here
+                }
+            }
+        }
+
+        public ViewModelBase CurrentToolbarViewModel 
+        {
+            get { return _currentToolbarViewModel; }
+            set 
+            {
+                _currentToolbarViewModel = value;
+                RaisePropertyChanged(() => CurrentToolbarViewModel);
             }
         }
 
@@ -70,6 +66,13 @@ namespace Appointment_Mgr.ViewModel
                 RaisePropertyChanged(() => CurrentViewModel);
             }
         }
+
+        public ViewModelBase HomeToolbarVM 
+        {
+            get { return (ViewModelBase)ViewModelLocator.HomeToolbar; }
+        }
+
+        public ViewModelBase ReceptionistToolbarVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistToolbar; } }
 
         public ViewModelBase HomeVM 
         {
@@ -84,35 +87,43 @@ namespace Appointment_Mgr.ViewModel
             if (IsInDesignMode)
             {
                 Title = "GP Booking (Design Mode)";
-                LiveClock = "15:45";
-                LiveDate = "05/09/16";
                 UserLogin = _userLogin;
 
             }
             else
             {
                 Title = "GP Booking";
-                timer = new DispatcherTimer(DispatcherPriority.Render);
-                timer.Interval = TimeSpan.FromSeconds(1);
-                timer.Tick += (sender, args) =>
-                {
-                    LiveClock = DateTime.Now.ToString("HH:mm");
-                    LiveDate = DateTime.Now.ToString("dd/MM/yy");
-                };
-                timer.Start();
                 UserLogin = _userLogin;
-
+                CurrentToolbarViewModel = HomeToolbarVM;
                 CurrentViewModel = HomeVM;
             }
-            ShowLoginCommand = new RelayCommand(LoginCommandMethod);
+            Messenger.Default.Register<StaffUser>
+            (
+                 this,
+                 (action) => ReceiveLoginMessage(action)
+            );
         }
 
-        public RelayCommand ShowLoginCommand { private set; get; }
+        private void ReceiveLoginMessage(StaffUser userAccount)
+        {
+            if (userAccount.getUsername() == "logout")
+            {
+                //logout code here
+            }
+            else 
+            {
+                if (userAccount.isReceptionist())
+                {
+                    CurrentToolbarViewModel = ReceptionistToolbarVM;
+                }
+                else if (userAccount.isDoctor()) 
+                {
+                    //open Doctor toolbar here
+                }
+            }
+        }
+
         public RelayCommand BookAppointmentCommand { get; private set; }
 
-        public void LoginCommandMethod()
-        {
-            MessengerInstance.Send<NotificationMessage>(new NotificationMessage("LoginView"));
-        }
     }
 }

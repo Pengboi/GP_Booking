@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace Appointment_Mgr.ViewModel
 {
@@ -21,5 +22,18 @@ namespace Appointment_Mgr.ViewModel
     /// </summary>
     public class ReceptionistToolbarViewModel : ViewModelBase
     {
+        private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
+        private string _userLogin = "Login";
+        private ViewModelBase _currentViewModel;
+        private DispatcherTimer timer;
+
+        public string UserLoggedIn { get; set; }
+
+        public ReceptionistToolbarViewModel() 
+        {
+            UserLoggedIn = "Welcome" + "Lucy";
+        }
+
     }
+
 }
