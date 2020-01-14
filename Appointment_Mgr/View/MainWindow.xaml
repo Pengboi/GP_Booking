@@ -44,6 +44,7 @@
             </Button>
             <Label x:Name="LiveClock" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,30,0" FontSize="35" Content="{Binding LiveClock}"></Label>
             <Label x:Name="LiveDate" Grid.Row="0" HorizontalAlignment="Right" Margin="0,45,30,0" FontSize="20" Content="{Binding LiveDate}"></Label>
+            
         </Grid>
 
         <Grid>

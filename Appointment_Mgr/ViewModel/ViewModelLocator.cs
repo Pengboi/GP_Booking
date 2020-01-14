@@ -53,6 +53,8 @@ namespace Appointment_Mgr.ViewModel
             SimpleIoc.Default.Register<AlertBoxViewModel>();
             SimpleIoc.Default.Register<OTPBoxViewModel>();
 
+            SimpleIoc.Default.Register<ReceptionistToolbarViewModel>();
+
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
             
@@ -71,6 +73,11 @@ namespace Appointment_Mgr.ViewModel
         public static HomeViewModel Home
         {
             get { return ServiceLocator.Current.GetInstance<HomeViewModel>(); }
+        }
+
+        public ReceptionistToolbarViewModel ReceptionistToolbar 
+        {
+            get { return ServiceLocator.Current.GetInstance<ReceptionistToolbarViewModel>(); }
         }
 
         public AlertBoxViewModel AlertBox 
