@@ -75,6 +75,55 @@ namespace Appointment_Mgr.Model
             return false;
         }
 
+        public string getUsername()
+        {
+            return this._username;
+        }
+
+        public string getSuffix() 
+        {
+            SQLiteConnection conn = startConnection();
+            string cmdString = $"SELECT Suffix FROM Accounts WHERE Username = @uname";
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.Prepare();
+            cmd.Parameters.Add("@uname", DbType.String).Value = this._username;
+            this._suffix = cmd.ExecuteScalar().ToString();
+            conn.Close();
+            return this._suffix;
+        }
+        public string getFirstname() 
+        {
+            SQLiteConnection conn = startConnection();
+            string cmdString = $"SELECT Firstname FROM Accounts WHERE Username = @uname";
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.Prepare();
+            cmd.Parameters.Add("@uname", DbType.String).Value = this._username;
+            this._firstname = cmd.ExecuteScalar().ToString();
+            conn.Close();
+            return this._firstname;
+        }
+
+        // TO BE COMPLETED!
+        //public string getMiddlename() { }
+
+        public string getLastname() 
+        {
+            SQLiteConnection conn = startConnection();
+            string cmdString = $"SELECT Lastname FROM Accounts WHERE Username = @uname";
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.Prepare();
+            cmd.Parameters.Add("@uname", DbType.String).Value = this._username;
+            this._lastname = cmd.ExecuteScalar().ToString();
+            conn.Close();
+            return this._lastname;
+        }
+
+        public string getFullname() 
+        {
+            //TO BE CHANGED TO IMPLEMENT MIDDLENAME
+            return getSuffix() + " " + getFirstname() + " " + getLastname();
+        }
+
         public int getAccountType()
         {
             SQLiteConnection conn = startConnection();
