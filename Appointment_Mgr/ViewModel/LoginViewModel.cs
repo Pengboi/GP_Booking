@@ -99,6 +99,14 @@ namespace Appointment_Mgr.ViewModel
             {
                 if (staffUser.verifyPassword())
                 {
+                    //check if account is Doctor OR Receptionist --> Otherwise trigger alert
+                    if (!(staffUser.isDoctor() || staffUser.isReceptionist())) 
+                    {
+                        Alert("Account Not Authorised", "Your account credentials are not authorised to access" +
+                            " this system.");
+                        return;
+                    }
+
                     string inputtedCode = Otp();
 
                     string otpToken = staffUser.getOTP();
@@ -109,6 +117,7 @@ namespace Appointment_Mgr.ViewModel
                     if (totpCode == inputtedCode)
                     {
                         Alert("It works!", "So you got the code right.");
+                        //This is where we are meant to get the toolbar to change based on if they are a doctor or not
                     }
                     else 
                     {
