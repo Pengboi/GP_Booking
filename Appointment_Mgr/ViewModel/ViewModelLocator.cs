@@ -49,11 +49,13 @@ namespace Appointment_Mgr.ViewModel
             
             SimpleIoc.Default.Register<MainViewModel>();
 
-
+            SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<HomeToolbarViewModel>();
+
+            SimpleIoc.Default.Register<ReceptionistBookingViewModel>();
             SimpleIoc.Default.Register<ReceptionistToolbarViewModel>();
 
-            SimpleIoc.Default.Register<HomeViewModel>();
+            
             SimpleIoc.Default.Register<LoginViewModel>();
             
         }
@@ -78,6 +80,11 @@ namespace Appointment_Mgr.ViewModel
             get { return ServiceLocator.Current.GetInstance<HomeToolbarViewModel>(); }
         }
 
+        public static ReceptionistBookingViewModel ReceptionistBooking 
+        {
+            get { return ServiceLocator.Current.GetInstance<ReceptionistBookingViewModel>(); }
+        }
+
         public static ReceptionistToolbarViewModel ReceptionistToolbar 
         {
             get { return ServiceLocator.Current.GetInstance<ReceptionistToolbarViewModel>(); }
@@ -90,15 +97,14 @@ namespace Appointment_Mgr.ViewModel
             SimpleIoc.Default.Reset();
             SimpleIoc.Default.Register<MainViewModel>();
 
-
+            SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<HomeToolbarViewModel>();
+
+            SimpleIoc.Default.Register<ReceptionistBookingViewModel>();
             SimpleIoc.Default.Register<ReceptionistToolbarViewModel>();
 
-            SimpleIoc.Default.Register<HomeViewModel>();
+
             SimpleIoc.Default.Register<LoginViewModel>();
-
-            //Messenger.Reset();
-
         }
     }
 }

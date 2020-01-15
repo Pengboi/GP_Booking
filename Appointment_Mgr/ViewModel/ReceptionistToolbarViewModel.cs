@@ -42,7 +42,7 @@ namespace Appointment_Mgr.ViewModel
 
         public void ExecuteLogoutCommand() 
         {
-            Messenger.Default.Send<string>("HomeToolbarView");
+            Messenger.Default.Send<string>("HomeView");
         }
 
     }

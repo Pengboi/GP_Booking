@@ -20,25 +20,30 @@
         </Button>
         <Label Grid.Row="0" HorizontalAlignment="Left" Margin="170,30,0,0" FontSize="20" Content="{Binding UserLoggedIn}"/>
 
-        <Button Width="280" Height="80" HorizontalAlignment="Center" Margin="0,0,1000,0" Grid.Column="1">
-            <StackPanel Orientation="Horizontal" Width="197">
-                <Image HorizontalAlignment="Left"  Height="60" Margin="-30,0,0,0" Source="/Assets/Book-icon.png" />
-                <TextBlock Margin="0,20,0,0" FontSize="14" HorizontalAlignment="Center" FontWeight="Bold" Text="Book Appointment"></TextBlock>
+        <Button Width="230" Height="75" HorizontalAlignment="Center" Margin="0,0,825,0" Grid.Column="1">
+            <StackPanel Orientation="Horizontal" Width="200">
+                <Image HorizontalAlignment="Left"  Height="60" Margin="0,0,0,0" Source="/Assets/Book-icon.png" />
+                <StackPanel Orientation="Vertical" Width="170">
+                    <TextBlock Margin="10,10,0,0" Height="20" VerticalAlignment="Top"
+                               FontSize="14"  FontWeight="Bold" Text="Appointment &amp;" />
+                    <TextBlock Margin="10,0,0,0" Height="15"
+                               FontSize="14"  FontWeight="Bold" Text="Check In" />
+                </StackPanel>
             </StackPanel>
         </Button>
-        <Button Width="280" Height="80" HorizontalAlignment="Center" Margin="0,0,350,0" Grid.Column="1">
-            <StackPanel Orientation="Horizontal" Width="197">
-                <Image HorizontalAlignment="Left"  Height="45" Margin="-20,0,0,0" Source="/Assets/Pencil-icon.png" />
+        <Button Width="230" Height="75" HorizontalAlignment="Center" Margin="0,0,275,0" Grid.Column="1">
+            <StackPanel Orientation="Horizontal" Width="200">
+                <Image HorizontalAlignment="Left"  Height="43" Margin="0,0,0,0" Source="/Assets/Pencil-icon.png" />
                 <TextBlock Margin="0,10,0,0" FontSize="14" HorizontalAlignment="Center" FontWeight="Bold" Text="Manage Appointments"></TextBlock>
             </StackPanel>
         </Button>
-        <Button Width="280" Height="80" HorizontalAlignment="Center" Margin="330,0,0,0" Grid.Column="1">
+        <Button Width="230" Height="75" HorizontalAlignment="Center" Margin="275,0,0,0" Grid.Column="1">
             <StackPanel Orientation="Horizontal" Width="197">
-                <Image HorizontalAlignment="Left"  Height="80" Margin="-40,-6,0,0" Source="/Assets/Waiting-icon.png" />
+                <Image HorizontalAlignment="Left"  Height="80" Margin="-20,-6,0,0" Source="/Assets/Waiting-icon.png" />
                 <TextBlock Margin="0,25,0,0" FontSize="14" HorizontalAlignment="Center" FontWeight="Bold" Text="View Waiting List"></TextBlock>
             </StackPanel>
         </Button>
-        <Button Width="280" Height="80" HorizontalAlignment="Center" Margin="1000,0,0,0" Grid.Column="1">
+        <Button Width="230" Height="75" HorizontalAlignment="Center" Margin="825,0,0,0" Grid.Column="1">
             <StackPanel Orientation="Horizontal" Width="197">
                 <Image Height="45" Margin="-10,0,0,0" Source="/Assets/Patient-icon.png" />
                 <TextBlock Margin="10,15,0,0" FontSize="13" HorizontalAlignment="Center" FontWeight="Bold" Text="Manage Patient Records"></TextBlock>

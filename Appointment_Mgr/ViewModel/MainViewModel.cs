@@ -64,13 +64,14 @@ namespace Appointment_Mgr.ViewModel
         {
             get { return (ViewModelBase)ViewModelLocator.HomeToolbar; }
         }
-
-        public ViewModelBase ReceptionistToolbarVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistToolbar; } }
-
-        public ViewModelBase HomeVM 
+        public ViewModelBase HomeVM
         {
             get { return (ViewModelBase)ViewModelLocator.Home; }
         }
+
+        public ViewModelBase ReceptionistToolbarVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistToolbar; } }
+        public ViewModelBase ReceptionistVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistBooking; } }
+        
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -111,6 +112,7 @@ namespace Appointment_Mgr.ViewModel
                     string firstname = userAccount.getFirstname();
                     ViewModelLocator.Cleanup();
                     CurrentToolbarViewModel = ReceptionistToolbarVM;
+                    CurrentViewModel = ReceptionistVM;
                     MessengerInstance.Send<string>(firstname);
                 }
                 else if (userAccount.isDoctor()) 
@@ -126,13 +128,8 @@ namespace Appointment_Mgr.ViewModel
         {
             Console.WriteLine("Got here");
             Console.WriteLine(value);
-
+ 
             if (value == "HomeView") 
-            {
-                CurrentViewModel = HomeVM;
-            }
-                
-            if (value == "HomeToolbarView") 
             {
                 Messenger.Reset(); //RESETS MESSENGER SETTINGS --> FIXES BUG
                 //Re-add the Messengers defined in the constructor which have been cleared
@@ -142,7 +139,8 @@ namespace Appointment_Mgr.ViewModel
                     (action) => ReceiveLoginMessage(action)
                 );
                 MessengerInstance.Register<string>(this, ChangeView);
-
+                
+                CurrentViewModel = HomeVM;
                 CurrentToolbarViewModel = HomeToolbarVM;
                 ViewModelLocator.Cleanup();
             }
