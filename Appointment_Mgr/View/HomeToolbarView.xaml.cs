@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -24,14 +25,15 @@ namespace Appointment_Mgr.View
         public HomeToolbarView()
         {
             InitializeComponent();
+            // Receives Notification Message to open Login View Window
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
         private void NotificationMessageReceived(NotificationMessage msg)
         {
             if (msg.Notification == "LoginView")
             {
-                var loginView = new LoginView();
-                loginView.ShowDialog();
+                LoginView loginWindow = new LoginView();
+                loginWindow.ShowDialog();
             }
         }
     }

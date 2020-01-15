@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Threading;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace Appointment_Mgr.ViewModel
 {
@@ -36,14 +37,6 @@ namespace Appointment_Mgr.ViewModel
             {
                 this._userLogin = value;
                 RaisePropertyChanged("UserLogin");
-                if (this._userLogin == "logout")
-                {
-                    //code that opens home toolbar VM here
-                }
-                else
-                {
-                    //code that opens receptionist or doctor toolbar VM here
-                }
             }
         }
 
@@ -102,6 +95,7 @@ namespace Appointment_Mgr.ViewModel
                  this,
                  (action) => ReceiveLoginMessage(action)
             );
+            MessengerInstance.Register<string>(this, ChangeView);
         }
 
         private void ReceiveLoginMessage(StaffUser userAccount)
@@ -114,13 +108,38 @@ namespace Appointment_Mgr.ViewModel
             {
                 if (userAccount.isReceptionist())
                 {
+                    string firstname = userAccount.getFirstname();
+                    ViewModelLocator.Cleanup();
                     CurrentToolbarViewModel = ReceptionistToolbarVM;
+                    MessengerInstance.Send<string>(firstname);
                 }
                 else if (userAccount.isDoctor()) 
                 {
                     //open Doctor toolbar here
                 }
             }
+        }
+
+        // Respondsible for resetting view to home / alter view when notification message is sent by other 
+        // classes containing any of the values below
+        private void ChangeView(string value) 
+        {
+            Console.WriteLine("Got here");
+            Console.WriteLine(value);
+
+            if (value == "HomeView") 
+            {
+                CurrentViewModel = HomeVM;
+            }
+                
+            if (value == "HomeToolbarView") 
+            {
+                Messenger.Reset(); //RESETS MESSENGER SETTINGS --> FIXES BUG
+                CurrentToolbarViewModel = HomeToolbarVM;
+                ViewModelLocator.Cleanup();
+            }
+                
+
         }
 
         public RelayCommand BookAppointmentCommand { get; private set; }

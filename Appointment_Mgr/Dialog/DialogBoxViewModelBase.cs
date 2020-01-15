@@ -26,7 +26,6 @@ namespace Appointment_Mgr.Dialog
         public void CloseDialogWithResult(IDialogWindow dialog, string result) 
         {
             DialogResult = result;
-            Console.WriteLine(result); //DEBUG
 
             if (dialog != null)
                 dialog.DialogResult = true;

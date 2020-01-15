@@ -21,7 +21,7 @@ namespace Appointment_Mgr.View
     /// <summary>
     /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class LoginView : IClosable
+    public partial class LoginView : Window
     {   
         // NOTE --> All commented out code has been replaced with custom dialog box. Code just serves as legacy for indication on if alt solution needed.
         public LoginView()
@@ -31,6 +31,7 @@ namespace Appointment_Mgr.View
             // so MVVM is seem as guide during this project as oppose to STRICT rules to be adhered to. MVVM to reduce coupling, not eliminate.
                 // Receives error message and sends to GetErrorMessage to find appropriate message
             Messenger.Default.Register<NotificationMessage>(this, CloseWindow);
+            
         }
 
         /// <summary>

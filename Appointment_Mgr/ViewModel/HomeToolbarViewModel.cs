@@ -14,6 +14,7 @@ namespace Appointment_Mgr.ViewModel
     {
         private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
         private string _userLogin = "Login";
+        private bool requestSent = false;
         private DispatcherTimer timer;
 
         public RelayCommand ShowLoginCommand { private set; get; }
@@ -52,7 +53,8 @@ namespace Appointment_Mgr.ViewModel
 
         public void LoginCommandMethod()
         {
-            MessengerInstance.Send<NotificationMessage>(new NotificationMessage("LoginView"));
+            //Notification Message to open Login View
+            Messenger.Default.Send<NotificationMessage>(new NotificationMessage("LoginView"));
         }
 
         public HomeToolbarViewModel() 

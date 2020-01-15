@@ -15,7 +15,7 @@
                 <Image x:Name="LoginImage" Source="pack://application:,,,/Assets/Login-icon.png" Grid.Row="0"
                         Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Label x:Name="UserLogin" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"
-                        FontSize="20" FontWeight="DemiBold" Foreground="#f5f6fa" Content="{Binding UserLogout}"></Label>
+                        FontSize="20" FontWeight="DemiBold" Foreground="#f5f6fa" Content="Log out"></Label>
             </StackPanel>
         </Button>
         <Label Grid.Row="0" HorizontalAlignment="Left" Margin="170,30,0,0" FontSize="20" Content="{Binding UserLoggedIn}"/>

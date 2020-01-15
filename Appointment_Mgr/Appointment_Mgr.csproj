@@ -108,7 +108,6 @@
       <DependentUpon>OTPBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\OTP\OTPBoxViewModel.cs" />
-    <Compile Include="Helper\IClosable.cs" />
     <Compile Include="Helper\TabOnInputBehaviour.cs" />
     <Compile Include="Model\StaffUser.cs" />
     <Compile Include="Dialog\DialogBoxViewModel.cs" />

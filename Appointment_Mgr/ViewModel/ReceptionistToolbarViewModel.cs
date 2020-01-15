@@ -1,4 +1,7 @@
-﻿using GalaSoft.MvvmLight;
+﻿using Appointment_Mgr.Model;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,15 +26,23 @@ namespace Appointment_Mgr.ViewModel
     public class ReceptionistToolbarViewModel : ViewModelBase
     {
         private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
-        private string _userLogin = "Login";
-        private ViewModelBase _currentViewModel;
         private DispatcherTimer timer;
 
         public string UserLoggedIn { get; set; }
 
+        public RelayCommand ExecuteLogout { private set; get; }
+
+
         public ReceptionistToolbarViewModel() 
         {
-            UserLoggedIn = "Welcome" + "Lucy";
+            Messenger.Default.Register<string>(this, name => { UserLoggedIn = "Welcome, " + name + "."; });
+            ExecuteLogout = new RelayCommand(ExecuteLogoutCommand);
+        }
+
+
+        public void ExecuteLogoutCommand() 
+        {
+            Messenger.Default.Send<string>("HomeToolbarView");
         }
 
     }
