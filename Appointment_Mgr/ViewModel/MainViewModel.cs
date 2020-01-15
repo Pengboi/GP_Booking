@@ -135,6 +135,14 @@ namespace Appointment_Mgr.ViewModel
             if (value == "HomeToolbarView") 
             {
                 Messenger.Reset(); //RESETS MESSENGER SETTINGS --> FIXES BUG
+                //Re-add the Messengers defined in the constructor which have been cleared
+                Messenger.Default.Register<StaffUser>
+                (
+                    this,
+                    (action) => ReceiveLoginMessage(action)
+                );
+                MessengerInstance.Register<string>(this, ChangeView);
+
                 CurrentToolbarViewModel = HomeToolbarVM;
                 ViewModelLocator.Cleanup();
             }
