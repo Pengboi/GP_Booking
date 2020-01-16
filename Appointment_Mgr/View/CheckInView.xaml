@@ -8,7 +8,7 @@
              Background="#ffffff"
              d:DesignHeight="980" d:DesignWidth="1920">
     <Grid>
-        <Label>GE</Label>
+        
             
     </Grid>
 </UserControl>

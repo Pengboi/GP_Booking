@@ -70,7 +70,7 @@ namespace Appointment_Mgr.ViewModel
         }
 
         public ViewModelBase ReceptionistToolbarVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistToolbar; } }
-        public ViewModelBase ReceptionistVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistBooking; } }
+        public ViewModelBase ReceptionistVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistHome; } }
         
 
         /// <summary>
@@ -101,24 +101,17 @@ namespace Appointment_Mgr.ViewModel
 
         private void ReceiveLoginMessage(StaffUser userAccount)
         {
-            if (userAccount.getUsername() == "logout")
+            if (userAccount.isReceptionist())
             {
-                //logout code here
+                string firstname = userAccount.getFirstname();
+                ViewModelLocator.Cleanup();
+                CurrentToolbarViewModel = ReceptionistToolbarVM;
+                CurrentViewModel = ReceptionistVM;
+                MessengerInstance.Send<string>(firstname);
             }
-            else 
+            else if (userAccount.isDoctor())
             {
-                if (userAccount.isReceptionist())
-                {
-                    string firstname = userAccount.getFirstname();
-                    ViewModelLocator.Cleanup();
-                    CurrentToolbarViewModel = ReceptionistToolbarVM;
-                    CurrentViewModel = ReceptionistVM;
-                    MessengerInstance.Send<string>(firstname);
-                }
-                else if (userAccount.isDoctor()) 
-                {
-                    //open Doctor toolbar here
-                }
+                //open Doctor toolbar here
             }
         }
 
@@ -132,6 +125,7 @@ namespace Appointment_Mgr.ViewModel
             if (value == "HomeView") 
             {
                 Messenger.Reset(); //RESETS MESSENGER SETTINGS --> FIXES BUG
+
                 //Re-add the Messengers defined in the constructor which have been cleared
                 Messenger.Default.Register<StaffUser>
                 (

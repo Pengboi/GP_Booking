@@ -111,13 +111,17 @@
     <Compile Include="Helper\TabOnInputBehaviour.cs" />
     <Compile Include="Model\StaffUser.cs" />
     <Compile Include="Dialog\DialogBoxViewModel.cs" />
+    <Compile Include="ViewModel\BookAppointmentViewModel.cs" />
     <Compile Include="ViewModel\HomeToolbarViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ReceptionistBookingViewModel.cs" />
-    <Compile Include="View\ReceptionistBookingView.xaml.cs">
-      <DependentUpon>ReceptionistBookingView.xaml</DependentUpon>
+    <Compile Include="ViewModel\ReceptionistHomeViewModel.cs" />
+    <Compile Include="View\BookAppointmentView.xaml.cs">
+      <DependentUpon>BookAppointmentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ReceptionistHomeView.xaml.cs">
+      <DependentUpon>ReceptionistHomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ReceptionistToolbarViewModel.cs" />
     <Compile Include="View\HomeToolbarView.xaml.cs">
@@ -134,7 +138,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ReceptionistBookingView.xaml">
+    <Page Include="View\BookAppointmentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ReceptionistHomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -207,7 +215,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="Patients.db" />
+    <None Include="Patients.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

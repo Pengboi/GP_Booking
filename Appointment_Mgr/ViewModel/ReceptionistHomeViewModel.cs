@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Appointment_Mgr.ViewModel
 {
-    public class ReceptionistBookingViewModel : ViewModelBase
+    public class ReceptionistHomeViewModel : ViewModelBase
     {
         public string ScreenMessage { get; set; }
 
-        public ReceptionistBookingViewModel()
+        public ReceptionistHomeViewModel()
         {
             if (IsInDesignMode)
             {

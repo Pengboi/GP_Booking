@@ -8,8 +8,11 @@ Account types:
 
 AMD Notes:
 
-ESSENTIAL NOTES:
-Make sure to make sure that the username of a new created user CANNOT be "logout" as this is used in messaging system to return toolbar to home toolbar
+ESSENTIAL NOTES: MoSCoW Priority Ranking
+Make sure to make sure that the username of a new created user CANNOT be "logout" as this is used in messaging system to return toolbar to home toolbar --> Not sure if relevant
+S:	Once system finished, add encryption to database files using small console file --> Maybe tie in with setup process 
+S:	Refactor button txt & image sources to be defined within view. View components should be displayed in view and should technically count as xaml definable not dependant on VM or code
+	(unless logic is required such in the case of the current time/date labels, current signed in user labels and etc.)
 
 
 Views =	666 OVO XO UI/UX Xperia Xperience XP

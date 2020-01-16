@@ -17,7 +17,7 @@
                     <!-- ViewModelLocator defined -->
                     <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel" />
                     
-                    <!-- ViewModel DataTemplates -->
+                    <!-- View-ViewModel DataTemplates -->
                     <!-- Bootstrapper / Main ViewModel-->
                     <DataTemplate DataType="{x:Type vm:MainViewModel}">
                         <views:MainWindow />
@@ -30,16 +30,21 @@
                     <DataTemplate DataType="{x:Type vm:HomeToolbarViewModel}">
                         <views:HomeToolbarView />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:ReceptionistBookingViewModel}">
-                        <views:ReceptionistBookingView />
+                    <DataTemplate DataType="{x:Type vm:ReceptionistHomeViewModel}">
+                        <views:ReceptionistHomeView />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type vm:ReceptionistToolbarViewModel}">
                         <views:ReceptionistToolbarView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:BookAppointmentViewModel}">
+                        <views:BookAppointmentView />
                     </DataTemplate>
                     
                     <DataTemplate DataType="{x:Type vm:LoginViewModel}">
                         <views:LoginView/>
                     </DataTemplate>
+                    
+                    <!-- Dialog box View + VM DataTemplates -->
                     <DataTemplate DataType="{x:Type dialog:DialogBoxViewModel}">
                         <dialog:DialogBoxView/>
                     </DataTemplate>
@@ -49,6 +54,7 @@
                     <DataTemplate DataType="{x:Type otp:OTPBoxViewModel}">
                         <otp:OTPBoxView/>
                     </DataTemplate>
+                    
                 </ResourceDictionary>
                 <!-- Material Design library -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />

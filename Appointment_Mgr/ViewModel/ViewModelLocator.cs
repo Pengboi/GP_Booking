@@ -48,16 +48,16 @@ namespace Appointment_Mgr.ViewModel
 
             
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<LoginViewModel>();
 
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<HomeToolbarViewModel>();
 
-            SimpleIoc.Default.Register<ReceptionistBookingViewModel>();
+            SimpleIoc.Default.Register<ReceptionistHomeViewModel>();
             SimpleIoc.Default.Register<ReceptionistToolbarViewModel>();
 
-            
-            SimpleIoc.Default.Register<LoginViewModel>();
-            
+            SimpleIoc.Default.Register<BookAppointmentViewModel>();    
+
         }
 
         public MainViewModel Main
@@ -80,9 +80,9 @@ namespace Appointment_Mgr.ViewModel
             get { return ServiceLocator.Current.GetInstance<HomeToolbarViewModel>(); }
         }
 
-        public static ReceptionistBookingViewModel ReceptionistBooking 
+        public static ReceptionistHomeViewModel ReceptionistHome 
         {
-            get { return ServiceLocator.Current.GetInstance<ReceptionistBookingViewModel>(); }
+            get { return ServiceLocator.Current.GetInstance<ReceptionistHomeViewModel>(); }
         }
 
         public static ReceptionistToolbarViewModel ReceptionistToolbar 
@@ -91,20 +91,26 @@ namespace Appointment_Mgr.ViewModel
         }
 
 
+        public static BookAppointmentViewModel BookAppointment
+        {
+            get { return ServiceLocator.Current.GetInstance<BookAppointmentViewModel>(); }
+        }
+
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
             SimpleIoc.Default.Reset();
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<LoginViewModel>();
 
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<HomeToolbarViewModel>();
 
-            SimpleIoc.Default.Register<ReceptionistBookingViewModel>();
+            SimpleIoc.Default.Register<ReceptionistHomeViewModel>();
             SimpleIoc.Default.Register<ReceptionistToolbarViewModel>();
 
-
-            SimpleIoc.Default.Register<LoginViewModel>();
+            SimpleIoc.Default.Register<BookAppointmentViewModel>();
         }
     }
 }

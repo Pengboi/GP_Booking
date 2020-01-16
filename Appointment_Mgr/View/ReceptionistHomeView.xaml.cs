@@ -18,9 +18,9 @@ namespace Appointment_Mgr.View
     /// <summary>
     /// Interaction logic for ReceptionistHomeView.xaml
     /// </summary>
-    public partial class ReceptionistBookingView : UserControl
+    public partial class ReceptionistHomeView : UserControl
     {
-        public ReceptionistBookingView()
+        public ReceptionistHomeView()
         {
             InitializeComponent();
         }

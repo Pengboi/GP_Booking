@@ -28,6 +28,29 @@ namespace Appointment_Mgr.ViewModel
         private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
         private DispatcherTimer timer;
 
+        public string LiveClock
+        {
+            get { return this._clockTime; }
+            set
+            {
+                if (this._clockTime == value)
+                    return;
+                this._clockTime = value;
+                RaisePropertyChanged("LiveClock");
+            }
+        }
+        public string LiveDate
+        {
+            get { return this._dateValue; }
+            set
+            {
+                if (this._dateValue == value)
+                    return;
+                this._dateValue = value;
+                RaisePropertyChanged("LiveDate");
+            }
+        }
+
         public string UserLoggedIn { get; set; }
 
         public RelayCommand ExecuteLogout { private set; get; }
@@ -35,8 +58,26 @@ namespace Appointment_Mgr.ViewModel
 
         public ReceptionistToolbarViewModel() 
         {
+            if (IsInDesignMode)
+            {
+                LiveClock = "15:45";
+                LiveDate = "05/09/16";
+            }
+            else
+            {
+                timer = new DispatcherTimer(DispatcherPriority.Render);
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Tick += (sender, args) =>
+                {
+                    LiveClock = DateTime.Now.ToString("HH:mm");
+                    LiveDate = DateTime.Now.ToString("dd/MM/yy");
+                };
+                timer.Start();
+            }
+
             Messenger.Default.Register<string>(this, name => { UserLoggedIn = "Welcome, " + name + "."; });
             ExecuteLogout = new RelayCommand(ExecuteLogoutCommand);
+
         }
 
 
