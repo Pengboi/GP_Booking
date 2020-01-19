@@ -26,8 +26,8 @@ namespace Appointment_Mgr.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private string _userLogin = "Login";
-        private ViewModelBase _currentViewModel, _currentToolbarViewModel;
-
+        private ViewModelBase _currentViewModel, _currentToolbarViewModel; //maybe not needed? - idk
+        public RelayCommand BookAppointmentCommand { get; private set; }
         public string Title { get; set; }
  
         public string UserLogin
@@ -60,18 +60,10 @@ namespace Appointment_Mgr.ViewModel
             }
         }
 
-        public ViewModelBase HomeToolbarVM 
-        {
-            get { return (ViewModelBase)ViewModelLocator.HomeToolbar; }
-        }
-        public ViewModelBase HomeVM
-        {
-            get { return (ViewModelBase)ViewModelLocator.Home; }
-        }
-
+        public ViewModelBase HomeToolbarVM { get { return (ViewModelBase)ViewModelLocator.HomeToolbar; } }
+        public ViewModelBase HomeVM { get { return (ViewModelBase)ViewModelLocator.Home; } }
         public ViewModelBase ReceptionistToolbarVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistToolbar; } }
         public ViewModelBase ReceptionistVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistHome; } }
-
         public ViewModelBase BookingVM { get { return (ViewModelBase)ViewModelLocator.BookAppointment; } }
         
 
@@ -84,7 +76,6 @@ namespace Appointment_Mgr.ViewModel
             {
                 Title = "GP Booking (Design Mode)";
                 UserLogin = _userLogin;
-
             }
             else
             {
@@ -121,11 +112,10 @@ namespace Appointment_Mgr.ViewModel
         // classes containing any of the values below
         private void ChangeView(string value) 
         {
-            Console.WriteLine("Got here");
-            Console.WriteLine(value);
-
             if (value == "HomeView")
             {
+                // RE-ESTABLISH LISTENER FOR BOOK APPOINTMENT
+
                 Messenger.Reset(); //RESETS MESSENGER SETTINGS --> FIXES BUG
 
                 //Re-add the Messengers defined in the constructor which have been cleared
@@ -139,11 +129,13 @@ namespace Appointment_Mgr.ViewModel
                 CurrentViewModel = HomeVM;
                 CurrentToolbarViewModel = HomeToolbarVM;
                 ViewModelLocator.Cleanup();
-            }    
+            }
 
+            if (value == "BookingView")
+                CurrentViewModel = BookingVM;
         }
 
-        public RelayCommand BookAppointmentCommand { get; private set; }
+        
 
     }
 }

@@ -28,6 +28,30 @@ namespace Appointment_Mgr.ViewModel
         private string _bookAppointment = "Book Appointment"; private string _checkIn = "Check In";
         private DispatcherTimer timer;
 
+        public string BookAppointment
+        {
+            get { return this._bookAppointment; }
+            set { _bookAppointment = value; }
+        }
+        public string AppointmentButtonImg
+        {
+            get { return this._appointmentButtonImage; }
+            set { _appointmentButtonImage = value; }
+        }
+
+        public string CheckIn
+        {
+            get { return this._checkIn; }
+            set { _checkIn = value; }
+        }
+        public string CheckInButtonImg
+        {
+            get { return this._checkInButtonImage; }
+            set { _checkInButtonImage = value; }
+        }
+
+        public RelayCommand BookAppointmentCommand { private set; get; }
+
         public HomeViewModel()
         {
             AppointmentButtonImg = _appointmentButtonImage;
@@ -83,34 +107,14 @@ namespace Appointment_Mgr.ViewModel
             }
         }
 
-        public string BookAppointment 
-        {
-            get { return this._bookAppointment; }
-            set { _bookAppointment = value; }
-        }
-        public string AppointmentButtonImg 
-        {
-            get { return this._appointmentButtonImage; }
-            set { _appointmentButtonImage = value; }
-        } 
-
-        public string CheckIn
-        {
-            get { return this._checkIn; }
-            set { _checkIn = value; }
-        }
-        public string CheckInButtonImg
-        {
-            get { return this._checkInButtonImage; }
-            set { _checkInButtonImage = value; }
-        }
-
-        public RelayCommand BookAppointmentCommand { private set; get; }
-
         public void SetBookingView()
         {
             //Notification Message to open Login View
-            Messenger.Default.Send<NotificationMessage>(new NotificationMessage("BookingView"));
+            Messenger.Default.Send<string>("BookingView");
         }
+
+       
+
+        
     }
 }

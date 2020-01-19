@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Appointment_Mgr.View"
+             xmlns:helper="clr-namespace:Appointment_Mgr.Helper"
              mc:Ignorable="d" 
              Background="#ffffff"
              DataContext="{Binding BookAppointment, Source={StaticResource Locator}}"
@@ -23,7 +24,7 @@
                                  x:Name="textSource" 
                                  Background="Transparent" 
                                  Panel.ZIndex="2" />
-                            <TextBox Text="{TemplateBinding Tag}" BorderThickness="0" Background="{TemplateBinding Background}" Panel.ZIndex="1">
+                            <TextBox Text="{TemplateBinding Tag}" BorderThickness="0" Focusable="False" Background="{TemplateBinding Background}" Panel.ZIndex="1">
                                 <TextBox.Style>
                                     <Style TargetType="{x:Type TextBox}">
                                         <Setter Property="Foreground" Value="Transparent"/>
@@ -90,7 +91,16 @@
                 </Rectangle.Effect>
             </Rectangle>
             <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="50,130,0,0" Width="420"
-                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"/>
+                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*" 
+                     materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13" >
+                <TextBox.Text>
+                    <Binding Path="Firstname" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <helper:TextOnlyRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
 
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,190,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Middle Name:"/>
@@ -102,7 +112,16 @@
                 </Rectangle.Effect>
             </Rectangle>
             <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="50,240,0,0" Width="420"
-                     FontSize="20" />
+                     FontSize="20"
+                     materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
+                <TextBox.Text>
+                    <Binding Path="Middlename" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <helper:OptionalFieldTextOnlyRule  />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
 
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,300,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Last Name:"/>
@@ -114,31 +133,60 @@
                 </Rectangle.Effect>
             </Rectangle>
             <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,50,0,0" Width="420"
-                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"/>
+                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
+                     materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
+                <TextBox.Text>
+                    <Binding Path="Lastname" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <helper:TextOnlyRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
 
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,420,0,0"
-                   FontSize="25" FontWeight="DemiBold" Content="Date of Birth:"/>
-            <DatePicker Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" Margin="35,0,0,220" />
-            
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,485,0,0"
-                   FontSize="25" FontWeight="DemiBold" Content="E-mail Address:"/>
-            <Rectangle Grid.Column="0" Width="470" Height="70" VerticalAlignment="Top" Margin="0,525,0,0"
+                   FontSize="25" FontWeight="DemiBold" Content="Date of Birth: *"/>
+            <DatePicker Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" Height="30" Margin="35,0,0,210"
+                        Focusable="False"  />
+
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,495,0,0"
+                   FontSize="25" FontWeight="DemiBold" Content="E-mail Address:"
+                   materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13"/>
+            <Rectangle Grid.Column="0" Width="470" Height="70" VerticalAlignment="Top" Margin="0,535,0,0"
                        Fill="#f5f6fa" RadiusX="10" RadiusY="10">
                 <Rectangle.Effect>
                     <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
                                       ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <TextBox Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="50,50,0,125" Width="420"
-                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"/>
+            <TextBox Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="50,50,0,115" Width="420"
+                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
+                     materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
+                <TextBox.Text>
+                    <Binding Path="Email" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <helper:ValidEmailRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
 
             <!-- Column 2 Elements -->
             <Label Grid.Column="1" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
                    FontSize="30" FontWeight="DemiBold" Content="Appointment Type" />
 
+            <Button Grid.Column="1" VerticalAlignment="Top" Width="250" Height="100" Margin="0,200,0,0"
+                    Content="Same Day Walk-in" FontSize="20" FontWeight="Bold" Command="{Binding WalkInCommand}"></Button>
+
+            <Button Grid.Column="1" VerticalAlignment="Center" Width="250" Height="100" Margin="0,100,0,0"
+                    Content="Reservation" FontSize="20" FontWeight="Bold" Command="{Binding BookAppointmentCommand}"></Button>
+
             <!-- Column 3 Elements -->
             <Label Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
                    FontSize="30" FontWeight="DemiBold" Content="Confirm Appointment" />
+            <Grid Grid.Column="2" Margin="30,60,30,30">
+                <ContentControl></ContentControl>
+            </Grid>
 
         </Grid>
 

@@ -90,7 +90,6 @@ namespace Appointment_Mgr.ViewModel
             get { return ServiceLocator.Current.GetInstance<ReceptionistToolbarViewModel>(); }
         }
 
-
         public static BookAppointmentViewModel BookAppointment
         {
             get { return ServiceLocator.Current.GetInstance<BookAppointmentViewModel>(); }
