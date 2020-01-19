@@ -51,6 +51,8 @@ namespace Appointment_Mgr.ViewModel
                 BookAppointment = _bookAppointment;
                 CheckIn = _checkIn;
             }
+
+            BookAppointmentCommand = new RelayCommand(SetBookingView);
         }
 
         public static string getGreeting()
@@ -101,6 +103,14 @@ namespace Appointment_Mgr.ViewModel
         {
             get { return this._checkInButtonImage; }
             set { _checkInButtonImage = value; }
+        }
+
+        public RelayCommand BookAppointmentCommand { private set; get; }
+
+        public void SetBookingView()
+        {
+            //Notification Message to open Login View
+            Messenger.Default.Send<NotificationMessage>(new NotificationMessage("BookingView"));
         }
     }
 }

@@ -71,6 +71,8 @@ namespace Appointment_Mgr.ViewModel
 
         public ViewModelBase ReceptionistToolbarVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistToolbar; } }
         public ViewModelBase ReceptionistVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistHome; } }
+
+        public ViewModelBase BookingVM { get { return (ViewModelBase)ViewModelLocator.BookAppointment; } }
         
 
         /// <summary>
@@ -121,8 +123,8 @@ namespace Appointment_Mgr.ViewModel
         {
             Console.WriteLine("Got here");
             Console.WriteLine(value);
- 
-            if (value == "HomeView") 
+
+            if (value == "HomeView")
             {
                 Messenger.Reset(); //RESETS MESSENGER SETTINGS --> FIXES BUG
 
@@ -133,12 +135,11 @@ namespace Appointment_Mgr.ViewModel
                     (action) => ReceiveLoginMessage(action)
                 );
                 MessengerInstance.Register<string>(this, ChangeView);
-                
+
                 CurrentViewModel = HomeVM;
                 CurrentToolbarViewModel = HomeToolbarVM;
                 ViewModelLocator.Cleanup();
-            }
-                
+            }    
 
         }
 

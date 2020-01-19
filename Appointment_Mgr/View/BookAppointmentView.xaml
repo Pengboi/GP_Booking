@@ -3,11 +3,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Appointment_Mgr.View"
              mc:Ignorable="d" 
              Background="#ffffff"
              DataContext="{Binding BookAppointment, Source={StaticResource Locator}}"
              d:DesignHeight="980" d:DesignWidth="1920">
+    <UserControl.Resources>
+        <!-- Placeholder style template for Textboxes -->
+        <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <TextBox Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 x:Name="textSource" 
+                                 Background="Transparent" 
+                                 Panel.ZIndex="2" />
+                            <TextBox Text="{TemplateBinding Tag}" BorderThickness="0" Background="{TemplateBinding Background}" Panel.ZIndex="1">
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Foreground" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="">
+                                                <Setter Property="Foreground" Value="Gray"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Rectangle Width="1600" Height="700" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Rectangle.Effect>
@@ -16,8 +51,8 @@
             </Rectangle.Effect>
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#ECE9E6" Offset="0.35"/>
-                    <GradientStop Color="#FFFFFF" Offset="1"/>
+                    <GradientStop Color="#fdfbfb" Offset="0.35"/>
+                    <GradientStop Color="#EBEDEE" Offset="1"/>
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
@@ -27,11 +62,83 @@
                 <ColumnDefinition Width= "*" />
                 <ColumnDefinition Width= "*" />
             </Grid.ColumnDefinitions>
+            <!-- Black lines for each column -->
+            <Rectangle Grid.Column="0" Width="3" HorizontalAlignment="Right" Fill="#2f3640">
+                <Rectangle.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
+                                  ShadowDepth="3" Opacity="0.8"/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <Rectangle Grid.Column="1" Width="3" HorizontalAlignment="Right" Fill="#2f3640">
+                <Rectangle.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
+                                  ShadowDepth="3" Opacity="0.8"/>
+                </Rectangle.Effect>
+            </Rectangle>
+
             <!-- Column 1 Elements -->
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
+                   FontSize="30" FontWeight="DemiBold" Content="Your Details" />
+            
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,80,0,0"
+                   FontSize="25" FontWeight="DemiBold" Content="First Name:"/>
+            <Rectangle Grid.Column="0" Width="470" Height="60" VerticalAlignment="Top" Margin="0,120,0,0"
+                       Fill="#f5f6fa" RadiusX="10" RadiusY="10">
+                <Rectangle.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
+                                      ShadowDepth="3" Opacity="0.8"/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="50,130,0,0" Width="420"
+                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"/>
+
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,190,0,0"
+                   FontSize="25" FontWeight="DemiBold" Content="Middle Name:"/>
+            <Rectangle Grid.Column="0" Width="470" Height="60" VerticalAlignment="Top" Margin="0,230,0,0"
+                       Fill="#f5f6fa" RadiusX="10" RadiusY="10">
+                <Rectangle.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
+                                      ShadowDepth="3" Opacity="0.8"/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="50,240,0,0" Width="420"
+                     FontSize="20" />
+
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,300,0,0"
+                   FontSize="25" FontWeight="DemiBold" Content="Last Name:"/>
+            <Rectangle Grid.Column="0" Width="470" Height="70" VerticalAlignment="Top" Margin="0,340,0,0"
+                       Fill="#f5f6fa" RadiusX="10" RadiusY="10">
+                <Rectangle.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
+                                      ShadowDepth="3" Opacity="0.8"/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,50,0,0" Width="420"
+                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"/>
+
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,420,0,0"
+                   FontSize="25" FontWeight="DemiBold" Content="Date of Birth:"/>
+            <DatePicker Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" Margin="35,0,0,220" />
+            
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,485,0,0"
+                   FontSize="25" FontWeight="DemiBold" Content="E-mail Address:"/>
+            <Rectangle Grid.Column="0" Width="470" Height="70" VerticalAlignment="Top" Margin="0,525,0,0"
+                       Fill="#f5f6fa" RadiusX="10" RadiusY="10">
+                <Rectangle.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
+                                      ShadowDepth="3" Opacity="0.8"/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <TextBox Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="50,50,0,125" Width="420"
+                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"/>
 
             <!-- Column 2 Elements -->
+            <Label Grid.Column="1" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
+                   FontSize="30" FontWeight="DemiBold" Content="Appointment Type" />
 
             <!-- Column 3 Elements -->
+            <Label Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
+                   FontSize="30" FontWeight="DemiBold" Content="Confirm Appointment" />
 
         </Grid>
 
