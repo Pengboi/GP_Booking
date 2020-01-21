@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Appointment_Mgr.View"
              xmlns:helper="clr-namespace:Appointment_Mgr.Helper"
@@ -79,7 +80,7 @@
 
             <!-- Column 1 Elements -->
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
-                   FontSize="30" FontWeight="DemiBold" Content="Your Details" />
+                   FontSize="30" FontWeight="DemiBold" Content="Patient Details" />
             
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,80,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="First Name:"/>
@@ -147,7 +148,13 @@
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,420,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Date of Birth: *"/>
             <DatePicker Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" Height="30" Margin="35,0,0,210"
-                        Focusable="False"  />
+                        Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}"  >
+                <DatePicker.CalendarStyle>
+                    <Style TargetType="Calendar" BasedOn="{StaticResource {x:Type Calendar}}">
+                        <Setter Property="helper:CalendarYearView.DisplayMode" Value="Year" />
+                    </Style>
+                </DatePicker.CalendarStyle>
+            </DatePicker>
 
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,495,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="E-mail Address:"

@@ -1,4 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ namespace Appointment_Mgr.ViewModel
     public class ReceptionistHomeViewModel : ViewModelBase
     {
         public string ScreenMessage { get; set; }
+        public RelayCommand BookAppointmentCommand { private set; get; }
 
         public ReceptionistHomeViewModel()
         {
@@ -21,6 +24,13 @@ namespace Appointment_Mgr.ViewModel
             {
                 ScreenMessage = "Placeholder";
             }
+            BookAppointmentCommand = new RelayCommand(SetBookingView);
+        }
+
+        public void SetBookingView()
+        {
+            //Notification Message to open Login View
+            Messenger.Default.Send<string>("BookingView");
         }
     }
 }
