@@ -109,7 +109,7 @@ namespace Appointment_Mgr.ViewModel
 
         public void SetBookingView()
         {
-            //Notification Message to open Login View
+            //Notification Message to open Booking View
             Messenger.Default.Send<string>("BookingView");
         }
 

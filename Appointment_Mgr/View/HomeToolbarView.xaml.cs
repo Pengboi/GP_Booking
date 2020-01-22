@@ -25,16 +25,8 @@ namespace Appointment_Mgr.View
         public HomeToolbarView()
         {
             InitializeComponent();
-            // Receives Notification Message to open Login View Window
-            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            
         }
-        private void NotificationMessageReceived(NotificationMessage msg)
-        {
-            if (msg.Notification == "LoginView")
-            {
-                LoginView loginWindow = new LoginView();
-                loginWindow.ShowDialog();
-            }
-        }
+        
     }
 }

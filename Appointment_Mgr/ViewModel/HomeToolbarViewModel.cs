@@ -54,7 +54,7 @@ namespace Appointment_Mgr.ViewModel
         public void LoginCommandMethod()
         {
             //Notification Message to open Login View
-            Messenger.Default.Send<NotificationMessage>(new NotificationMessage("LoginView"));
+            Messenger.Default.Send<string>("LoginView");
         }
 
         public HomeToolbarViewModel() 

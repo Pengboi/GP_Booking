@@ -64,6 +64,7 @@ namespace Appointment_Mgr.ViewModel
         public ViewModelBase HomeVM { get { return (ViewModelBase)ViewModelLocator.Home; } }
         public ViewModelBase ReceptionistToolbarVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistToolbar; } }
         public ViewModelBase ReceptionistVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistHome; } }
+        public ViewModelBase LoginVM { get { return (ViewModelBase)ViewModelLocator.Login; } }
         public ViewModelBase BookingVM { get { return (ViewModelBase)ViewModelLocator.BookAppointment; } }
         
 
@@ -112,11 +113,15 @@ namespace Appointment_Mgr.ViewModel
         // classes containing any of the values below
         private void ChangeView(string value) 
         {
+            if (value == "LoginView") 
+            {
+                CurrentViewModel = LoginVM;
+            }
             if (value == "HomeView")
             {
                 // RE-ESTABLISH LISTENER FOR BOOK APPOINTMENT
 
-                Messenger.Reset(); //RESETS MESSENGER SETTINGS --> FIXES BUG
+                //Messenger.Reset(); //RESETS MESSENGER SETTINGS --> FIXES BUG
 
                 //Re-add the Messengers defined in the constructor which have been cleared
                 Messenger.Default.Register<StaffUser>
@@ -124,7 +129,7 @@ namespace Appointment_Mgr.ViewModel
                     this,
                     (action) => ReceiveLoginMessage(action)
                 );
-                MessengerInstance.Register<string>(this, ChangeView);
+                Messenger.Default.Register<string>(this, ChangeView);
 
                 CurrentViewModel = HomeVM;
                 CurrentToolbarViewModel = HomeToolbarVM;
