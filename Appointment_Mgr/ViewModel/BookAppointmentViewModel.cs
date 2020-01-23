@@ -76,7 +76,9 @@ namespace Appointment_Mgr.ViewModel
             if (!p.RecordExists())
             {
                 Alert("Patient Not Found", "Patient record could not be found. Please speak to a receptionist to register as a patient with the GP");
+                return false;
             }
+            
 
             return false;
         }

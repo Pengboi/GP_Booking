@@ -148,7 +148,7 @@
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,420,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Date of Birth: *"/>
             <DatePicker Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" Height="30" Margin="35,0,0,210"
-                        Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}"  >
+                        Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}">
                 <DatePicker.CalendarStyle>
                     <Style TargetType="Calendar" BasedOn="{StaticResource {x:Type Calendar}}">
                         <Setter Property="helper:CalendarYearView.DisplayMode" Value="Year" />

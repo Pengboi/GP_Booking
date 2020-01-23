@@ -74,6 +74,7 @@ namespace Appointment_Mgr.ViewModel
         }
 
         public RelayCommand SignInClick { private set; get; }
+        public RelayCommand Close { private set; get;}
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -92,6 +93,7 @@ namespace Appointment_Mgr.ViewModel
                 ButtonText = _buttonText;
             }
             SignInClick = new RelayCommand(SignInValidation);
+            Close = new RelayCommand(GoToHomeView);
         }
 
 
@@ -139,6 +141,11 @@ namespace Appointment_Mgr.ViewModel
                 Alert("User Not Found", "The account could not be found. Please check your username & try again. If issues" +
                     " persist, please contact the IT administrator or speak to a member of HR.");
             }
+        }
+
+        public void GoToHomeView() 
+        {
+            MessengerInstance.Send<string>("HomeView");
         }
     }
 }

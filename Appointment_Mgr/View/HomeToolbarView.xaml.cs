@@ -25,7 +25,6 @@ namespace Appointment_Mgr.View
         public HomeToolbarView()
         {
             InitializeComponent();
-            
         }
         
     }
