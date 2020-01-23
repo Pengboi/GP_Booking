@@ -122,6 +122,7 @@
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistHomeViewModel.cs" />
+    <Compile Include="ViewModel\ReservationAppointmentViewModel.cs" />
     <Compile Include="View\BookAppointmentView.xaml.cs">
       <DependentUpon>BookAppointmentView.xaml</DependentUpon>
     </Compile>
@@ -134,6 +135,9 @@
     </Compile>
     <Compile Include="View\ReceptionistToolbarView.xaml.cs">
       <DependentUpon>ReceptionistToolbarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ReservationAppointmentView.xaml.cs">
+      <DependentUpon>ReservationAppointmentView.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialog\Alert\AlertBoxView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +201,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\ReceptionistToolbarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ReservationAppointmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

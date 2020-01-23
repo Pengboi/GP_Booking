@@ -23,13 +23,20 @@ namespace Appointment_Mgr.Model
             connection.Open();
             return connection;
         }
+
         
         //email for contact --> should not be used to identify Patient.
         public PatientUser(string firstname, string middlename, string lastname,
-                           string dob)
+                           DateTime dob)
         {
-            this._firstname = firstname;    this._middlename = middlename; this._lastname = lastname;
-            this._DOB = dob;
+            this._firstname = firstname.ToLower();  this._middlename = string.IsNullOrWhiteSpace(middlename) ? middlename : middlename.ToLower(); this._lastname = lastname.ToLower();
+            this._DOB = dob.ToString("dd/MM/yyyy");
+            Console.WriteLine(_DOB);
+        }
+
+        public string GetName() 
+        {
+            return this._firstname;
         }
 
         public bool RecordExists()

@@ -56,7 +56,8 @@ namespace Appointment_Mgr.ViewModel
             SimpleIoc.Default.Register<ReceptionistHomeViewModel>();
             SimpleIoc.Default.Register<ReceptionistToolbarViewModel>();
 
-            SimpleIoc.Default.Register<BookAppointmentViewModel>();    
+            SimpleIoc.Default.Register<BookAppointmentViewModel>();
+            SimpleIoc.Default.Register<ReservationAppointmentViewModel>();
 
         }
 
@@ -95,6 +96,11 @@ namespace Appointment_Mgr.ViewModel
             get { return ServiceLocator.Current.GetInstance<BookAppointmentViewModel>(); }
         }
 
+        public static ReservationAppointmentViewModel ReservationAppointment 
+        {
+            get { return ServiceLocator.Current.GetInstance<ReservationAppointmentViewModel>(); }
+        }
+
 
         public static void Cleanup()
         {
@@ -110,6 +116,7 @@ namespace Appointment_Mgr.ViewModel
             SimpleIoc.Default.Register<ReceptionistToolbarViewModel>();
 
             SimpleIoc.Default.Register<BookAppointmentViewModel>();
+            SimpleIoc.Default.Register<ReservationAppointmentViewModel>();
         }
     }
 }

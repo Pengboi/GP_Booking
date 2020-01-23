@@ -119,10 +119,6 @@ namespace Appointment_Mgr.ViewModel
             }
             if (value == "HomeView")
             {
-                // RE-ESTABLISH LISTENER FOR BOOK APPOINTMENT
-
-                //Messenger.Reset(); //RESETS MESSENGER SETTINGS --> FIXES BUG
-
                 //Re-add the Messengers defined in the constructor which have been cleared
                 Messenger.Default.Register<StaffUser>
                 (

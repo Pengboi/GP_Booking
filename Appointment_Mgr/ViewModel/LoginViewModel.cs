@@ -36,6 +36,9 @@ namespace Appointment_Mgr.ViewModel
         public ICommand ErrorCommand { get; private set; }
         public ICommand OtpCommand { get; private set; }
 
+        public RelayCommand SignInClick { private set; get; }
+        public RelayCommand CloseClick { private set; get; }
+
         private string Otp()
         {
             var dialog = new Dialog.OTP.OTPBoxViewModel("", "Input your OTP code below:");
@@ -73,7 +76,7 @@ namespace Appointment_Mgr.ViewModel
             }
         }
 
-        public RelayCommand SignInClick { private set; get; }
+        
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -92,6 +95,7 @@ namespace Appointment_Mgr.ViewModel
                 ButtonText = _buttonText;
             }
             SignInClick = new RelayCommand(SignInValidation);
+            CloseClick = new RelayCommand(CloseView);
         }
 
 
@@ -121,8 +125,7 @@ namespace Appointment_Mgr.ViewModel
                     {
                         //Returns user signed in to MainViewModel
                         Messenger.Default.Send<StaffUser>(new StaffUser(staffUser.getUsername(), ""));
-                        //Closes LoginView window
-                        Messenger.Default.Send<NotificationMessage>(new NotificationMessage(""));
+                        
                     }
                     else 
                     {
@@ -139,6 +142,13 @@ namespace Appointment_Mgr.ViewModel
                 Alert("User Not Found", "The account could not be found. Please check your username & try again. If issues" +
                     " persist, please contact the IT administrator or speak to a member of HR.");
             }
+        }
+
+        public void CloseView() 
+        {
+            // Closes Login View
+            // FROM: LoginViewModel TO: MainViewModel
+            Messenger.Default.Send<string>("HomeView");
         }
     }
 }

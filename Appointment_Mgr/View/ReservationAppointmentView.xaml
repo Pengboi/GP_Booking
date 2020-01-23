@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Appointment_Mgr.View.ReservationAppointmentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Appointment_Mgr.View"
+             mc:Ignorable="d" 
+             Background="#ffffff"
+             d:DesignHeight="610" d:DesignWidth="673">
+    <Grid>
+        <Rectangle  HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Rectangle.Effect>
+            <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
+                                  ShadowDepth="3" Opacity="0.8"/>
+        </Rectangle.Effect>
+        <Rectangle.Fill>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#fdfbfb" Offset="0.35"/>
+                <GradientStop Color="#EBEDEE" Offset="1"/>
+            </LinearGradientBrush>
+        </Rectangle.Fill>
+        </Rectangle>
+        <Grid Margin="0,10,0,0" Height="300" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="10" />
+            </Grid.ColumnDefinitions>
+            
+            <Rectangle  HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Rectangle.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
+                                  ShadowDepth="3" Opacity="0.8"/>
+                </Rectangle.Effect>
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="#f5f6fa" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <Label Grid.Column="1"
+                   Content="Appointment Preferences" FontSize="20" FontWeight="Bold">
+            </Label>
+
+            <Label Grid.Column="1" Margin="0,25,0,0"
+                   Content="(Optional)" FontSize="15" FontWeight="DemiBold">
+            </Label>
+            
+        </Grid>
+        
+    </Grid>
+</UserControl>

@@ -61,7 +61,7 @@
         <Grid Width="1600" Height="700">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width= "*" />
-                <ColumnDefinition Width= "*" />
+                <ColumnDefinition Width= "300" />
                 <ColumnDefinition Width= "*" />
             </Grid.ColumnDefinitions>
             <!-- Black lines for each column -->
@@ -82,7 +82,7 @@
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
                    FontSize="30" FontWeight="DemiBold" Content="Patient Details" />
             
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,80,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="90,80,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="First Name:"/>
             <Rectangle Grid.Column="0" Width="470" Height="60" VerticalAlignment="Top" Margin="0,120,0,0"
                        Fill="#f5f6fa" RadiusX="10" RadiusY="10">
@@ -91,7 +91,7 @@
                                       ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="50,130,0,0" Width="420"
+            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100,130,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*" 
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13" >
                 <TextBox.Text>
@@ -103,7 +103,7 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,190,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="90,190,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Middle Name:"/>
             <Rectangle Grid.Column="0" Width="470" Height="60" VerticalAlignment="Top" Margin="0,230,0,0"
                        Fill="#f5f6fa" RadiusX="10" RadiusY="10">
@@ -112,7 +112,7 @@
                                       ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="50,240,0,0" Width="420"
+            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100,240,0,0" Width="420"
                      FontSize="20"
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
                 <TextBox.Text>
@@ -124,7 +124,7 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,300,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="90,300,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Last Name:"/>
             <Rectangle Grid.Column="0" Width="470" Height="70" VerticalAlignment="Top" Margin="0,340,0,0"
                        Fill="#f5f6fa" RadiusX="10" RadiusY="10">
@@ -133,7 +133,7 @@
                                       ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,50,0,0" Width="420"
+            <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,50,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
                 <TextBox.Text>
@@ -145,9 +145,9 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,420,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="90,420,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Date of Birth: *"/>
-            <DatePicker Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" Height="30" Margin="35,0,0,210"
+            <DatePicker Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" Height="30" Margin="100,0,0,210"
                         Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}"  >
                 <DatePicker.CalendarStyle>
                     <Style TargetType="Calendar" BasedOn="{StaticResource {x:Type Calendar}}">
@@ -156,7 +156,7 @@
                 </DatePicker.CalendarStyle>
             </DatePicker>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,495,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="90,495,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="E-mail Address:"
                    materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13"/>
             <Rectangle Grid.Column="0" Width="470" Height="70" VerticalAlignment="Top" Margin="0,535,0,0"
@@ -166,7 +166,7 @@
                                       ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <TextBox Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="50,50,0,115" Width="420"
+            <TextBox Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,50,0,115" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
                 <TextBox.Text>
@@ -186,13 +186,13 @@
                     Content="Same Day Walk-in" FontSize="20" FontWeight="Bold" Command="{Binding WalkInCommand}"></Button>
 
             <Button Grid.Column="1" VerticalAlignment="Center" Width="250" Height="100" Margin="0,100,0,0"
-                    Content="Reservation" FontSize="20" FontWeight="Bold" Command="{Binding BookAppointmentCommand}"></Button>
+                    Content="Reservation" FontSize="20" FontWeight="Bold" Command="{Binding ReservationCommand}"></Button>
 
             <!-- Column 3 Elements -->
             <Label Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
                    FontSize="30" FontWeight="DemiBold" Content="Confirm Appointment" />
             <Grid Grid.Column="2" Margin="30,60,30,30">
-                <ContentControl></ContentControl>
+                <ContentControl Content="{Binding AppointmentTypeView}"/>
             </Grid>
 
         </Grid>
