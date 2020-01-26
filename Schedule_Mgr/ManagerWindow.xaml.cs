@@ -56,7 +56,7 @@ namespace Schedule_Mgr
             calendar.DisplayDateEnd = DateTime.Today.AddDays(14);
 
             DateTime selectedDay = DateTime.Today;
-            DateTime maxDay = DateTime.Today.AddDays(14);
+            DateTime maxDay = DateTime.Today.AddDays(15);
 
             while (selectedDay != maxDay)
             {
