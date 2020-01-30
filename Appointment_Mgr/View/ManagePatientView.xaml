@@ -44,7 +44,8 @@
                                       ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <ContentControl Width="1300" Height="820" VerticalAlignment="Center"></ContentControl>
+            <ContentControl Width="1300" Height="820" VerticalAlignment="Center"
+                            Content="{Binding CurrentViewModel}" ></ContentControl>
 
         </Grid>
     </Grid>

@@ -11,6 +11,7 @@
              DataContext="{Binding AddPatient, Source={StaticResource Locator}}"
              d:DesignHeight="820" d:DesignWidth="1300">
     <UserControl.Resources>
+        <helper:GenderConverter x:Key="genderToStringKey" />
         <!-- Placeholder style template for Textboxes -->
         <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="Template">
@@ -79,7 +80,7 @@
             </Rectangle.Effect>
         </Rectangle>
         <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Margin="30,83,30,0" Width="600"
+                 Margin="30,83,30,0" Width="490"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Required*"
                  materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13" >
@@ -104,12 +105,12 @@
             </Rectangle.Effect>
         </Rectangle>
         <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Margin="30,213,30,0" Width="600"
+                 Margin="30,213,30,0" Width="490"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Required*"
                  materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13" >
             <TextBox.Text>
-                <Binding Path="Firstname" UpdateSourceTrigger="PropertyChanged" >
+                <Binding Path="Lastname" UpdateSourceTrigger="PropertyChanged" >
                     <Binding.ValidationRules>
                         <helper:TextOnlyRule />
                     </Binding.ValidationRules>
@@ -129,12 +130,12 @@
             </Rectangle.Effect>
         </Rectangle>
         <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Margin="30,355,30,0" Width="600"
+                 Margin="30,355,30,0" Width="490"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Required*"
                  materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13" >
             <TextBox.Text>
-                <Binding Path="Firstname" UpdateSourceTrigger="PropertyChanged" >
+                <Binding Path="AddressNo" UpdateSourceTrigger="PropertyChanged" >
                     <Binding.ValidationRules>
                         <helper:NumberOnlyRule />
                     </Binding.ValidationRules>
@@ -157,14 +158,14 @@
             </Rectangle.Effect>
         </Rectangle>
         <TextBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Margin="30,83,30,0" Width="600"
+                 Margin="30,83,30,0" Width="490"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Optional"
                  materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13" >
             <TextBox.Text>
-                <Binding Path="Firstname" UpdateSourceTrigger="PropertyChanged" >
+                <Binding Path="Middlename" UpdateSourceTrigger="PropertyChanged" >
                     <Binding.ValidationRules>
-                        <helper:TextOnlyRule />
+                        <helper:OptionalFieldTextOnlyRule />
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -172,22 +173,24 @@
 
         <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
                Margin="20,160,0,0"
-               Content="Gender:" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
+               Content="Gender: *" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
         <StackPanel Orientation="Horizontal"
                     Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
                     Margin="20,200,0,0" Width="200" Height="100">
             <RadioButton Margin="0,20,0,50" VerticalContentAlignment="Center"
-                         Content="Male" FontSize="25" FontWeight="Light" Foreground="#1e272e">
+                         Content="Male" FontSize="25" FontWeight="Light" Foreground="#1e272e"
+                         IsChecked="{Binding Gender, Converter={StaticResource ResourceKey=genderToStringKey}, ConverterParameter=Male}" >
             </RadioButton>
             <RadioButton Margin="15,20,0,50" VerticalContentAlignment="Center"
-                         Content="Female" FontSize="25" FontWeight="Light" Foreground="#1e272e">
+                         Content="Female" FontSize="25" FontWeight="Light" Foreground="#1e272e"
+                         IsChecked="{Binding Gender, Converter={StaticResource ResourceKey=genderToStringKey}, ConverterParameter=Female}" >
             </RadioButton>
             
         </StackPanel>
 
         <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top"
-               Margin="0,160,80,0"
-               Content="Date of Birth:" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
+               Margin="0,160,55,0"
+               Content="Date of Birth: *" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
 
         <DatePicker Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" 
                     Width="180" Height="35" Margin="0,220,80,10"
@@ -210,15 +213,17 @@
                                       ShadowDepth="3" Opacity="0.8"/>
             </Rectangle.Effect>
         </Rectangle>
+        <!-- ADD VALIDATION RULE IN HELPER -->
         <TextBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
                  Margin="35,355,30,0" Width="180"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Required*"
-                 materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13" >
+                 materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13"
+                 MaxLength="7" >
             <TextBox.Text>
-                <Binding Path="Firstname" UpdateSourceTrigger="PropertyChanged" >
+                <Binding Path="Postcode" UpdateSourceTrigger="PropertyChanged" >
                     <Binding.ValidationRules>
-                        <helper:TextOnlyRule />
+                        <helper:PostcodeRule />
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -227,7 +232,8 @@
 
         <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                 Margin="0,0,0,30"  Width="250" Height="90"
-                Content="Create Record" FontSize="30" FontWeight="DemiBold">
+                Content="Create Record" FontSize="30" FontWeight="DemiBold"
+                Command="{Binding CreateRecordCommand}">
         </Button>
 
     </Grid>
