@@ -65,7 +65,9 @@ namespace Appointment_Mgr.ViewModel
         public ViewModelBase ReceptionistToolbarVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistToolbar; } }
         public ViewModelBase ReceptionistVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistHome; } }
         public ViewModelBase LoginVM { get { return (ViewModelBase)ViewModelLocator.Login; } }
+        
         public ViewModelBase BookingVM { get { return (ViewModelBase)ViewModelLocator.BookAppointment; } }
+        public ViewModelBase ManagePatientVM { get { return (ViewModelBase)ViewModelLocator.ManagePatient; } }
         
 
         /// <summary>
@@ -101,11 +103,12 @@ namespace Appointment_Mgr.ViewModel
                 ViewModelLocator.Cleanup();
                 CurrentToolbarViewModel = ReceptionistToolbarVM;
                 CurrentViewModel = ReceptionistVM;
-                MessengerInstance.Send<string>(firstname);
+                MessengerInstance.Send<NotificationMessage>(new NotificationMessage(firstname));  // FROM: MainVM TO: ReceptionistToolbarVM ~ sends logged in users first name.
             }
             else if (userAccount.isDoctor())
             {
                 //open Doctor toolbar here
+                Console.WriteLine("I think you are a doctor");
             }
         }
 
@@ -113,6 +116,8 @@ namespace Appointment_Mgr.ViewModel
         // classes containing any of the values below
         private void ChangeView(string value) 
         {
+            ViewModelLocator.Cleanup();
+
             if (value == "LoginView") 
             {
                 CurrentViewModel = LoginVM;
@@ -134,6 +139,12 @@ namespace Appointment_Mgr.ViewModel
 
             if (value == "BookingView")
                 CurrentViewModel = BookingVM;
+
+            if (value == "ReceptionistHomeView")
+                CurrentViewModel = ReceptionistVM;
+
+            if (value == "ManagePatientView")
+                CurrentViewModel = ManagePatientVM;
         }
 
         

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Appointment_Mgr.ViewModel
@@ -25,8 +26,28 @@ namespace Appointment_Mgr.ViewModel
     /// </summary>
     public class ReceptionistToolbarViewModel : ViewModelBase
     {
+        private string _homeButtonTextColour, _managePatientButtonTextColour;
         private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
         private DispatcherTimer timer;
+
+        public string HomeButtonTextColour 
+        {
+            get { return this._homeButtonTextColour; }
+            set 
+            {
+                this._homeButtonTextColour = value;
+                RaisePropertyChanged("HomeButtonTextColour");
+            }
+        }
+        public string ManagePatientButtonTextColour
+        {
+            get { return this._managePatientButtonTextColour; }
+            set
+            {
+                this._managePatientButtonTextColour = value;
+                RaisePropertyChanged("ManagePatientButtonTextColour");
+            }
+        }
 
         public string LiveClock
         {
@@ -53,6 +74,9 @@ namespace Appointment_Mgr.ViewModel
 
         public string UserLoggedIn { get; set; }
 
+        public RelayCommand BookingCheckIn { private set; get; }
+        public RelayCommand ManagePatient { private set; get; }
+
         public RelayCommand ExecuteLogout { private set; get; }
 
 
@@ -62,6 +86,7 @@ namespace Appointment_Mgr.ViewModel
             {
                 LiveClock = "15:45";
                 LiveDate = "05/09/16";
+                UserLoggedIn = "Welcome, Lucy.";
             }
             else
             {
@@ -75,11 +100,29 @@ namespace Appointment_Mgr.ViewModel
                 timer.Start();
             }
 
-            Messenger.Default.Register<string>(this, name => { UserLoggedIn = "Welcome, " + name + "."; });
+            Messenger.Default.Register<NotificationMessage>(this, name => { UserLoggedIn = "Welcome, " + name.Notification + "."; });
+
+            HomeButtonTextColour = "#40739e"; // Light blue hex code for selected navigation VM element
+            ManagePatientButtonTextColour = "#2f3640"; // Dark Black for non-selected navigation VM element
+            BookingCheckIn = new RelayCommand(SetBookingCheckInView);
+            ManagePatient = new RelayCommand(SetManagePatientView);
             ExecuteLogout = new RelayCommand(ExecuteLogoutCommand);
 
         }
 
+        public void SetBookingCheckInView() 
+        {
+            HomeButtonTextColour = "#40739e";
+            ManagePatientButtonTextColour = "#2f3640";
+            Messenger.Default.Send<string>("ReceptionistHomeView");
+        }
+
+        public void SetManagePatientView() 
+        {
+            HomeButtonTextColour = "#2f3640";
+            ManagePatientButtonTextColour = "#40739e";
+            Messenger.Default.Send<string>("ManagePatientView");
+        }
 
         public void ExecuteLogoutCommand() 
         {

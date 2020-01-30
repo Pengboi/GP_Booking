@@ -31,6 +31,7 @@ namespace Appointment_Mgr.Model
         {
             this._username = username;
             this._password = password;
+
         }
 
         public bool userExists() 
@@ -103,8 +104,20 @@ namespace Appointment_Mgr.Model
             return this._firstname;
         }
 
-        // TO BE COMPLETED!
-        //public string getMiddlename() { }
+        public string getMiddlename() 
+        {
+            string middlename = "";
+
+            SQLiteConnection conn = startConnection();
+            string cmdString = $"SELECT Middlename FROM Accounts WHERE Username = @uname";
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.Prepare();
+            cmd.Parameters.Add("@uname", DbType.String).Value = this._username;
+            if (string.IsNullOrWhiteSpace(cmd.ExecuteScalar().ToString()))
+                return "";
+
+            return cmd.ExecuteScalar().ToString();
+        }
 
         public string getLastname() 
         {
@@ -113,15 +126,27 @@ namespace Appointment_Mgr.Model
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
             cmd.Parameters.Add("@uname", DbType.String).Value = this._username;
-            this._lastname = cmd.ExecuteScalar().ToString();
+            string lastname = cmd.ExecuteScalar().ToString();
             conn.Close();
-            return this._lastname;
+            return lastname;
         }
 
         public string getFullname() 
         {
             //TO BE CHANGED TO IMPLEMENT MIDDLENAME
             return getSuffix() + " " + getFirstname() + " " + getLastname();
+        }
+
+        public string getGender() 
+        {
+            SQLiteConnection conn = startConnection();
+            string cmdString = $"SELECT Gender FROM Accounts WHERE Username = @uname";
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.Prepare();
+            cmd.Parameters.Add("@uname", DbType.String).Value = this._username;
+            string gender = cmd.ExecuteScalar().ToString();
+            conn.Close();
+            return gender;
         }
 
         public int getAccountType()
@@ -178,6 +203,25 @@ namespace Appointment_Mgr.Model
                 return true;
             else
                 return false;
+        }
+
+        public List<StaffUser> GetAllDoctorNames() 
+        {
+            List<StaffUser> doctorList = new List<StaffUser>();
+
+            SQLiteConnection conn = startConnection();
+            string cmdString = $"SELECT Username FROM Accounts WHERE Account_Type = @type";
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.Prepare();
+            cmd.Parameters.Add("@tpye", DbType.Int32).Value = 2;
+
+            SQLiteDataReader reader = cmd.ExecuteReader();
+            while (reader.Read()) 
+            {
+                doctorList.Add(new StaffUser(reader["Username"].ToString(), ""));
+            }
+
+            return doctorList;
         }
         
     }

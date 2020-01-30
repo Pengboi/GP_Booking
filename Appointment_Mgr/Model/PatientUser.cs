@@ -31,7 +31,7 @@ namespace Appointment_Mgr.Model
         {
             this._firstname = firstname.ToLower();  this._middlename = string.IsNullOrWhiteSpace(middlename) ? middlename : middlename.ToLower(); this._lastname = lastname.ToLower();
             this._DOB = dob.ToString("dd/MM/yyyy");
-            Console.WriteLine(_DOB);
+            Console.WriteLine("firstname: " + _firstname + " Middlename: " + _middlename + " Lastname: " + _lastname +  _DOB);
         }
 
         public string GetName() 
@@ -55,10 +55,10 @@ namespace Appointment_Mgr.Model
             cmd.Parameters.Add("@lname", DbType.String).Value = this._lastname;
             cmd.Parameters.Add("@dob", DbType.String).Value = this._DOB;
 
-            Console.WriteLine("SQL COMMAND: " + cmdString);
-            int recordsFound = Convert.ToInt32(cmd.ExecuteScalar());
 
-            if (recordsFound == 1)
+            int recordFound = Convert.ToInt32(cmd.ExecuteScalar());
+
+            if (recordFound == 1)
             {
                 conn.Close();
                 return true;

@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="Dialog\OTP\OTPBoxViewModel.cs" />
     <Compile Include="Helper\CalendarYearView.cs" />
+    <Compile Include="Helper\NumberOnlyRule.cs" />
     <Compile Include="Helper\OptionalFieldTextOnlyRule.cs" />
     <Compile Include="Helper\TabOnInputBehaviour.cs" />
     <Compile Include="Helper\ValidEmailRule.cs" />
@@ -116,13 +117,21 @@
     <Compile Include="Model\PatientUser.cs" />
     <Compile Include="Model\StaffUser.cs" />
     <Compile Include="Dialog\DialogBoxViewModel.cs" />
+    <Compile Include="ViewModel\AddPatientViewModel.cs" />
     <Compile Include="ViewModel\BookAppointmentViewModel.cs" />
     <Compile Include="ViewModel\HomeToolbarViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ManagePatientViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistHomeViewModel.cs" />
     <Compile Include="ViewModel\ReservationAppointmentViewModel.cs" />
+    <Compile Include="View\AddPatientView.xaml.cs">
+      <DependentUpon>AddPatientView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ManagePatientView.xaml.cs">
+      <DependentUpon>ManagePatientView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\BookAppointmentView.xaml.cs">
       <DependentUpon>BookAppointmentView.xaml</DependentUpon>
     </Compile>
@@ -144,6 +153,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialog\OTP\OTPBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddPatientView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ManagePatientView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

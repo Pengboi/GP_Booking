@@ -24,5 +24,25 @@ namespace Appointment_Mgr.View
         {
             InitializeComponent();
         }
+
+        //Violates MVVM Single Respondsibility
+
+        private void FormatCalendar(object sender, RoutedEventArgs e)
+        {
+            Calendar.DisplayDateStart = DateTime.Today.AddDays(1);
+            Calendar.DisplayDateEnd = DateTime.Today.AddDays(14);
+
+            DateTime selectedDay = DateTime.Today.AddDays(1);
+            DateTime maxDay = DateTime.Today.AddDays(15);
+
+            while (selectedDay != maxDay)
+            {
+                if ((selectedDay.DayOfWeek == DayOfWeek.Saturday) || (selectedDay.DayOfWeek == DayOfWeek.Sunday))
+                {
+                    Calendar.BlackoutDates.Add(new CalendarDateRange(selectedDay));
+                }
+                selectedDay = selectedDay.AddDays(1);
+            }
+        }
     }
 }

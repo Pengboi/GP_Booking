@@ -13,6 +13,8 @@ namespace Appointment_Mgr.ViewModel
 {
     public class BookAppointmentViewModel : MainViewModel
     {
+        private string _bookingVisible = "Hidden";
+
         public ViewModelBase _appointmentTypeViewModel;
         public ViewModelBase ReservationView { get { return (ViewModelBase)ViewModelLocator.ReservationAppointment; } }
 
@@ -24,8 +26,18 @@ namespace Appointment_Mgr.ViewModel
         public string Lastname { get; set; }
         public DateTime? DOB { get; set; }
         public string Email { get; set; }
-        private Dialog.IDialogBoxService _dialogService;
 
+        public string BookingVisible
+        {
+            get { return _bookingVisible; }
+            set
+            {
+                _bookingVisible = value;
+                RaisePropertyChanged("BookingVisible");
+            }
+        }
+
+        private Dialog.IDialogBoxService _dialogService;
         public ICommand AlertCommand { get; private set; }
 
         
@@ -54,6 +66,9 @@ namespace Appointment_Mgr.ViewModel
 
             WalkInCommand = new RelayCommand(ShowWalkInView);
             ReservationCommand = new RelayCommand(ShowReservationView);
+
+            BookingVisible = "Hidden";
+            AppointmentTypeView = ReservationView;
         }
 
         private bool RequiredNotComplete()
@@ -88,9 +103,13 @@ namespace Appointment_Mgr.ViewModel
                 return;
 
             PatientUser patient = new PatientUser(Firstname, Middlename, Lastname, (DateTime)DOB);
-            if (!VerifyPatientDetails(patient))
+            if (!VerifyPatientDetails(patient)) 
+            {
                 return;
-            AppointmentTypeView = ReservationView;
+            }
+            
+            // Shows the booking view after patient details & desired reservation type verified
+            BookingVisible = "Visible";
         }
         public void ShowWalkInView() 
         {
@@ -101,6 +120,8 @@ namespace Appointment_Mgr.ViewModel
             if (!VerifyPatientDetails(patient))
                 return;
 
+            // Change VM of AppointmentTypeView
+            BookingVisible = "Visible";
         }
 
        

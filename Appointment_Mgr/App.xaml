@@ -46,6 +46,13 @@
                     <DataTemplate DataType="{x:Type vm:LoginViewModel}">
                         <views:LoginView/>
                     </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type vm:ManagePatientViewModel}" >
+                        <views:ManagePatientView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:AddPatientViewModel}" >
+                        <views:AddPatientView />
+                    </DataTemplate>
                     
                     <!-- Dialog box View + VM DataTemplates -->
                     <DataTemplate DataType="{x:Type dialog:DialogBoxViewModel}">

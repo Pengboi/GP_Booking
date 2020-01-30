@@ -19,3 +19,9 @@ Views =	666 OVO XO UI/UX Xperia Xperience XP
 ViewModels = UI LOGIC
 Models = Backend / Business Logic
 
+
+
+CHANGES:
+
+Anywhere where you want to ask for gender use RADIO buttons
+

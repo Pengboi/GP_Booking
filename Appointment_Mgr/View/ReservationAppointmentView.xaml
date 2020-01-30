@@ -5,47 +5,99 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Appointment_Mgr.View"
              mc:Ignorable="d" 
-             Background="#ffffff"
-             d:DesignHeight="610" d:DesignWidth="673">
-    <Grid>
-        <Rectangle  HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Rectangle.Effect>
-            <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
-                                  ShadowDepth="3" Opacity="0.8"/>
-        </Rectangle.Effect>
-        <Rectangle.Fill>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#fdfbfb" Offset="0.35"/>
-                <GradientStop Color="#EBEDEE" Offset="1"/>
-            </LinearGradientBrush>
-        </Rectangle.Fill>
-        </Rectangle>
-        <Grid Margin="0,10,0,0" Height="300" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="10" />
-            </Grid.ColumnDefinitions>
-            
-            <Rectangle  HorizontalAlignment="Center" VerticalAlignment="Center">
+             Background="Wheat"
+             d:DesignHeight="1300" d:DesignWidth="900">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid ScrollViewer.CanContentScroll="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150" />
+                <RowDefinition Height="500" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Margin="0,10,0,0" Height="150" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="1"
+                       Content="Appointment Preferences" 
+                       Foreground="Black" FontSize="25" FontWeight="Bold">
+                </Label>
+
+                <Label Grid.Column="1" Margin="0,30,0,0"
+                       Content="(Optional)" FontSize="20" FontWeight="DemiBold">
+                </Label>
+
+                <StackPanel Grid.Column="1" Margin="30,70,0,0" Width="200"
+                            Orientation="Vertical" HorizontalAlignment="Left">
+                    <Label FontSize="20" FontWeight="DemiBold"
+                           Content="Appointment Doctor"></Label>
+                    <ComboBox FontSize="15">
+                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="0,70,30,0" Width="200"
+                            Orientation="Vertical" HorizontalAlignment="Right">
+                    <Label FontSize="20" FontWeight="DemiBold"
+                           Content="Doctor Gender"></Label>
+                    <ComboBox FontSize="15">
+                        <ComboBoxItem IsSelected="True">None</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
+
+            <Rectangle Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,40,0,0"
+                       Width="500" Height="460"
+                       Fill="#f5f6fa" RadiusX="30" RadiusY="30">
                 <Rectangle.Effect>
-                    <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
-                                  ShadowDepth="3" Opacity="0.8"/>
+                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
+                                      ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="#f5f6fa" />
-                </Rectangle.Fill>
             </Rectangle>
+            <StackPanel Orientation="Vertical" 
+                        Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,40,0,0"
+                        Width="500" Height="460">
+                <Label HorizontalAlignment="Center"
+                       Foreground="Black" FontWeight="Bold" FontSize="30" Margin="0,5"
+                       Content="Select a date."></Label>
+                <Label HorizontalAlignment="Center"
+                       FontSize="15"
+                       Content="Please select the desired date for your appointment.">
+                </Label>
 
-            <Label Grid.Column="1"
-                   Content="Appointment Preferences" FontSize="20" FontWeight="Bold">
-            </Label>
+                <Calendar x:Name="Calendar" HorizontalAlignment="Center" Margin="0,0,0,20"
+                          FirstDayOfWeek="Monday" Loaded="FormatCalendar"
+                          IsTodayHighlighted="False">
 
-            <Label Grid.Column="1" Margin="0,25,0,0"
-                   Content="(Optional)" FontSize="15" FontWeight="DemiBold">
-            </Label>
-            
+                </Calendar>
+            </StackPanel>
+
+            <Rectangle Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,0,50"
+                       Width="500" Height="430"
+                       Fill="#f5f6fa" RadiusX="30" RadiusY="30">
+                <Rectangle.Effect>
+                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
+                                      ShadowDepth="3" Opacity="0.8"/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <StackPanel Orientation="Vertical"
+                        Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,0,50"
+                        Width="500" Height="400">
+                <Label HorizontalAlignment="Center"
+                       Foreground="Black" FontWeight="Bold" FontSize="30" Margin="0,5"
+                       Content="Select a time.">
+                    
+                </Label>
+                <Label HorizontalAlignment="Center"
+                       FontSize="15"
+                       Content="Please select the desired avaliable timeslot for your appointment.">
+                    
+                </Label>
+
+            </StackPanel>
         </Grid>
-        
-    </Grid>
+    </ScrollViewer>
 </UserControl>

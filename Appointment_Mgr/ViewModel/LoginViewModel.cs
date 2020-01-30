@@ -124,6 +124,7 @@ namespace Appointment_Mgr.ViewModel
                     if (totpCode == inputtedCode)
                     {
                         //Returns user signed in to MainViewModel
+                        Console.WriteLine("Verified user");
                         Messenger.Default.Send<StaffUser>(new StaffUser(staffUser.getUsername(), ""));
                         
                     }
