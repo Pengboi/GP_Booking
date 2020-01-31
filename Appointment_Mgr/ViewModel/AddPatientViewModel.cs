@@ -38,7 +38,7 @@ namespace Appointment_Mgr.ViewModel
         { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
 
         
-        public IDialogBoxService _dialogService;
+        private IDialogBoxService _dialogService;
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
         public ICommand ConfirmationCommand { get; private set; }
@@ -62,6 +62,8 @@ namespace Appointment_Mgr.ViewModel
 
         public AddPatientViewModel() 
         {
+            _dialogService = new DialogBoxService();
+
             if (IsInDesignMode)
             {
                 Firstname = "Alfred";
@@ -87,45 +89,56 @@ namespace Appointment_Mgr.ViewModel
             DateTime dateOfBirth = (DateTime)DOB;
             SQLiteConnection connection = startConnection("Patients");
 
-            SQLiteCommand cmd = new SQLiteCommand(@"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @firstname AND Middlename = @middlename" +
-                            " AND Lastname = @lastname AND DOB = @dob AND Gender = @gender AND ST_Number = @streetNumber AND Postcode = @postcode", connection); 
-            cmd.Prepare();
-            cmd.Parameters.Add("@firstname", DbType.String).Value = Firstname;
-            if (string.IsNullOrEmpty(Middlename))
-                cmd.Parameters.Add("@middlename", DbType.String).Value = null;
+            string cmdString = "";
+            if (string.IsNullOrWhiteSpace(Middlename))
+                cmdString = @"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @firstname" +
+                            " AND Lastname = @lastname AND DOB = @dob AND Gender = @gender AND ST_Number = @streetNumber AND Postcode = @postcode";
             else
-                cmd.Parameters.Add("@middlename", DbType.String).Value = Middlename;
-            cmd.Parameters.Add("@lastname", DbType.String).Value = Lastname;
+                cmdString = @"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @firstname AND Middlename = @middlename " +
+                            " AND Lastname = @lastname AND DOB = @dob AND Gender = @gender AND ST_Number = @streetNumber AND Postcode = @postcode";
+
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, connection); 
+            cmd.Prepare();
+            cmd.Parameters.Add("@firstname", DbType.String).Value = Firstname.ToLower();
+            if (!string.IsNullOrWhiteSpace(Middlename))
+                cmd.Parameters.Add("@middlename", DbType.String).Value = Middlename.ToLower();
+            cmd.Parameters.Add("@lastname", DbType.String).Value = Lastname.ToLower();
             cmd.Parameters.Add("@dob", DbType.String).Value = dateOfBirth.ToString("dd/MM/yyyy");
             cmd.Parameters.Add("@gender", DbType.String).Value = Gender;
             cmd.Parameters.Add("@streetNumber", DbType.String).Value = AddressNo;
-            cmd.Parameters.Add("@postcode", DbType.String).Value = Postcode;
+            cmd.Parameters.Add("@postcode", DbType.String).Value = Postcode.Replace(" ", "");
 
             //  Checks if record already exists
             int recordsFound = Convert.ToInt32(cmd.ExecuteScalar());
-
-            if (recordsFound > 0)
+            if (recordsFound == 1)
             {
                 Error("Record Already Exists.", "Patient Record already exists. Please speak to the receptionist for any assistance in booking" +
                     " an appointment");
                 return;
             }
 
+
             // Record added to patient database.
-            cmd = new SQLiteCommand(@"INSERT INTO Patient_Data (Firstname, Middlename, Lastname, DOB, Gender, ST_Number, Postcode) 
-                            VALUES (@firstname, @middlename, @lastname, @dob, @gender, @streetNumber, @postcode)", connection);
-            cmd.Prepare();
-            cmd.Parameters.Add("@firstname", DbType.String).Value = Firstname;
-            if (string.IsNullOrEmpty(Middlename))
-                cmd.Parameters.Add("@middlename", DbType.String).Value = null;
+
+            if (string.IsNullOrWhiteSpace(Middlename))
+                cmdString = @"INSERT INTO Patient_Data (Firstname, Lastname, DOB, Gender, ST_Number, Postcode) 
+                            VALUES (@firstname, @lastname, @dob, @gender, @streetNumber, @postcode)";
             else
-                cmd.Parameters.Add("@middlename", DbType.String).Value = Middlename;
-            cmd.Parameters.Add("@lastname", DbType.String).Value = Lastname;
+                cmdString = @"INSERT INTO Patient_Data (Firstname, Middlename, Lastname, DOB, Gender, ST_Number, Postcode) 
+                            VALUES (@firstname, @middlename, @lastname, @dob, @gender, @streetNumber, @postcode)";
+
+            cmd = new SQLiteCommand(cmdString, connection);
+            cmd.Prepare();
+            cmd.Parameters.Add("@firstname", DbType.String).Value = Firstname.ToLower();
+            if (!string.IsNullOrEmpty(Middlename))
+                cmd.Parameters.Add("@middlename", DbType.String).Value = Middlename.ToLower();
+            cmd.Parameters.Add("@lastname", DbType.String).Value = Lastname.ToLower();
             cmd.Parameters.Add("@dob", DbType.String).Value = dateOfBirth.ToString("dd/MM/yyyy");
             cmd.Parameters.Add("@gender", DbType.String).Value = Gender;
             cmd.Parameters.Add("@streetNumber", DbType.String).Value = AddressNo;
-            cmd.Parameters.Add("@postcode", DbType.String).Value = Postcode;
+            cmd.Parameters.Add("@postcode", DbType.String).Value = Postcode.Replace(" ", "");
             cmd.ExecuteNonQuery();
+
             Confirmation("Success", "Record created. You can now proceed to create an appointment.");
             connection.Close();
         }
