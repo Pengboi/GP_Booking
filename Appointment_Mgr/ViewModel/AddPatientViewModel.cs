@@ -38,7 +38,7 @@ namespace Appointment_Mgr.ViewModel
         { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
 
         
-        private Dialog.IDialogBoxService _dialogService;
+        public IDialogBoxService _dialogService;
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
         public ICommand ConfirmationCommand { get; private set; }
@@ -51,12 +51,12 @@ namespace Appointment_Mgr.ViewModel
         }
         private void Error(string title, string message)
         {
-            var dialog = new ErrorBoxViewModel(title, message);
+            var dialog = new Dialog.Error.ErrorBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
         private void Confirmation(string title, string message)
         {
-            var dialog = new ConfirmationBoxViewModel(title, message);
+            var dialog = new Dialog.Confirmation.ConfirmationBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
 

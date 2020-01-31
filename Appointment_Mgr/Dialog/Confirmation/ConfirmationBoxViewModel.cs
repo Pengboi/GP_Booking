@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Appointment_Mgr.Dialog
+namespace Appointment_Mgr.Dialog.Confirmation
 {
     public class ConfirmationBoxViewModel : DialogBoxViewModelBase<DialogResults>
     {
