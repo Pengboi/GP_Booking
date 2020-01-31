@@ -67,9 +67,9 @@ namespace Appointment_Mgr.ViewModel
         }
         public void SetEditView() 
         {
-            AddRecordTextColour = "#2f3640"; // Light blue hex code for selected navigation VM element
-            EditRecordTextColour = "#40739e"; // Dark Black for non-selected navigation VM element
-            DeleteRecordTextColour = "#000000"; // Dark Black for non-selected navigation VM element
+            AddRecordTextColour = "#2f3640"; 
+            EditRecordTextColour = "#40739e"; 
+            DeleteRecordTextColour = "#000000"; 
             CurrentViewModel = EditPatientVM;
         }
 

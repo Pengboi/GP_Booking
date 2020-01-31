@@ -52,9 +52,9 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="50" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="50" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
@@ -74,13 +74,13 @@
         </Rectangle>
             <DataGrid Grid.Row="1" Grid.Column="1" Margin="10,10,10,10"
                       HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"
-                      GridLinesVisibility="Vertical" HeadersVisibility="All" 
+                      GridLinesVisibility="Vertical" HeadersVisibility="All" IsReadOnly="False"
                       RowBackground="#f1f2f6" AlternatingRowBackground="#718093" Foreground="Black"
-                      AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding Patients}"
-                      >
+                      AutoGenerateColumns="False" CanUserAddRows="False" 
+                      ItemsSource="{Binding Patients, Mode=TwoWay}" >
             
                 <DataGrid.Columns>
-                <DataGridTextColumn Width="70" Header="Patient No." IsReadOnly="True" Binding="{Binding Path=PatientNo, Mode=TwoWay}">
+                <DataGridTextColumn Width="Auto" Header="Patient No." IsReadOnly="True" Binding="{Binding Path=PatientNo, Mode=TwoWay}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="HorizontalContentAlignment"
@@ -89,7 +89,7 @@
                         </DataGridTextColumn.HeaderStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Width="*" Header="First Name" Binding="{Binding Path=Firstname, Mode=TwoWay}">
+                <DataGridTextColumn Width="SizeToCells" Header="First Name" Binding="{Binding Path=Firstname, Mode=TwoWay}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="HorizontalContentAlignment"
@@ -98,7 +98,7 @@
                         </DataGridTextColumn.HeaderStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Width="*" Header="Middle Name" Binding="{Binding Path=Middlename, Mode=TwoWay}">
+                <DataGridTextColumn Width="Auto" Header="Middle Name" Binding="{Binding Path=Middlename, Mode=TwoWay}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="HorizontalContentAlignment"
@@ -107,7 +107,7 @@
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Width="*" Header="Last Name" Binding="{Binding Path=Lastname, Mode=TwoWay}">
+                <DataGridTextColumn Width="SizeToCells" Header="Last Name" Binding="{Binding Path=Lastname, Mode=TwoWay}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment"
@@ -116,7 +116,41 @@
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Width="*" Header="Date of Birth" Binding="{Binding Path=DOB, Mode=TwoWay}">
+                <DataGridTemplateColumn Width="SizeToCells" Header="Date of Birth">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=DOB, StringFormat=dd/MM/yyyy}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding Path=DOB, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="SizeToCells" Header="Gender">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Gender, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedItem="{Binding Path=Gender, Mode=TwoWay}">
+                                <ComboBoxItem IsSelected="{Binding Path=IsMale}" Content="Male" />
+                                <ComboBoxItem IsSelected="{Binding Path=IsFemale}" Content="Female"/>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Gender, Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Width="SizeToCells" Header="E-mail" Binding="{Binding Path=Email, Mode=TwoWay}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment"
@@ -125,7 +159,7 @@
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Width="60" Header="Gender" Binding="{Binding Path=Gender, Mode=TwoWay}">
+                <DataGridTextColumn Width="Auto" Header="Street No." Binding="{Binding Path=StreetNo, Mode=TwoWay}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment"
@@ -133,25 +167,7 @@
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
-
-                <DataGridTextColumn Width="*" Header="E-mail" Binding="{Binding Path=Email, Mode=TwoWay}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment"
-                                Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn Width="90" Header="Street No." Binding="{Binding Path=StreetNo, Mode=TwoWay}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment"
-                                Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Width="70" Header="Postcode" Binding="{Binding Path=Postcode, Mode=TwoWay}">
+                <DataGridTextColumn Width="*" Header="Postcode" Binding="{Binding Path=Postcode, Mode=TwoWay}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment"

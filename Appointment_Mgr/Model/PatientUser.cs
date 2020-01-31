@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 using System.Data;
 using OtpNet;
 using System.Windows;
+using GalaSoft.MvvmLight;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Appointment_Mgr.Model
 {
-    public class PatientUser
+    public class PatientUser : ViewModelBase
     {
         private int _patientNum;
         private string _firstname, _middlename, _lastname, _DOB, _gender, _email, _streetNumber, _postcode;
@@ -62,36 +65,23 @@ namespace Appointment_Mgr.Model
             return false;
         }
 
-        public int GetPatientNo() { return _patientNum;  }
-        public string GetFirstname() { return _firstname; }
-        public string GetMiddlename() 
-        {
-            if (string.IsNullOrWhiteSpace(_middlename))
-                return "";
-            else
-                return _middlename;
-        }
-        public string GetLastname() { return _lastname; }
-        public string GetDOB() { return _DOB; }
-        public string GetGender() { return _gender; }
-        public string GetEmail() { return _email; }
-        public string GetStreetNum() { return _streetNumber; }
-        public string GetPostcode() { return _postcode; }
-
         public int PatientNo 
         {
             get { return _patientNum; }
             set { value = _patientNum; }
         }
-        public string DOB 
+        public DateTime DOB 
         {
-            get { return _DOB; }
-            set { value = _DOB; }
+            get { return DateTime.Parse(_DOB); }
+            set 
+            { 
+                value = DateTime.Parse(_DOB);
+            }
         }
         public string Firstname
         {
             get { return _firstname; }
-            set { value = _firstname; }
+            set { value = _firstname; RaisePropertyChanged("Gender"); }
         }
         public string Middlename 
         {
@@ -102,32 +92,60 @@ namespace Appointment_Mgr.Model
                     Middlename = "";
                 else
                     value = _middlename;
+                RaisePropertyChanged("Middlename");
             }
         }
         public string Lastname 
         {
             get { return _lastname; }
-            set { value = Lastname; }
+            set { value = Lastname; RaisePropertyChanged("Lastname"); }
         }
         public string Gender 
         {
             get { return _gender; }
-            set { value = _gender; }
+            set { value = _gender; RaisePropertyChanged("Gender"); }
         }
         public string Email 
         {
             get { return _email; }
-            set { value = _email; }
+            set 
+            { 
+                value = _email;
+                RaisePropertyChanged("Email");
+            }
         }
         public string StreetNo 
         {
             get { return _streetNumber; }
-            set { value = _email; }
+            set { value = _streetNumber; RaisePropertyChanged("StreetNo"); }
         }
         public string Postcode 
         {
             get { return _postcode; }
-            set { value = _postcode; }
+            set { value = _postcode; RaisePropertyChanged("Postcode"); }
+        }
+        //Needed for checkboxes in Manage Patient view. (All of these are used for patient management tbh)
+        public bool IsMale 
+        {
+            get { return true;  }
+            set 
+            {
+                if (_gender == "Male")
+                    value = true;
+                else
+                    value = false;
+            }
+        }
+        public bool IsFemale
+        {
+            get { return true; }
+            set
+            {
+                if (_gender == "Female")
+                    value = true;
+                else
+                    value = false;
+            }
         }
 
         /*  Below functions to be used by Model - Database Converter

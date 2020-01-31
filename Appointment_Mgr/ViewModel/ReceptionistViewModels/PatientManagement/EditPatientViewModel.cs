@@ -17,20 +17,23 @@ namespace Appointment_Mgr.ViewModel
         public ObservableCollection<PatientUser> Patients
         {
             get { return _patients; }
-            set { _patients = value; }
+            set 
+            { 
+                _patients = value;
+                RaisePropertyChanged("Patients");
+            }
         }
 
 
         public EditPatientViewModel() 
         {
+            Patients = PatientDBConverter.GetPatients();
             if (IsInDesignMode)
             {
                 //insert dummy data here
             }
             else 
             {
-                Patients = PatientDBConverter.GetPatients();
-                Console.WriteLine(Patients.ToString());
                 
             }
         }

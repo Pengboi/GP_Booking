@@ -41,7 +41,6 @@ namespace Appointment_Mgr.Model
 
                 pList.Add(p);
             }
-            Console.WriteLine(pList); // DEBUG
             reader.Close();
             conn.Close();
             return pList;
