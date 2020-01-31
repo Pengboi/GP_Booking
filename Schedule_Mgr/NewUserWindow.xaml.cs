@@ -33,7 +33,7 @@ namespace Schedule_Mgr
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        private SQLiteConnection startConnection()
+        private SQLiteConnection OpenConnection()
         {
             string sqlPath = LoadConnectionString();
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
@@ -167,7 +167,7 @@ namespace Schedule_Mgr
 
         private bool isUniqueUsername(string name) 
         {
-            SQLiteConnection connection = startConnection();
+            SQLiteConnection connection = OpenConnection();
             SQLiteCommand cmd = new SQLiteCommand(@"SELECT COUNT(*) FROM Accounts WHERE Username = @Username", connection);
             cmd.Prepare();
             cmd.Parameters.Add("@Username", DbType.String).Value = name;
@@ -206,7 +206,7 @@ namespace Schedule_Mgr
         private void addRecordToDB(string user, string pass, string otp, string gender, string honorific, 
             string fname, string mname, string lname, int accountType) 
         {
-            SQLiteConnection connection = startConnection();
+            SQLiteConnection connection = OpenConnection();
             SQLiteCommand cmd = new SQLiteCommand(@"INSERT INTO Accounts (Username, Password, OTP_Token, Gender, Suffix, Firstname, Middlename, Lastname, Account_Type)
                                 VALUES (@user, @pass, @otp, @gender, @suffix, @firstname, @middlename, @lastname, @Account_Type)", connection);
             cmd.Prepare();

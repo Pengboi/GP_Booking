@@ -40,7 +40,7 @@ namespace Schedule_Mgr
         }
 
 
-        private SQLiteConnection startConnection()
+        private SQLiteConnection OpenConnection()
         {
             string sqlPath = LoadConnectionString();
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
@@ -73,7 +73,7 @@ namespace Schedule_Mgr
 
         public void doctorList_GetDoctors(object sender, RoutedEventArgs e)
         {
-            SQLiteConnection connection = startConnection();
+            SQLiteConnection connection = OpenConnection();
             string sqlQuery = $"SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Account_Type = 2;";
 
             var cmd = new SQLiteCommand(sqlQuery, connection);
@@ -284,7 +284,7 @@ namespace Schedule_Mgr
                 return;
             }
 
-            SQLiteConnection connection = startConnection();
+            SQLiteConnection connection = OpenConnection();
             string doctorUsername = getDoctorUsername(doctorSelected, connection);
             if (shiftExists(shiftDate.ToString("dd/MM/yyyy"), doctorUsername, connection))
             {
@@ -363,7 +363,7 @@ namespace Schedule_Mgr
             dailyScheduleGrid.Items.Clear();
             DateTime selectedDate = getDate().Date;
 
-            SQLiteConnection connection = startConnection();
+            SQLiteConnection connection = OpenConnection();
             SQLiteCommand cmd = new SQLiteCommand(@"SELECT Username, Shift_Start, Shift_End FROM Schedule WHERE Date = @Date", connection);
             cmd.Prepare();
             cmd.Parameters.Add("@Date", DbType.String).Value = selectedDate.ToString("dd/MM/yyyy");
@@ -374,7 +374,6 @@ namespace Schedule_Mgr
                 string doctorName = getDoctorName(reader["Username"].ToString(), connection);
                 string shiftStart = reader["Shift_Start"].ToString().Insert(2, ":");
                 string shiftEnd = reader["Shift_End"].ToString().Insert(2, ":");
-                string mergedInline = doctorName + " " + shiftStart + " " + shiftEnd;
                 var doctorShiftRow = new ShiftRow { DoctorHeader = doctorName, ShiftStartHeader = shiftStart, ShiftEndHeader = shiftEnd };
                 dailyScheduleGrid.Items.Add(doctorShiftRow);
             }

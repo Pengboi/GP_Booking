@@ -19,7 +19,7 @@ namespace Appointment_Mgr.Model
         // To be implemented later --> merge with other string instance variables upon implemntation (Or don't, keep as the "optional instance variable list"), idk.
         private string _suffix, _firstname, _middlename, _lastname, _gender;
 
-        private SQLiteConnection startConnection()
+        private SQLiteConnection OpenConnection()
         {
             SQLiteConnection connection = new SQLiteConnection(LoadConnectionString());
             connection.Open();
@@ -36,7 +36,7 @@ namespace Appointment_Mgr.Model
 
         public bool userExists() 
         {
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT COUNT(*) FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -57,7 +57,7 @@ namespace Appointment_Mgr.Model
         {
             if (string.IsNullOrWhiteSpace(this._password))
                 return false;
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT Password FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -83,7 +83,7 @@ namespace Appointment_Mgr.Model
 
         public string getSuffix() 
         {
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT Suffix FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -94,7 +94,7 @@ namespace Appointment_Mgr.Model
         }
         public string getFirstname() 
         {
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT Firstname FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -108,7 +108,7 @@ namespace Appointment_Mgr.Model
         {
             string middlename = "";
 
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT Middlename FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -121,7 +121,7 @@ namespace Appointment_Mgr.Model
 
         public string getLastname() 
         {
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT Lastname FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -139,7 +139,7 @@ namespace Appointment_Mgr.Model
 
         public string getGender() 
         {
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT Gender FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -151,7 +151,7 @@ namespace Appointment_Mgr.Model
 
         public int getAccountType()
         {
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT Account_Type FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -167,7 +167,7 @@ namespace Appointment_Mgr.Model
 
         public string getOTP() 
         {
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT OTP_TOKEN FROM Accounts WHERE Username = @uname";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -209,7 +209,7 @@ namespace Appointment_Mgr.Model
         {
             List<StaffUser> doctorList = new List<StaffUser>();
 
-            SQLiteConnection conn = startConnection();
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT Username FROM Accounts WHERE Account_Type = @type";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();

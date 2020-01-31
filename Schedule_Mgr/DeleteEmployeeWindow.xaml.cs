@@ -34,7 +34,7 @@ namespace Schedule_Mgr
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
-        private SQLiteConnection startConnection()
+        private SQLiteConnection OpenConnection()
         {
             string sqlPath = LoadConnectionString();
             SQLiteConnection connection = new SQLiteConnection(sqlPath);
@@ -51,7 +51,7 @@ namespace Schedule_Mgr
 
         private void getAccounts(int type) 
         {
-            SQLiteConnection connection = startConnection();
+            SQLiteConnection connection = OpenConnection();
             string sqlQuery = $"SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Account_Type = " + type.ToString() + ";";
             var cmd = new SQLiteCommand(sqlQuery, connection);
             SQLiteDataReader reader = cmd.ExecuteReader();
@@ -78,7 +78,7 @@ namespace Schedule_Mgr
         {
             string searchRequest = searchtext.Replace(" ", String.Empty).ToLower();   //Removes whitespace
 
-            SQLiteConnection connection = startConnection();
+            SQLiteConnection connection = OpenConnection();
             string sqlQuery = "SELECT Suffix, Firstname, Middlename, Lastname, Account_Type FROM Accounts";
             var cmd = new SQLiteCommand(sqlQuery, connection);
 
@@ -112,7 +112,7 @@ namespace Schedule_Mgr
 
         private void deleteAccount(string fullname) 
         {
-            SQLiteConnection connection = startConnection();
+            SQLiteConnection connection = OpenConnection();
             string cmdString = ""; string middlename = ""; string lastname = "";
             fullname = fullname.Remove(0, fullname.IndexOf(" ") + 1);
             var names = fullname.Split(' ');
