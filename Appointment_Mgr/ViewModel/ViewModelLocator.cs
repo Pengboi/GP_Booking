@@ -61,6 +61,7 @@ namespace Appointment_Mgr.ViewModel
 
             SimpleIoc.Default.Register<ManagePatientViewModel>();
             SimpleIoc.Default.Register<AddPatientViewModel>();
+            SimpleIoc.Default.Register<EditPatientViewModel>();
 
         }
 
@@ -105,14 +106,17 @@ namespace Appointment_Mgr.ViewModel
         }
 
 
-        public static ManagePatientViewModel ManagePatient 
+        public static ManagePatientViewModel ManagePatient
         {
             get { return ServiceLocator.Current.GetInstance<ManagePatientViewModel>(); }
         }
-        
         public static AddPatientViewModel AddPatient 
         {
             get  { return ServiceLocator.Current.GetInstance<AddPatientViewModel>(); }
+        }
+        public static EditPatientViewModel EditPatient
+        {
+            get { return ServiceLocator.Current.GetInstance<EditPatientViewModel>(); }
         }
 
         public static void Cleanup()
@@ -133,6 +137,7 @@ namespace Appointment_Mgr.ViewModel
 
             SimpleIoc.Default.Register<ManagePatientViewModel>();
             SimpleIoc.Default.Register<AddPatientViewModel>();
+            SimpleIoc.Default.Register<EditPatientViewModel>();
         }
     }
 }
