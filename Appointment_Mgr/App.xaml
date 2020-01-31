@@ -8,6 +8,8 @@
              xmlns:model="clr-namespace:Appointment_Mgr.Model"
              xmlns:dialog="clr-namespace:Appointment_Mgr.Dialog"
              xmlns:otp="clr-namespace:Appointment_Mgr.Dialog.OTP"
+             xmlns:confirmation="clr-namespace:Appointment_Mgr.Dialog.Confirmation"
+             xmlns:error="clr-namespace:Appointment_Mgr.Dialog.Error"
              d1p1:Ignorable="d" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <Application.Resources>
@@ -58,11 +60,17 @@
                     <DataTemplate DataType="{x:Type dialog:DialogBoxViewModel}">
                         <dialog:DialogBoxView/>
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type error:ErrorBoxViewModel}">
+                        <error:ErrorBoxView />
+                    </DataTemplate>
                     <DataTemplate DataType="{x:Type dialog:AlertBoxViewModel}">
                         <dialog:AlertBoxView />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type otp:OTPBoxViewModel}">
                         <otp:OTPBoxView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type confirmation:ConfirmationBoxViewModel}">
+                        <confirmation:ConfirmationBoxView />
                     </DataTemplate>
                     
                 </ResourceDictionary>

@@ -30,7 +30,7 @@ namespace Appointment_Mgr.ViewModel
     {
         private string _username;
         private string _buttonText = "Sign in";
-        private Dialog.IDialogBoxService _dialogService;
+        private IDialogBoxService _dialogService;
 
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
