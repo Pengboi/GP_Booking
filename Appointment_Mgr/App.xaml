@@ -58,6 +58,9 @@
                     <DataTemplate DataType="{x:Type vm:EditPatientViewModel}">
                         <views:EditPatientView />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:DeletePatientViewModel}">
+                        <views:DeletePaitentView />
+                    </DataTemplate>
                     
                     <!-- Dialog box View + VM DataTemplates -->
                     <DataTemplate DataType="{x:Type dialog:DialogBoxViewModel}">

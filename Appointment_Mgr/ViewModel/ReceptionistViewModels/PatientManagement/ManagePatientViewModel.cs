@@ -32,7 +32,7 @@ namespace Appointment_Mgr.ViewModel
             set
             {
                 this._editRecordTextColour = value;
-                RaisePropertyChanged("ManageRecordTextColour");
+                RaisePropertyChanged("EditRecordTextColour");
             }
         }
         public string DeleteRecordTextColour
@@ -57,33 +57,43 @@ namespace Appointment_Mgr.ViewModel
         }
         public ViewModelBase AddPatientVM { get { return (ViewModelBase)ViewModelLocator.AddPatient; } }
         public ViewModelBase EditPatientVM { get { return (ViewModelBase)ViewModelLocator.EditPatient; } }
+        public ViewModelBase DeletePatientVM { get { return (ViewModelBase)ViewModelLocator.DeletePatient; } }
 
         public void SetAddView() 
         {
-            AddRecordTextColour = "#40739e"; // Light blue hex code for selected navigation VM element
+            AddRecordTextColour = "#1e3799"; // Light blue hex code for selected navigation VM element
             EditRecordTextColour = "#2f3640"; // Dark Black for non-selected navigation VM element
-            DeleteRecordTextColour = "#000000"; // Dark Black for non-selected navigation VM element
+            DeleteRecordTextColour = "#2f3640"; // Dark Black for non-selected navigation VM element
             CurrentViewModel = AddPatientVM;
         }
         public void SetEditView() 
         {
             AddRecordTextColour = "#2f3640"; 
-            EditRecordTextColour = "#40739e"; 
-            DeleteRecordTextColour = "#000000"; 
+            EditRecordTextColour = "#1e3799"; 
+            DeleteRecordTextColour = "#2f3640";
+            ViewModelLocator.Cleanup();
             CurrentViewModel = EditPatientVM;
+        }
+        public void SetDeleteView()
+        {
+            AddRecordTextColour = "#2f3640";
+            EditRecordTextColour = "#2f3640";
+            DeleteRecordTextColour = "#1e3799";
+            ViewModelLocator.Cleanup();
+            CurrentViewModel = DeletePatientVM;
         }
 
         public ManagePatientViewModel() 
         {
             CurrentViewModel = AddPatientVM;
 
-            AddRecordTextColour = "#40739e"; // Light blue hex code for selected navigation VM element
+            AddRecordTextColour = "#1e3799"; // Navy blue hex code for selected navigation VM element
             EditRecordTextColour = "#2f3640"; // Dark Black for non-selected navigation VM element
             DeleteRecordTextColour = "#000000"; // Dark Black for non-selected navigation VM element
 
             AddPatientCommand = new RelayCommand(SetAddView);
             EditPatientCommand = new RelayCommand(SetEditView);
-            // not yet implemented DeletePatientCommand = new RelayCommand();
+            DeletePatientCommand = new RelayCommand(SetDeleteView);
         }
 
     }

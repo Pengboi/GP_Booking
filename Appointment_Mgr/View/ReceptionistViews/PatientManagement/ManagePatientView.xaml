@@ -34,7 +34,8 @@
 
             <Button Width="220" Height="80" 
                 Margin="30,190,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                Background="#e84118">
+                Background="#e84118"
+                Command="{Binding DeletePatientCommand}">
                 <StackPanel Orientation="Vertical" Margin="0,0,30,0" Width="200">
                     <Label Content="Delete" FontSize="20" FontWeight="Bold"
                            Foreground="{Binding DeleteRecordTextColour, Mode=TwoWay}"></Label>

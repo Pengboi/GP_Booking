@@ -12,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Appointment_Mgr.ViewModel;
 
 namespace Appointment_Mgr.View
 {
     /// <summary>
-    /// Interaction logic for EditPatientView.xaml
+    /// Interaction logic for DeletePaitentView.xaml
     /// </summary>
-    public partial class EditPatientView : UserControl
+    public partial class DeletePaitentView : UserControl
     {
-        public EditPatientView()
+        public DeletePaitentView()
         {
             InitializeComponent();
         }
-        
     }
 }

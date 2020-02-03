@@ -5,10 +5,11 @@ using System.Data;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
 using Appointment_Mgr.Dialog;
+using System.Windows.Controls;
 
 namespace Appointment_Mgr.ViewModel
 {
-    public class EditPatientViewModel : ViewModelBase
+    public class DeletePatientViewModel : ViewModelBase
     {
         private IDialogBoxService _dialogService;
         public ICommand AlertCommand { get; private set; }
@@ -16,15 +17,26 @@ namespace Appointment_Mgr.ViewModel
         public ICommand ConfirmationCommand { get; private set; }
 
         private DataTable _patients = new DataTable();
-        public RelayCommand SaveCommand { get; private set; }
+        private int? _selectedRow = null;
+        public RelayCommand DeleteCommand { get; private set; }
 
         public DataTable Patients
         {
             get { return _patients; }
-            set 
-            { 
+            set
+            {
                 _patients = value;
                 RaisePropertyChanged("Patients");
+            }
+        }
+
+        public int? SelectedRow
+        {
+            get { return _selectedRow; }
+            set 
+            {
+                _selectedRow = value;
+                RaisePropertyChanged("SelectedRow");
             }
         }
 
@@ -45,35 +57,34 @@ namespace Appointment_Mgr.ViewModel
             var result = _dialogService.OpenDialog(dialog);
         }
 
-        public void SaveToDB() 
+        public void DeleteFromDB()
         {
-            //EntryValidation(); // Add Validation laters
-            PatientDBConverter.SaveChanges(Patients);
-            // Refreshes DataGrid view
-            Patients = null;
-            Patients = PatientDBConverter.GetPatients();
+            // If no row was selected
+            if (SelectedRow == null) 
+            {
+                Alert("No Row Selected!", "No record selected. Please select a record before attempting to delete a patient record.");
+                return;
+            }
 
+            PatientDBConverter.SaveRemoval(SelectedRow.ToString());
+            // Refreshes DataGrid view, Resets selected row to null
+            Patients = null; SelectedRow = null;
+            Patients = PatientDBConverter.GetPatients();
             Confirmation("Database Updated.", "Changes to the database were successfully updated.");
         }
 
-        private void EntryValidation()
-        {
-            // string.IsNullOrEmpty --> set as null.
-            throw new NotImplementedException();
-        }
-
-        public EditPatientViewModel() 
+        public DeletePatientViewModel()
         {
             _dialogService = new DialogBoxService();
-            if (IsInDesignMode) 
+            if (IsInDesignMode)
             {
 
             }
-            else 
+            else
             {
                 Patients = PatientDBConverter.GetPatients();
             }
-            SaveCommand = new RelayCommand(SaveToDB);
+            DeleteCommand = new RelayCommand(DeleteFromDB);
         }
     }
 }

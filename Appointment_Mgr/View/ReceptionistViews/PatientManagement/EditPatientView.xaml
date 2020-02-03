@@ -9,39 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="820" d:DesignWidth="1300">
     <UserControl.Resources>
-        <helper:GenderConverter x:Key="genderToStringKey" />
-        <!-- Placeholder style template for Textboxes -->
-        <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Grid>
-                            <TextBox Text="{Binding Path=Text,
-                                                RelativeSource={RelativeSource TemplatedParent}, 
-                                                Mode=TwoWay,
-                                                UpdateSourceTrigger=PropertyChanged}"
-                                 x:Name="textSource" 
-                                 Background="Transparent" 
-                                 Panel.ZIndex="2" />
-                            <TextBox Text="{TemplateBinding Tag}" BorderThickness="0" Focusable="False" Background="{TemplateBinding Background}" Panel.ZIndex="1">
-                                <TextBox.Style>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="Foreground" Value="Transparent"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="">
-                                                <Setter Property="Foreground" Value="Gray"/>
-                                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                                                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBox.Style>
-                            </TextBox>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <helper:GenderList x:Key="GenderList" />
     </UserControl.Resources>
     <Grid>
         <!-- Gradient background -->
@@ -77,10 +45,11 @@
                       GridLinesVisibility="Vertical" HeadersVisibility="All" IsReadOnly="False"
                       RowBackground="#f1f2f6" AlternatingRowBackground="#718093" Foreground="Black"
                       AutoGenerateColumns="False" CanUserAddRows="False" 
-                      ItemsSource="{Binding Patients, Mode=TwoWay}" >
+                      ItemsSource="{Binding Patients}"  >
             
                 <DataGrid.Columns>
-                <DataGridTextColumn Width="Auto" Header="Patient No." IsReadOnly="True" Binding="{Binding Path=PatientNo, Mode=TwoWay}">
+                <DataGridTextColumn Width="Auto" Header="Patient No." IsReadOnly="True" 
+                                    Binding="{Binding Path=Patient#}" >
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="HorizontalContentAlignment"
@@ -89,77 +58,85 @@
                         </DataGridTextColumn.HeaderStyle>
                     </DataGridTextColumn>
 
-                <DataGridTextColumn Width="SizeToCells" Header="First Name" Binding="{Binding Path=Firstname, Mode=TwoWay}">
+                <DataGridTextColumn Width="Auto" Header="First Name" Binding="{Binding Path=Firstname}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="HorizontalContentAlignment"
                                     Value="Center" />
                             </Style>
                         </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="CharacterCasing" Value="Lower"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
                     </DataGridTextColumn>
 
-                <DataGridTextColumn Width="Auto" Header="Middle Name" Binding="{Binding Path=Middlename, Mode=TwoWay}">
+                <DataGridTextColumn Width="Auto" Header="Middle Name" Binding="{Binding Path=Middlename}">
                         <DataGridTextColumn.HeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="HorizontalContentAlignment"
                                     Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn Width="SizeToCells" Header="Last Name" Binding="{Binding Path=Lastname, Mode=TwoWay}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment"
-                                Value="Center" />
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="CharacterCasing" Value="Lower"/>
                         </Style>
-                    </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTemplateColumn Width="SizeToCells" Header="Date of Birth">
+                <DataGridTextColumn Width="Auto" Header="Last Name" Binding="{Binding Path=Lastname}">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="CharacterCasing" Value="Lower"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTemplateColumn Width="Auto" Header="Date of Birth">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Path=DOB, StringFormat=dd/MM/yyyy}" />
+                            <TextBlock Text="{Binding DOB, Mode=TwoWay}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <DatePicker SelectedDate="{Binding Path=DOB, Mode=TwoWay}" />
+                            <DatePicker Text="{Binding DOB, StringFormat='dd/MM/yyyy', Mode=TwoWay}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="SizeToCells" Header="Gender">
+                <DataGridTemplateColumn Width="Auto" Header="Gender">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Gender, Mode=TwoWay}" />
+                            <TextBlock Text="{Binding Gender}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ComboBox SelectedItem="{Binding Path=Gender, Mode=TwoWay}">
-                                <ComboBoxItem IsSelected="{Binding Path=IsMale}" Content="Male" />
-                                <ComboBoxItem IsSelected="{Binding Path=IsFemale}" Content="Female"/>
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Path=Gender, Mode=TwoWay}" />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
+                            <ComboBox   ItemsSource="{StaticResource GenderList}"
+                                        SelectedItem="{Binding Gender}" >
                             </ComboBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Width="SizeToCells" Header="E-mail" Binding="{Binding Path=Email, Mode=TwoWay}">
+                <DataGridTextColumn Width="Auto" Header="E-mail (optional)" Binding="{Binding Path=E-mail}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment"
                                 Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="CharacterCasing" Value="Lower"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Width="Auto" Header="Street No." Binding="{Binding Path=StreetNo, Mode=TwoWay}">
+                <DataGridTextColumn Width="Auto" Header="Street No." Binding="{Binding Path=ST_Number}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment"
@@ -167,16 +144,28 @@
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="*" Header="Postcode" Binding="{Binding Path=Postcode, Mode=TwoWay}">
+                <DataGridTextColumn Width="*" Header="Postcode" Binding="{Binding Path=Postcode}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment"
                                 Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="CharacterCasing" Value="Upper"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Button Grid.Row="2" Grid.Column="1"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,20,0"
+                Width="200" Height="50"
+                Content="Save Changes" FontSize="25" FontWeight="Black"
+                Command="{Binding SaveCommand}"></Button>
+        
 
     </Grid>
 </UserControl>

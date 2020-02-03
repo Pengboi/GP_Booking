@@ -116,6 +116,7 @@
       <DependentUpon>OTPBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\OTP\OTPBoxViewModel.cs" />
+    <Compile Include="GenderList.cs" />
     <Compile Include="Helper\CalendarYearView.cs" />
     <Compile Include="Helper\GenderConverter.cs" />
     <Compile Include="Helper\NumberOnlyRule.cs" />
@@ -134,12 +135,16 @@
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ReceptionistViewModels\PatientManagement\DeletePatientViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\PatientManagement\EditPatientViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\PatientManagement\ManagePatientViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\Home\ReceptionistHomeViewModel.cs" />
     <Compile Include="ViewModel\ReservationAppointmentViewModel.cs" />
     <Compile Include="View\ReceptionistViews\PatientManagement\AddPatientView.xaml.cs">
       <DependentUpon>AddPatientView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ReceptionistViews\PatientManagement\DeletePaitentView.xaml.cs">
+      <DependentUpon>DeletePaitentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ReceptionistViews\PatientManagement\EditPatientView.xaml.cs">
       <DependentUpon>EditPatientView.xaml</DependentUpon>
@@ -180,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ReceptionistViews\PatientManagement\AddPatientView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ReceptionistViews\PatientManagement\DeletePaitentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

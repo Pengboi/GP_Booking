@@ -62,6 +62,7 @@ namespace Appointment_Mgr.ViewModel
             SimpleIoc.Default.Register<ManagePatientViewModel>();
             SimpleIoc.Default.Register<AddPatientViewModel>();
             SimpleIoc.Default.Register<EditPatientViewModel>();
+            SimpleIoc.Default.Register<DeletePatientViewModel>();
 
         }
 
@@ -75,31 +76,31 @@ namespace Appointment_Mgr.ViewModel
             get { return ServiceLocator.Current.GetInstance<LoginViewModel>(); }
         }
 
+
         public static HomeViewModel Home
         {
             get { return ServiceLocator.Current.GetInstance<HomeViewModel>(); }
         }
-
         public static HomeToolbarViewModel HomeToolbar 
         {
             get { return ServiceLocator.Current.GetInstance<HomeToolbarViewModel>(); }
         }
 
+
         public static ReceptionistHomeViewModel ReceptionistHome 
         {
             get { return ServiceLocator.Current.GetInstance<ReceptionistHomeViewModel>(); }
         }
-
         public static ReceptionistToolbarViewModel ReceptionistToolbar 
         {
             get { return ServiceLocator.Current.GetInstance<ReceptionistToolbarViewModel>(); }
         }
 
+
         public static BookAppointmentViewModel BookAppointment
         {
             get { return ServiceLocator.Current.GetInstance<BookAppointmentViewModel>(); }
         }
-
         public static ReservationAppointmentViewModel ReservationAppointment 
         {
             get { return ServiceLocator.Current.GetInstance<ReservationAppointmentViewModel>(); }
@@ -117,6 +118,10 @@ namespace Appointment_Mgr.ViewModel
         public static EditPatientViewModel EditPatient
         {
             get { return ServiceLocator.Current.GetInstance<EditPatientViewModel>(); }
+        }
+        public static DeletePatientViewModel DeletePatient 
+        {
+            get { return ServiceLocator.Current.GetInstance<DeletePatientViewModel>(); }
         }
 
         public static void Cleanup()
@@ -138,6 +143,7 @@ namespace Appointment_Mgr.ViewModel
             SimpleIoc.Default.Register<ManagePatientViewModel>();
             SimpleIoc.Default.Register<AddPatientViewModel>();
             SimpleIoc.Default.Register<EditPatientViewModel>();
+            SimpleIoc.Default.Register<DeletePatientViewModel>();
         }
     }
 }
