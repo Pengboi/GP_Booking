@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -19,31 +20,42 @@ namespace Appointment_Mgr.Model
             return connection;
         }
 
-        public static ObservableCollection<PatientUser> GetPatients()
+        public static DataTable GetPatients()
         {
-            var pList = new ObservableCollection<PatientUser>();
-
+            
             //load from db into pList
             SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT * FROM Patient_Data";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
-            
-            SQLiteDataReader reader = cmd.ExecuteReader();
-            while (reader.Read()) 
-            {
-                PatientUser p = new PatientUser(reader["Firstname"].ToString(), reader["Middlename"].ToString(),
-                    reader["Lastname"].ToString(), DateTime.Parse(reader["DOB"].ToString()));
-                p.SetPatientNo(int.Parse(reader["Patient#"].ToString()));
-                p.SetGender(reader["Gender"].ToString());
-                p.SetEmail(reader["E-mail"].ToString());
-                p.SetStreetNum(reader["ST_Number"].ToString());
-                p.SetPostcode(reader["Postcode"].ToString());
-
-                pList.Add(p);
-            }
-            reader.Close();
+            SQLiteDataAdapter sqlda = new SQLiteDataAdapter(cmd);
+            DataTable dt = new DataTable("Patient_Data");
+            sqlda.Fill(dt);
             conn.Close();
-            return pList;
+
+            return dt;
+        }
+
+        public static void SaveChanges(DataTable dt) 
+        {
+            string cmdString = "SELECT * FROM Patient_Data";
+            SQLiteConnection conn = OpenConnection();
+            SQLiteDataAdapter sqlDa = new SQLiteDataAdapter();
+            sqlDa.SelectCommand = new SQLiteCommand(cmdString, conn);
+            sqlDa.Fill(dt);
+            sqlDa.UpdateCommand = new SQLiteCommandBuilder(sqlDa).GetUpdateCommand();
+            sqlDa.Update(dt);
+            conn.Close();
+        }
+
+        public static void SaveRemoval(string index)
+        {
+            string cmdString = @"DELETE FROM Patient_Data WHERE Firstname in (SELECT Firstname FROM Patient_Data LIMIT 1 OFFSET " 
+                + index + ")";
+            Console.WriteLine(cmdString); //DEBUG
+            SQLiteConnection conn = OpenConnection();
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
     }
 }
