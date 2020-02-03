@@ -122,7 +122,7 @@ namespace Appointment_Mgr.Model
         public string Postcode 
         {
             get { return _postcode; }
-            set { value = _postcode; RaisePropertyChanged("Postcode"); }
+            set { _postcode = value.ToUpper().Replace(" ", ""); RaisePropertyChanged("Postcode"); }
         }
         //Needed for checkboxes in Manage Patient view. (All of these are used for patient management tbh)
         public bool IsMale 
