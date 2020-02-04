@@ -25,7 +25,7 @@ namespace Appointment_Mgr.Model
             connection.Open();
             return connection;
         }
-        private static string LoadConnectionString(string id = "Default") { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
+        private static string LoadConnectionString(string id = "Staff") { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
 
         public StaffUser(string username, string password)
         {

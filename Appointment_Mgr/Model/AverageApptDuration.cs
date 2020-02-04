@@ -48,7 +48,6 @@ namespace Appointment_Mgr.Model
 
             using (StreamWriter sw = new StreamWriter(path)) 
             { sw.Write(calculatedAverage);  }
-
         }
     }
 }
