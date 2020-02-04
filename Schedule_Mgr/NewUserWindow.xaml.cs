@@ -28,7 +28,7 @@ namespace Schedule_Mgr
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
 
-        private static string LoadConnectionString(string id = "Default")
+        private static string LoadConnectionString(string id = "Staff")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }

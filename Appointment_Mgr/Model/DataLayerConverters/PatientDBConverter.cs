@@ -13,7 +13,7 @@ namespace Appointment_Mgr.Model
     public class PatientDBConverter
     {
         private static string LoadConnectionString(string id) { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
-        public static SQLiteConnection OpenConnection(string id = "Patients")
+        public static SQLiteConnection OpenConnection(string id = "Staff")
         {
             SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(id));
             connection.Open();

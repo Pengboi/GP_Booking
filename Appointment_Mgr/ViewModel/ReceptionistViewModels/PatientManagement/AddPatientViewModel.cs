@@ -27,7 +27,7 @@ namespace Appointment_Mgr.ViewModel
         public RelayCommand CreateRecordCommand { private set; get; }
 
 
-        private SQLiteConnection OpenConnection(string id = "Default")
+        private SQLiteConnection OpenConnection(string id = "Staff")
         {
             SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(id));
             connection.Open();

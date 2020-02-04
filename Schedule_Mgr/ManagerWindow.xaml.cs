@@ -34,7 +34,7 @@ namespace Schedule_Mgr
             public string ShiftEndHeader { get; set; }
         }
 
-        private static string LoadConnectionString(string id = "Default")
+        private static string LoadConnectionString(string id = "Staff")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }

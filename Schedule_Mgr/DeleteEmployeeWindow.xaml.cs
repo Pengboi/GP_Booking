@@ -30,7 +30,7 @@ namespace Schedule_Mgr
 
         DataTable dbdataset;
 
-        private static string LoadConnectionString(string id = "Default")
+        private static string LoadConnectionString(string id = "Staff")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }

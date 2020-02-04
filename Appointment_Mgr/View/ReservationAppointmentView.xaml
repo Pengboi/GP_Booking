@@ -34,8 +34,10 @@
                             Orientation="Vertical" HorizontalAlignment="Left">
                     <Label FontSize="20" FontWeight="DemiBold"
                            Content="Appointment Doctor"></Label>
-                    <ComboBox FontSize="15">
+                    <ComboBox FontSize="15" SelectedItem="{Binding RequestedDoctor, Mode=TwoWay}">
                         <ComboBoxItem IsSelected="True">None</ComboBoxItem>
+                        <ComboBoxItem>Male</ComboBoxItem>
+                        <ComboBoxItem>Female</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 
@@ -43,8 +45,10 @@
                             Orientation="Vertical" HorizontalAlignment="Right">
                     <Label FontSize="20" FontWeight="DemiBold"
                            Content="Doctor Gender"></Label>
-                    <ComboBox FontSize="15">
+                    <ComboBox FontSize="15" >
                         <ComboBoxItem IsSelected="True">None</ComboBoxItem>
+                        <ComboBoxItem>Male</ComboBoxItem>
+                        <ComboBoxItem>Female</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="0,0,0,40" Height="100"
@@ -85,7 +89,7 @@
                 </Calendar>
             </StackPanel>
             
-            <!-- Row 2 Elements -->
+            <!-- Time Selection Elements -->
             <Rectangle Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,0,50"
                        Width="500" Height="430"
                        Fill="#f5f6fa" RadiusX="30" RadiusY="30">
@@ -106,6 +110,9 @@
                        FontSize="15"
                        Content="Please select the desired avaliable timeslot for your appointment.">
                 </Label>
+                <ListView ItemsSource="{Binding AvaliableDoctors}">
+                    
+                </ListView>
                 
 
             </StackPanel>
