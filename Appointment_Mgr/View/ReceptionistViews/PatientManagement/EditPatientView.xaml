@@ -3,12 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:Appointment_Mgr.View"
              xmlns:helper="clr-namespace:Appointment_Mgr.Helper"
              DataContext="{Binding EditPatient, Source={StaticResource Locator}}"
              mc:Ignorable="d" 
              d:DesignHeight="820" d:DesignWidth="1300">
-
+    
+    <UserControl.Resources>
+        <x:Array x:Key="GenderList" Type="{x:Type sys:String}">
+            <sys:String>Male</sys:String>
+            <sys:String>Female</sys:String>
+        </x:Array>
+    </UserControl.Resources>
+    
     <Grid>
         <!-- Gradient background -->
         <Grid.Background>
@@ -113,8 +121,9 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ComboBox   ItemsSource="{StaticResource GenderList}"
-                                        SelectedItem="{Binding Gender}" >
+                            <ComboBox
+                                ItemsSource="{StaticResource GenderList}"
+                                SelectedItem="{Binding Gender}" >
                             </ComboBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
