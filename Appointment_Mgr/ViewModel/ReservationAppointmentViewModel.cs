@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using Appointment_Mgr.Model;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace Appointment_Mgr.ViewModel
     public class ReservationAppointmentViewModel : ViewModelBase
     {
         private string _requestedDoctor = "None", _requestedGender = "None";
-        private DateTime _selectedDate = DateTime.Now.Date;
-        private DataTable _avaliableDoctors;
+        private DateTime _selectedDate = DateTime.Now.AddDays(1).Date;
+        private DataTable _avaliableTimes;
 
         public string RequestedDoctor 
         {
@@ -33,36 +34,40 @@ namespace Appointment_Mgr.ViewModel
                 RaisePropertyChanged("RequestedGender");
             }
         }
-        public DataTable AvaliableDoctors 
+        public DataTable AvaliableTimes
         {
-            get { return _avaliableDoctors; }
+            get { return _avaliableTimes; }
             set 
             {
-                _avaliableDoctors = value;
-                RaisePropertyChanged("AvaliableDoctors");
+                _avaliableTimes = value;
+                RaisePropertyChanged("AvaliableTimes");
             }
         }
         public DateTime SelectedDate
         {
-            get { return _selectedDate; }
-            set 
-            {
-                value = SelectedDate;
-                RaisePropertyChanged("SelectedDate");
-            }
+            get;
+            set;
         }
 
         public ReservationAppointmentViewModel() 
         {
-            SelectedDate = DateTime.Now.Date;
+            
+
             if (IsInDesignMode)
             {
-                //AvaliableDoctors = insert sample
+                SelectedDate = DateTime.Parse("17/02/2000");
             }
             else 
             {
-                //AvaliableDoctors = StaffDBConverter.GetAvaliableDoctors(SelectedDate, RequestedDoctor, RequestedGender);
+                if (DateTime.Today.Date.DayOfWeek == DayOfWeek.Friday)
+                    SelectedDate = DateTime.Now.AddDays(3).Date;
+                else if (DateTime.Today.Date.DayOfWeek == DayOfWeek.Saturday)
+                    SelectedDate = DateTime.Now.AddDays(2).Date;
+                else
+                    SelectedDate = DateTime.Now.AddDays(1).Date;
             }
+
+            AvaliableTimes = StaffDBConverter.GetAvaliableTimeslots(SelectedDate, RequestedDoctor, RequestedGender);
         }
 
 

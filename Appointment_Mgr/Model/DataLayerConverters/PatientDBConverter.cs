@@ -24,7 +24,7 @@ namespace Appointment_Mgr.Model
         {
             
             //load from db into pList
-            SQLiteConnection conn = OpenConnection();
+            SQLiteConnection conn = OpenConnection("Patients");
             string cmdString = $"SELECT * FROM Patient_Data";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             SQLiteDataAdapter sqlda = new SQLiteDataAdapter(cmd);
@@ -38,7 +38,7 @@ namespace Appointment_Mgr.Model
         public static void SaveChanges(DataTable dt) 
         {
             string cmdString = "SELECT * FROM Patient_Data";
-            SQLiteConnection conn = OpenConnection();
+            SQLiteConnection conn = OpenConnection("Patients");
             SQLiteDataAdapter sqlDa = new SQLiteDataAdapter();
             sqlDa.SelectCommand = new SQLiteCommand(cmdString, conn);
             sqlDa.Fill(dt);
@@ -52,7 +52,7 @@ namespace Appointment_Mgr.Model
             string cmdString = @"DELETE FROM Patient_Data WHERE Firstname in (SELECT Firstname FROM Patient_Data LIMIT 1 OFFSET " 
                 + index + ")";
             Console.WriteLine(cmdString); //DEBUG
-            SQLiteConnection conn = OpenConnection();
+            SQLiteConnection conn = OpenConnection("Patients");
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.ExecuteNonQuery();
             conn.Close();

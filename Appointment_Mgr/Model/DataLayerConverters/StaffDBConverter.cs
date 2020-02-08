@@ -19,25 +19,78 @@ namespace Appointment_Mgr.Model
             return connection;
         }
 
+        public static List<List<int>> GetBookedTimeslots(DateTime date, List<int> ids) 
+        {
+            List<List<int>> bookedTimeslots = new List<List<int>>();
+
+            SQLiteConnection conn = OpenConnection();
+
+            foreach (int id in ids) 
+            {
+                List<int> selectedDoctorTimeslots = new List<int>();
+
+                string cmdString = @"SELECT Booked_Appointment.Appointment_Time " +
+                                     "FROM Booked_Appointment WHERE Date = @date AND Assigned_Doctor_ID = @id ";
+                SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+                cmd.Prepare();
+                cmd.Parameters.Add("@Date", DbType.String).Value = date;
+                cmd.Parameters.Add("@id", DbType.String).Value = id;
+                SQLiteDataReader reader = cmd.ExecuteReader();
+                while (reader.Read()) 
+                {
+                    selectedDoctorTimeslots.Add(reader.GetInt32(reader.GetOrdinal("Appointment_Time")));
+                }
+                reader.Close();
+                bookedTimeslots.Add(selectedDoctorTimeslots);
+            }
+            conn.Close();
+            return bookedTimeslots;
+        }
+
+        public static DataTable GetAvaliableTimeslots(DateTime date, string doctor = "None", string gender = "None") 
+        {
+            DataTable workingDoctors = GetWorkingDoctors(date, doctor, gender); //Dont delete name rows so you know if someone selects a doctor/gender pref, which doctor to use as assigned doctor in DB
+
+            // Doctor shift start & end times stored to be used to calculate 
+            List<int> staffID = new List<int>();
+            List<int> shiftStarts = new List<int>();
+            List<int> shiftEnds = new List<int>();
+            foreach (DataRow row in workingDoctors.Rows) 
+            {
+                staffID.Add((int)row["Id"]);
+                // PERSONAL NOTE: // //////////
+                // Remember these numbers are stored as ints ---- so no leading digits. i.e. 9:15AM IS NOT 0915 but is 915
+                shiftStarts.Add(int.Parse(row["Shift_Start"].ToString()));
+                shiftEnds.Add(int.Parse(row["Shift_End"].ToString()));
+            }
+            
+            DataTable dt = AppointmentLogic.CalcReservationTimeslots(staffID, shiftStarts, shiftEnds, GetBookedTimeslots(date, staffID));
+
+            // Calls Appointment Logic Model class method.
+            return  dt;
+        }
+        
         /*
+         *  Function Purpose: Return DataTable of doctors working on given day with optional filter parameters of doctor name and gender
+         *  
+         *  This function utalises SQL queries which uses Accounts & Schedule Tables FROM the Staff Database to retrieve the:
+         *  Suffix, Firstname, Middlename (if exists), Lastname, Gender, Schdule start time & end time of doctors.
+         *
+         *  IF either optional field is fulfilled, those parameters are also included within the SQL Command arguement to filter results
          *  Return Format of DataTable:
-         *  Suffix | Firstname | Middlename | Lastname | Shift Start | Shift End  (shift start & end are stored in Military Time format)
+         *  Id | Suffix | Firstname | Middlename | Lastname | Shift Start | Shift End  (shift start & end are stored in Military Time format)
          */
-        public static DataTable GetAvaliableDoctors(DateTime date, string doctor, string gender)
+
+         // You might be able to shorten all of this if you dont need all above columns
+        public static DataTable GetWorkingDoctors(DateTime date, string doctor = "None", string gender = "None")
         {
             SQLiteConnection conn = OpenConnection();
             string cmdString = "";
-
-            /* 
-             * This line contains an SQL query which uses Accounts & Schedule Tables FROM the Staff Database to retrieve the:
-             * Suffix, Firstname, Middlename (if exists), Lastname, Gender, Schdule start time & end time of doctors.
-             * IF either optional field is fulfilled, those parameters are also included within the SQL Command arguement.
-             */
             
             // If no optional field defined
             if (doctor == "None" && gender == "None")
             {
-                cmdString = $"SELECT Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End " +
+                cmdString = $"SELECT Accounts.Id, Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End " +
                              "FROM Accounts, Schedule " +
                              "WHERE Accounts.Username = Schedule.Username AND Schedule.Date = @Date";
                 
@@ -54,7 +107,7 @@ namespace Appointment_Mgr.Model
             else if (doctor != "None" && gender == "None")
             {
                 List<string> doctorNames = doctor.Split(' ').ToList();
-                cmdString = $"SELECT Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End "
+                cmdString = $"SELECT Accounts.Id, Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End "
                     + "FROM Accounts, Schedule WHERE Accounts.Username = Schedule.Username AND Schedule.Date = @Date AND Accounts.Firstname = @Firstname AND";
                 if (doctorNames.Count == 3)
                     cmdString = cmdString + " Accounts.Middlename = @Middlename AND Accounts.Lastname = @Lastname";
@@ -81,7 +134,7 @@ namespace Appointment_Mgr.Model
             // If only gender optional field defined
             else if (doctor == "None" && gender != "None")
             {
-                cmdString = $"SELECT Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End " +
+                cmdString = $"SELECT Accounts.Id, Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End " +
                              "FROM Accounts, Schedule " +
                              "WHERE Accounts.Username = Schedule.Username AND Schedule.Date = @Date AND Accounts.Gender = @Gender";
                 SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
@@ -98,7 +151,7 @@ namespace Appointment_Mgr.Model
             else
             {
                 List<string> doctorNames = doctor.Split(' ').ToList();
-                cmdString = $"SELECT Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End "
+                cmdString = $"SELECT Accounts.Id, Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End "
                     + "FROM Accounts, Schedule WHERE Accounts.Username = Schedule.Username AND Schedule.Date = @Date AND Accounts.Firstname = @Firstname AND";
                 if (doctorNames.Count == 3)
                     cmdString = cmdString + " Accounts.Middlename = @Middlename AND Accounts.Lastname = @Lastname";

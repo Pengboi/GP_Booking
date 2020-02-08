@@ -33,7 +33,7 @@ namespace Appointment_Mgr.View
             Calendar.DisplayDateEnd = DateTime.Today.AddDays(14);
 
             DateTime selectedDay = DateTime.Today.AddDays(1);
-            DateTime maxDay = DateTime.Today.AddDays(15);
+            DateTime maxDay = DateTime.Today.AddDays(14);
 
             while (selectedDay != maxDay)
             {

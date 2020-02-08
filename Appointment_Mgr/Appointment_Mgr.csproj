@@ -124,7 +124,7 @@
     <Compile Include="Helper\TabOnInputBehaviour.cs" />
     <Compile Include="Helper\ValidEmailRule.cs" />
     <Compile Include="Helper\TextOnlyRule.cs" />
-    <Compile Include="Model\AverageApptDuration.cs" />
+    <Compile Include="Model\AppointmentLogic.cs" />
     <Compile Include="Model\DataLayerConverters\PatientDBConverter.cs" />
     <Compile Include="Model\DataLayerConverters\StaffDBConverter.cs" />
     <Compile Include="Model\PatientUser.cs" />
