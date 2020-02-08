@@ -85,7 +85,9 @@
 
                 <Calendar x:Name="Calendar" HorizontalAlignment="Center" Margin="0,0,0,20"
                           FirstDayOfWeek="Monday" Loaded="FormatCalendar" 
-                          IsTodayHighlighted="False" SelectedDate="{Binding SelectedDate, Mode=TwoWay}" >
+                          IsTodayHighlighted="False" 
+                          SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                          >
 
                 </Calendar>
             </StackPanel>

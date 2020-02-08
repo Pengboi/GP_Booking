@@ -45,8 +45,12 @@ namespace Appointment_Mgr.ViewModel
         }
         public DateTime SelectedDate
         {
-            get;
-            set;
+            get { return _selectedDate; }
+            set 
+            {
+                _selectedDate = value.Date;
+                RaisePropertyChanged("SelectedDate");
+            }
         }
 
         public ReservationAppointmentViewModel() 
@@ -66,7 +70,13 @@ namespace Appointment_Mgr.ViewModel
                 else
                     SelectedDate = DateTime.Now.AddDays(1).Date;
             }
+            Console.WriteLine("At VM level");
+            Console.WriteLine(SelectedDate + " " + RequestedDoctor + " " + RequestedGender);
+            AvaliableTimes = StaffDBConverter.GetAvaliableTimeslots(SelectedDate, RequestedDoctor, RequestedGender);
+        }
 
+        public void UpdateTimeslots() 
+        {
             AvaliableTimes = StaffDBConverter.GetAvaliableTimeslots(SelectedDate, RequestedDoctor, RequestedGender);
         }
 

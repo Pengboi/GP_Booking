@@ -55,8 +55,9 @@ namespace Appointment_Mgr.Model
 
         public static int getTimeDifference(int a, int b) 
         {
-            DateTime startTime = DateTime.ParseExact(a.ToString(), "HHmm", CultureInfo.InvariantCulture);
-            DateTime endTime = DateTime.ParseExact(b.ToString(), "HHmm", CultureInfo.InvariantCulture);
+            // pads strings with leading 0 if time is less than 4 digits i.e. time is "900" for 9AM --> "0900"
+            DateTime startTime = DateTime.ParseExact(a.ToString().PadLeft(4, '0'), "HHmm", CultureInfo.InvariantCulture);
+            DateTime endTime = DateTime.ParseExact(b.ToString().PadLeft(4, '0'), "HHmm", CultureInfo.InvariantCulture);
 
             return (int)endTime.Subtract(startTime).TotalMinutes;
         }
@@ -72,14 +73,12 @@ namespace Appointment_Mgr.Model
             List<List<int>> reservationTimeslots = new List<List<int>>(); // All possible appointments
 
             //Debugging
-            if ((starts != null) && (!starts.Any())) 
-            {
-                Console.WriteLine("YOU FYCJHSDAIUOFHDSAUIJKFHDSAIUJFHSDUIFHSUDI YOURSELF");
-            }
+            Console.WriteLine("id length ~ starts length ~ ends length ~ bookedTimeslots length");
+            Console.WriteLine(ids.Count + " " + starts.Count + " " + ends.Count + " " + bookedTimeslots.Count);
 
             // ERROR: Code will not run as all lists are recognised as "Empty" as shown by debugging print statement above which was printed below during runtime.
             // POSSIBLE SOLUTION: Check StaffDBConverter to ensure Lists are properly defined from DataTable values.
-            foreach (int element in starts)
+            for (int element=0; element < starts.Count; element++)
             {
                 /*
                  *    - shiftDuration calculates length of each doctors shift in minutes
@@ -87,7 +86,9 @@ namespace Appointment_Mgr.Model
                  *      & their scheduled work hours.
                  *  Half of predicted possible appointments for each doctor working are reserverd as reservation only, with 50/50 priority on same-day to reservation
                  */
-                int shiftDuration = getTimeDifference(starts[element], ends[element]);
+                Console.WriteLine(starts[element].ToString());
+                Console.WriteLine(ends[element].ToString());
+                int shiftDuration = getTimeDifference(starts[element], ends[element]); //error here
                 int predictedAppointments = shiftDuration / averageDuration;
                 int reservationsPerHour = (predictedAppointments / (shiftDuration / 60)) / 2; //reservations per hour = average per hour / 2
 
@@ -97,7 +98,8 @@ namespace Appointment_Mgr.Model
                 Console.WriteLine("Shift Duration: " + shiftDuration + " Predicted Appointments: " + predictedAppointments + " reservations Per Hour: " + reservationsPerHour);
 
                 List<int> timeslots = new List<int>();
-                while (currentTime != ends[element])
+               
+                while (currentTime < ends[element])
                 {
                     // If more than an hour remains in doctor's shift, add reservation times (otherwise last hour of shift doctor will support walk-in appointments)
                     // I.E: In event where doctor is scheduled 10AM - 5:30PM: 10AM - 5PM Timeslots are calculated, remaining 30minutes doctor will support walk-in
@@ -124,7 +126,7 @@ namespace Appointment_Mgr.Model
                 avaliableTimes.RemoveAll(timeslot => existingTimes.Contains(timeslot)); //lambda expression removes all avaliable times ints that are also in existingtimes for any given doctor
                 reservationTimeslots[i] = avaliableTimes;
             }
-
+            
             DataTable doctorTimeslots = new DataTable();
             doctorTimeslots.Columns.Add("Doctor_ID");
             doctorTimeslots.Columns.Add("Avaliable_Reservations");
@@ -133,8 +135,8 @@ namespace Appointment_Mgr.Model
             {
                 for (int j = 0; j < reservationTimeslots[i].Count; j++) 
                 {
-                    doctorTimeslots.Rows.Add(ids[i], reservationTimeslots[j]);
-                    Console.WriteLine("ROW ------ ID: " + ids[i].ToString() + "   TIMESLOTS: " + reservationTimeslots[j].ToString());
+                    doctorTimeslots.Rows.Add(ids[i], reservationTimeslots[i][j]);
+                    Console.WriteLine("ROW ------ ID: " + ids[i].ToString() + "   TIMESLOTS: " + reservationTimeslots[i][j].ToString());
                 }
             }
 

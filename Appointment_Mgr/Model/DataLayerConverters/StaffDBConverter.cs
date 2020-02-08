@@ -23,14 +23,14 @@ namespace Appointment_Mgr.Model
         {
             List<List<int>> bookedTimeslots = new List<List<int>>();
 
-            SQLiteConnection conn = OpenConnection();
+            SQLiteConnection conn = OpenConnection("Patients");
 
             foreach (int id in ids) 
             {
                 List<int> selectedDoctorTimeslots = new List<int>();
 
-                string cmdString = @"SELECT Booked_Appointment.Appointment_Time " +
-                                     "FROM Booked_Appointment WHERE Date = @date AND Assigned_Doctor_ID = @id ";
+                string cmdString = @"SELECT Booked_Appointments.Appointment_Time " +
+                                     "FROM Booked_Appointments WHERE Date = @date AND Assigned_Doctor_ID = @id ";
                 SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
                 cmd.Prepare();
                 cmd.Parameters.Add("@Date", DbType.String).Value = date;
@@ -49,6 +49,7 @@ namespace Appointment_Mgr.Model
 
         public static DataTable GetAvaliableTimeslots(DateTime date, string doctor = "None", string gender = "None") 
         {
+            date = date.Date;
             DataTable workingDoctors = GetWorkingDoctors(date, doctor, gender); //Dont delete name rows so you know if someone selects a doctor/gender pref, which doctor to use as assigned doctor in DB
 
             // Doctor shift start & end times stored to be used to calculate 
@@ -57,7 +58,7 @@ namespace Appointment_Mgr.Model
             List<int> shiftEnds = new List<int>();
             foreach (DataRow row in workingDoctors.Rows) 
             {
-                staffID.Add((int)row["Id"]);
+                staffID.Add(int.Parse(row["Id"].ToString()));
                 // PERSONAL NOTE: // //////////
                 // Remember these numbers are stored as ints ---- so no leading digits. i.e. 9:15AM IS NOT 0915 but is 915
                 shiftStarts.Add(int.Parse(row["Shift_Start"].ToString()));
@@ -96,7 +97,7 @@ namespace Appointment_Mgr.Model
                 
                 SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
                 cmd.Prepare();
-                cmd.Parameters.Add("@Date", DbType.String).Value = DateTime.UtcNow.Date.ToString("dd/MM/yyyy");
+                cmd.Parameters.Add("@Date", DbType.String).Value = date.ToShortDateString();
                 SQLiteDataAdapter sqlda = new SQLiteDataAdapter(cmd);
                 DataTable dt = new DataTable("Patient_Data");
                 sqlda.Fill(dt);
@@ -116,7 +117,7 @@ namespace Appointment_Mgr.Model
                 
                 SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
                 cmd.Prepare();
-                cmd.Parameters.Add("@Date", DbType.String).Value = DateTime.UtcNow.Date.ToString("dd/MM/yyyy");
+                cmd.Parameters.Add("@Date", DbType.String).Value = date.ToShortDateString();
                 cmd.Parameters.Add("@Firstname", DbType.String).Value = doctorNames[0];
                 if (doctorNames.Count == 3)
                 {
@@ -139,7 +140,7 @@ namespace Appointment_Mgr.Model
                              "WHERE Accounts.Username = Schedule.Username AND Schedule.Date = @Date AND Accounts.Gender = @Gender";
                 SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
                 cmd.Prepare();
-                cmd.Parameters.Add("@Date", DbType.String).Value = DateTime.UtcNow.Date.ToString("dd/MM/yyyy");
+                cmd.Parameters.Add("@Date", DbType.String).Value = date.ToShortDateString();
                 cmd.Parameters.Add("@Gender", DbType.String).Value = gender;
                 SQLiteDataAdapter sqlda = new SQLiteDataAdapter(cmd);
                 DataTable dt = new DataTable("Patient_Data");
@@ -160,7 +161,7 @@ namespace Appointment_Mgr.Model
                 cmdString = cmdString + " AND Accounts.Gender = @Gender";
                 SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
                 cmd.Prepare();
-                cmd.Parameters.Add("@Date", DbType.String).Value = DateTime.UtcNow.Date.ToString("dd/MM/yyyy");
+                cmd.Parameters.Add("@Date", DbType.String).Value = date.ToShortDateString();
                 if (doctorNames.Count == 3)
                 {
                     cmd.Parameters.Add("@Middlename", DbType.String).Value = doctorNames[1];
