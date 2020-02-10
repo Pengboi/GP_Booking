@@ -19,6 +19,25 @@ namespace Appointment_Mgr.Model
             return connection;
         }
 
+        public static List<string> GetDoctorList() 
+        {
+            List<string> doctorList = new List<string> { "None" };
+
+            SQLiteConnection conn = OpenConnection();
+            string cmdString = $"SELECT Suffix || ' ' || Firstname || COALESCE(' ' || Middlename, '') || ' ' || Lastname " +
+                                "FROM Accounts " +
+                                "WHERE Account_Type = 2";
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            SQLiteDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                doctorList.Add(reader[0].ToString());
+            }
+            reader.Close();
+            conn.Close();
+            return doctorList;
+        }
+
         public static List<List<int>> GetBookedTimeslots(DateTime date, List<int> ids) 
         {
             List<List<int>> bookedTimeslots = new List<List<int>>();
@@ -107,7 +126,9 @@ namespace Appointment_Mgr.Model
             // If only doctor optional field defined
             else if (doctor != "None" && gender == "None")
             {
+                doctor = doctor.Substring(4, doctor.Length - 4); // Removes suffix + leading whitespace from selected doctor name
                 List<string> doctorNames = doctor.Split(' ').ToList();
+
                 cmdString = $"SELECT Accounts.Id, Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End "
                     + "FROM Accounts, Schedule WHERE Accounts.Username = Schedule.Username AND Schedule.Date = @Date AND Accounts.Firstname = @Firstname AND";
                 if (doctorNames.Count == 3)
@@ -151,17 +172,18 @@ namespace Appointment_Mgr.Model
             // If both optional fields defined
             else
             {
+                doctor = doctor.Substring(4, doctor.Length - 4); // Removes suffix + leading whitespace from selected doctor name
                 List<string> doctorNames = doctor.Split(' ').ToList();
                 cmdString = $"SELECT Accounts.Id, Accounts.Suffix, Accounts.Firstname, Accounts.Middlename, Accounts.Lastname, Schedule.Shift_Start, Schedule.Shift_End "
-                    + "FROM Accounts, Schedule WHERE Accounts.Username = Schedule.Username AND Schedule.Date = @Date AND Accounts.Firstname = @Firstname AND";
+                    + "FROM Accounts, Schedule WHERE Accounts.Username = Schedule.Username AND Schedule.Date = @Date AND Accounts.Gender = @Gender AND Accounts.Firstname = @Firstname AND";
                 if (doctorNames.Count == 3)
                     cmdString = cmdString + " Accounts.Middlename = @Middlename AND Accounts.Lastname = @Lastname";
                 else
                     cmdString = cmdString + " Accounts.Lastname = @Lastname";
-                cmdString = cmdString + " AND Accounts.Gender = @Gender";
                 SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
                 cmd.Prepare();
                 cmd.Parameters.Add("@Date", DbType.String).Value = date.ToShortDateString();
+                cmd.Parameters.Add("@Firstname", DbType.String).Value = doctorNames[0];
                 if (doctorNames.Count == 3)
                 {
                     cmd.Parameters.Add("@Middlename", DbType.String).Value = doctorNames[1];

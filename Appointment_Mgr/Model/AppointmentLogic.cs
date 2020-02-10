@@ -135,8 +135,10 @@ namespace Appointment_Mgr.Model
             {
                 for (int j = 0; j < reservationTimeslots[i].Count; j++) 
                 {
-                    doctorTimeslots.Rows.Add(ids[i], reservationTimeslots[i][j]);
-                    Console.WriteLine("ROW ------ ID: " + ids[i].ToString() + "   TIMESLOTS: " + reservationTimeslots[i][j].ToString());
+                    string timeslot = reservationTimeslots[i][j].ToString("D4");
+                    timeslot = timeslot.Insert(timeslot.Length - 2, ":");
+                    doctorTimeslots.Rows.Add(ids[i], timeslot);
+                    Console.WriteLine("ROW ------ ID: " + ids[i].ToString() + "   TIMESLOTS: " + timeslot.ToString());
                 }
             }
 

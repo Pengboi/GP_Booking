@@ -25,3 +25,6 @@ CHANGES:
 Anywhere where you want to ask for gender use RADIO buttons
 
 
+Violations of MVVM:
+
+	-	ReservationAppointment code behind

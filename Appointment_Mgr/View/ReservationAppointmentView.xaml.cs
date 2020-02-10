@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,7 @@ namespace Appointment_Mgr.View
             DateTime selectedDay = DateTime.Today.AddDays(1);
             DateTime maxDay = DateTime.Today.AddDays(14);
 
-            while (selectedDay != maxDay)
+            while (selectedDay != maxDay.AddDays(1))
             {
                 if ((selectedDay.DayOfWeek == DayOfWeek.Saturday) || (selectedDay.DayOfWeek == DayOfWeek.Sunday))
                 {
@@ -43,6 +44,14 @@ namespace Appointment_Mgr.View
                 }
                 selectedDay = selectedDay.AddDays(1);
             }
+        }
+
+        //Violates MVVM Single Respondsibility
+
+        private void FilterSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Sends changed date to viewmodel
+            Messenger.Default.Send<DateTime>(DateTime.Now);
         }
     }
 }
