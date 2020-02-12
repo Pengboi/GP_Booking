@@ -6,6 +6,10 @@ Account types:
 	3:	HR/IT (Management accounts for scheduling access)
 
 
+
+PORT TO CROSS PLATFORM:
+https://docs.microsoft.com/en-us/xamarin/cross-platform/desktop/porting
+
 AMD Notes:
 
 ESSENTIAL NOTES: MoSCoW Priority Ranking
@@ -49,3 +53,13 @@ Questions for 12/02/20 Meeting with Keith
 
 
 	Q:	How critically is code assessed? Is Time-Complexity/Big-O notation something that is considered when assessing work?
+
+	Q: Basically, what do you think?
+
+
+	Software product:
+
+	Know which group of people will use it
+
+
+	User features

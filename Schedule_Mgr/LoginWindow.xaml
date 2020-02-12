@@ -36,9 +36,9 @@
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="400" MaxWidth="400" Margin="50, 0, 50, 0"
                         FocusManager.FocusedElement="{Binding ElementName=UsernameBox}">
                 <TextBox x:Name="UsernameBox" materialDesign:HintAssist.Hint="Username" 
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="15" />
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0" FontSize="20" />
                 <PasswordBox x:Name="passwordBox" materialDesign:HintAssist.Hint="Password" 
-                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 10, 30, 0" FontSize="15"/>
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 10, 30, 0" FontSize="20"/>
             </StackPanel>
             <Button x:Name="loginButton" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                     MinWidth="230" MinHeight="60" Margin="146,0,146,79"
