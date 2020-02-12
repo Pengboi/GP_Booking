@@ -28,3 +28,24 @@ Anywhere where you want to ask for gender use RADIO buttons
 Violations of MVVM:
 
 	-	ReservationAppointment code behind
+
+
+
+Questions for 12/02/20 Meeting with Keith
+
+	-	It must show a familiarity with the relevant literature, especially with reports of previous work on the problems involved in the project and with suggested solutions to them.
+	Q:	What literature would I need to include within the report? Do I need to shape my report around being an "improved version" of a existing system or can I form it around how I 
+		would envision a GP appointment with same-day / reservation priority would function?
+
+	-	The report must include a description of the requirements for the project and of the way in which the implementation or development of the project will meet these requirements.
+		If the project work has involved the writing of computer programs, then there should be an explicit well designed series of tests to show that these programs are free from errors and meet the requirements of the project.
+	Q:	Unit-Testing on c#
+
+
+	Q:	Will I get penalised for using MVVM software architecture model for AMD but not for the SMG system?
+
+
+	Q:	Is the project complex enough to achieve >70% if the report is done well.
+
+
+	Q:	How critically is code assessed? Is Time-Complexity/Big-O notation something that is considered when assessing work?
