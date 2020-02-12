@@ -114,9 +114,11 @@
                        FontSize="15"
                        Content="Please select the desired avaliable timeslot for your appointment.">
                 </Label>
-                <ListView ItemsSource="{Binding}" DataContext="{Binding Path=AvaliableTimes, UpdateSourceTrigger=PropertyChanged}"
+                <ListView ItemsSource="{Binding}"
+                          DataContext="{Binding Path=AvaliableTimes, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedIndex="{Binding SelectedTimeslot, Mode=TwoWay}"
                           FontSize="15"
-                          HorizontalAlignment="Center">
+                          HorizontalAlignment="Center" >
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Avaliable Timeslots" DisplayMemberBinding="{Binding Path=Avaliable_Reservations}">
@@ -125,14 +127,15 @@
                     </ListView.View>
                 </ListView>
                 <Label FontSize="40"
-                       HorizontalAlignment="Center"
+                       HorizontalAlignment="Center" Margin="0,50,0,0"
                        Content="{Binding NoAvaliableTime}">
                 </Label>
                 
             </StackPanel>
             <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                     Margin="0,0,0,60" Height="100"  Width="300"
-                    Content="Reserve Appointment" FontSize="25">
+                    Content="Reserve Appointment" FontSize="25"
+                    Command="{Binding BookAppointmentCommand}">
             </Button>
         </Grid>
     </ScrollViewer>

@@ -15,6 +15,7 @@ namespace Appointment_Mgr.ViewModel
     {
         private List<string> _genders = new List<string> {"None", "Male", "Female" }, _doctors = StaffDBConverter.GetDoctorList();
         private string _requestedDoctor = "None", _requestedGender = "None", _noAvaliableDate = "";
+        private int _selectedTimeslot;
         private DateTime _selectedDate = DateTime.Now.AddDays(1).Date;
         private DataTable _avaliableTimes;
 
@@ -66,6 +67,17 @@ namespace Appointment_Mgr.ViewModel
                 RaisePropertyChanged("SelectedDate");
             }
         }
+        public int SelectedTimeslot 
+        {
+            get { return _selectedTimeslot; }
+            set 
+            {
+                _selectedTimeslot = value;
+                RaisePropertyChanged("SelectedTimeslot");
+            } 
+        }
+
+        public RelayCommand BookAppointmentCommand { get; set; }
 
         public ReservationAppointmentViewModel() 
         {
@@ -96,6 +108,7 @@ namespace Appointment_Mgr.ViewModel
                     this,
                     ( action ) => UpdateTimeslots()
                 );
+            BookAppointmentCommand = new RelayCommand(BookAppointment);
         }
 
         public void UpdateTimeslots() 
@@ -105,6 +118,13 @@ namespace Appointment_Mgr.ViewModel
                 NoAvaliableTime = "No Avaliable Times.";
             else
                 NoAvaliableTime = "";
+        }
+
+        public void BookAppointment() 
+        {
+            Console.WriteLine("Got here.");
+            Console.WriteLine(SelectedTimeslot);
+
         }
     }
 }
