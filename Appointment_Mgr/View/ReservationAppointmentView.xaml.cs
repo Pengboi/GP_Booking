@@ -53,5 +53,11 @@ namespace Appointment_Mgr.View
             // Sends changed date to viewmodel
             Messenger.Default.Send<DateTime>(DateTime.Now);
         }
+
+        private void ReserveButton_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = int.Parse(TimeListView.SelectedIndex.ToString());
+            Messenger.Default.Send(selectedIndex);
+        }
     }
 }
