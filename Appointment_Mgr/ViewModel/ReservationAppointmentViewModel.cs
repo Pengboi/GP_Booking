@@ -16,7 +16,7 @@ namespace Appointment_Mgr.ViewModel
     public class ReservationAppointmentViewModel : ViewModelBase
     {
         private List<string> _genders = new List<string> { "None", "Male", "Female" }, _doctors = StaffDBConverter.GetDoctorList();
-        private string _requestedDoctor = "None", _requestedGender = "None", _noAvaliableDate = "", _seeThis;
+        private string _requestedDoctor = "None", _requestedGender = "None", _comment = "", _noAvaliableDate = "";
         private int? _selectedTimeslot = null;
         private DateTime _selectedDate = DateTime.Now.AddDays(1).Date;
         private DataTable _avaliableTimes;
@@ -61,6 +61,15 @@ namespace Appointment_Mgr.ViewModel
             {
                 _requestedGender = value;
                 RaisePropertyChanged("RequestedGender");
+            }
+        }
+        public string Comment 
+        {
+            get { return _comment; }
+            set 
+            {
+                _comment = value;
+                RaisePropertyChanged("Comment");
             }
         }
         public DataTable AvaliableTimes
@@ -118,7 +127,6 @@ namespace Appointment_Mgr.ViewModel
                 else
                     SelectedDate = DateTime.Now.AddDays(1).Date;
             }
-            Console.WriteLine("INITIAL DATE: " + SelectedDate + " " + RequestedDoctor + " " + RequestedGender);
             AvaliableTimes = StaffDBConverter.GetAvaliableTimeslots(SelectedDate, RequestedDoctor, RequestedGender);
             if (AvaliableTimes.Rows.Count <= 0)
                 NoAvaliableTime = "No Avaliable Times.";
@@ -144,6 +152,7 @@ namespace Appointment_Mgr.ViewModel
         }
         private void UpdateTimeslotIndex(int index) { TimeslotIndex = index; }
 
+        // Interacts with Data Layer Model to book appointment
         public void BookAppointment()
         {
             if (TimeslotIndex.Equals(-1))
@@ -152,10 +161,14 @@ namespace Appointment_Mgr.ViewModel
                 return;
             }
             string selectedTimeslot = AvaliableTimes.Rows[(int)TimeslotIndex][1].ToString();
-            string reservationDoctorID = AvaliableTimes.Rows[(int)TimeslotIndex][0].ToString();
+            int reservationDoctorID = int.Parse(AvaliableTimes.Rows[(int)TimeslotIndex][0].ToString());
 
-            Alert(selectedTimeslot, reservationDoctorID);
 
+            if (string.IsNullOrWhiteSpace(Comment))
+                Comment = "";
+            
+
+            PatientDBConverter.BookAppointment(selectedTimeslot, reservationDoctorID, 1, Comment, SelectedDate.ToShortDateString());
 
         }
     }

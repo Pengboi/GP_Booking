@@ -65,9 +65,31 @@
         
         <Grid Width="1600" Height="700">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width= "500" />
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="{Binding PatientCaptureWidth}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPatientCaptureVisible}" Value="True">
+                                    <Setter Property="Width" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
                 <ColumnDefinition Width= "300" />
-                <ColumnDefinition Width= "*" />
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="{Binding BookingWidth}"  />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsBookingVisible}" Value="False">
+                                    <Setter Property="Width" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
             </Grid.ColumnDefinitions>
             <!-- Black lines for each column -->
             <Rectangle Grid.Column="0" Width="3" HorizontalAlignment="Right" Fill="#2f3640">
@@ -76,7 +98,7 @@
                                   ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <Rectangle Grid.Column="1" Width="3" HorizontalAlignment="Right" Fill="#2f3640">
+            <Rectangle Grid.Column="2" Width="3" HorizontalAlignment="Left" Fill="#2f3640">
                 <Rectangle.Effect>
                     <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
                                   ShadowDepth="3" Opacity="0.8"/>
@@ -86,16 +108,9 @@
             <!-- Column 1 Elements -->
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
                    FontSize="30" FontWeight="DemiBold" Content="Patient Details" />
-            
+
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="20,80,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="First Name:"/>
-            <Rectangle Grid.Column="0" Width="450" Height="60" VerticalAlignment="Top" Margin="0,120,0,0"
-                       Fill="#f5f6fa" RadiusX="10" RadiusY="10">
-                <Rectangle.Effect>
-                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
-                                      ShadowDepth="3" Opacity="0.8"/>
-                </Rectangle.Effect>
-            </Rectangle>
             <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,130,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*" 
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13" >
@@ -110,13 +125,7 @@
 
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="20,190,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Middle Name:"/>
-            <Rectangle Grid.Column="0" Width="450" Height="60" VerticalAlignment="Top" Margin="0,230,0,0"
-                       Fill="#f5f6fa" RadiusX="10" RadiusY="10">
-                <Rectangle.Effect>
-                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
-                                      ShadowDepth="3" Opacity="0.8"/>
-                </Rectangle.Effect>
-            </Rectangle>
+            
             <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,240,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Optional" 
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
@@ -131,13 +140,7 @@
 
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="20,300,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Last Name:"/>
-            <Rectangle Grid.Column="0" Width="450" Height="70" VerticalAlignment="Top" Margin="0,340,0,0"
-                       Fill="#f5f6fa" RadiusX="10" RadiusY="10">
-                <Rectangle.Effect>
-                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
-                                      ShadowDepth="3" Opacity="0.8"/>
-                </Rectangle.Effect>
-            </Rectangle>
+            
             <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="35,50,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
@@ -164,13 +167,6 @@
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="20,495,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="E-mail Address:"
                    materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13"/>
-            <Rectangle Grid.Column="0" Width="450" Height="70" VerticalAlignment="Top" Margin="0,535,0,0"
-                       Fill="#f5f6fa" RadiusX="10" RadiusY="10">
-                <Rectangle.Effect>
-                    <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
-                                      ShadowDepth="3" Opacity="0.8"/>
-                </Rectangle.Effect>
-            </Rectangle>
             <TextBox Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="35,50,0,115" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
@@ -194,9 +190,10 @@
                     Content="Reservation" FontSize="20" FontWeight="Bold" Command="{Binding ReservationCommand}"></Button>
 
             <!-- Column 3 Elements -->
+            
             <Label Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
                    FontSize="30" FontWeight="DemiBold" Content="Confirm Appointment" />
-            <Grid Visibility="{Binding BookingVisible}" Grid.Column="2" Margin="30,60,30,30">
+            <Grid Visibility="{Binding BookingSubviewVisible}" Grid.Column="2" Margin="30,60,30,30">
                 <Rectangle Grid.Column="1"
                        Fill="#f5f6fa" RadiusX="20" RadiusY="20">
                     <Rectangle.Effect>

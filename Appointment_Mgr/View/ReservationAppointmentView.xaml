@@ -57,9 +57,10 @@
                             Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Left">
                     <Label Content="Comments for the doctor:" Margin="5,0,0,0"
                            FontSize="25" FontWeight="DemiBold" />
-                    <TextBox Grid.Column="1" Margin="10,0,0,0"
+                    <TextBox   Grid.Column="1" Margin="10,0,0,0"
                                Width="450" MaxLength="125"
-                               FontSize="15" TextAlignment="Justify" />
+                               FontSize="15" TextAlignment="Justify"
+                               Text="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Label Grid.Column="1" HorizontalAlignment="Right"
                            Content="(Max 125 characters)" FontSize="13"/>
                 </StackPanel>

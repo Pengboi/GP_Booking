@@ -13,7 +13,11 @@ namespace Appointment_Mgr.ViewModel
 {
     public class BookAppointmentViewModel : MainViewModel
     {
-        private string _bookingVisible = "Hidden";
+        // Patient capture visibility is defined by width. If width = 0, it is hidden, else it is shown
+        private bool _isBookingVisible;
+        private string _patientCaptureWidth = "*", _bookingWidth = "*";
+        
+        private string _bookingSubviewVisible = "Hidden";
 
         public ViewModelBase _appointmentTypeViewModel;
         public ViewModelBase ReservationView { get { return (ViewModelBase)ViewModelLocator.ReservationAppointment; } }
@@ -27,13 +31,40 @@ namespace Appointment_Mgr.ViewModel
         public DateTime? DOB { get; set; }
         public string Email { get; set; }
 
-        public string BookingVisible
+        public string PatientCaptureWidth
         {
-            get { return _bookingVisible; }
+            get { return _patientCaptureWidth; }
             set
             {
-                _bookingVisible = value;
-                RaisePropertyChanged("BookingVisible");
+                _patientCaptureWidth = value;
+                RaisePropertyChanged("PatientCaptureWidth");
+            }
+        }
+        public bool IsBookingVisible
+        {
+            get { return _isBookingVisible; }
+            set
+            {
+                _isBookingVisible = value;
+                RaisePropertyChanged("IsBookingVisible");
+            }
+        }
+        public string BookingWidth
+        {
+            get { return _bookingWidth; }
+            set
+            {
+                _bookingWidth = value;
+                RaisePropertyChanged("BookingWidth");
+            }
+        }
+        public string BookingSubviewVisible
+        {
+            get { return _bookingSubviewVisible; }
+            set
+            {
+                _bookingSubviewVisible = value;
+                RaisePropertyChanged("BookingSubviewVisible");
             }
         }
 
@@ -67,7 +98,7 @@ namespace Appointment_Mgr.ViewModel
             WalkInCommand = new RelayCommand(ShowWalkInView);
             ReservationCommand = new RelayCommand(ShowReservationView);
 
-            BookingVisible = "Hidden";
+            BookingSubviewVisible = "Hidden";
             AppointmentTypeView = ReservationView;
         }
 
@@ -107,9 +138,14 @@ namespace Appointment_Mgr.ViewModel
             {
                 return;
             }
-            
+
+            int patientID = PatientDBConverter.GetPatientID(patient); //************* FINISH IMPLEMENTING
             // Shows the booking view after patient details & desired reservation type verified
-            BookingVisible = "Visible";
+            // sends patient user details as message to view
+            IsBookingVisible = true;
+            BookingSubviewVisible = "Visible";
+            PatientCaptureWidth = "0";
+            MessengerInstance.Send<int>(patientID);
         }
         public void ShowWalkInView() 
         {
@@ -121,7 +157,8 @@ namespace Appointment_Mgr.ViewModel
                 return;
 
             // Change VM of AppointmentTypeView
-            BookingVisible = "Visible";
+            //AppointmentTypeView = *Walk in view*; --> IMPLEMENT CHANGE TO WALKING
+            //BookingVisible = "Visible";
         }
 
        
