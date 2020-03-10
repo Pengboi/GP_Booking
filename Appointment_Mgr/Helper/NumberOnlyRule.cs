@@ -20,7 +20,7 @@ namespace Appointment_Mgr.Helper
             }
             // if not a match
             if (!Regex.IsMatch(str, @"^[0-9]*$"))
-                return new ValidationResult(false, String.Format("Name must contain letters (may appropriate use '-')"));
+                return new ValidationResult(false, String.Format("Field must contain only numbers."));
 
             return new ValidationResult(true, null);
 
