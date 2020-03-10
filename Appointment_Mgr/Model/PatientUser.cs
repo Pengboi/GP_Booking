@@ -16,8 +16,8 @@ namespace Appointment_Mgr.Model
 {
     public class PatientUser : ViewModelBase
     {
-        private int _patientNum;
-        private string _firstname, _middlename, _lastname, _DOB, _gender, _email, _streetNumber, _postcode;
+        private int _patientNum, _streetNumber;
+        private string _firstname, _middlename, _lastname, _DOB, _gender, _email, _postcode;
 
         private static string LoadConnectionString(string id = "Patients") { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
         private SQLiteConnection OpenConnection()
@@ -30,11 +30,12 @@ namespace Appointment_Mgr.Model
 
         //email for contact --> should not be used to identify Patient.
         public PatientUser(string firstname, string middlename, string lastname,
-                           DateTime dob)
+                           DateTime dob, int streetNumber, string postcode)
         {
             this._firstname = firstname.ToLower(); this._middlename = string.IsNullOrWhiteSpace(middlename) ? middlename : middlename.ToLower(); this._lastname = lastname.ToLower();
             this._DOB = dob.ToString("dd/MM/yyyy");
-            Console.WriteLine("firstname: " + _firstname + " Middlename: " + _middlename + " Lastname: " + _lastname + _DOB);
+            this._streetNumber = streetNumber;
+            this._postcode = postcode.ToUpper().Replace(" ", "");
         }
 
         public bool RecordExists()
@@ -42,7 +43,7 @@ namespace Appointment_Mgr.Model
             SQLiteConnection conn = OpenConnection();
             // If middlename is not null, include in search
             string cmdString = $"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(this._middlename) ? " Middlename = @mname AND" : "") +
-                                " Lastname = @lname AND DOB = @dob";
+                                " Lastname = @lname AND DOB = @dob AND ST_Number = @stNum AND Postcode = @postcode";
 
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -52,6 +53,8 @@ namespace Appointment_Mgr.Model
                 cmd.Parameters.Add("@mname", DbType.String).Value = this._middlename;
             cmd.Parameters.Add("@lname", DbType.String).Value = this._lastname;
             cmd.Parameters.Add("@dob", DbType.String).Value = this._DOB;
+            cmd.Parameters.Add("@stNum", DbType.Int32).Value = this._streetNumber;
+            cmd.Parameters.Add("@postcode", DbType.String).Value = this._postcode;
 
 
             int recordFound = Convert.ToInt32(cmd.ExecuteScalar());
@@ -114,7 +117,7 @@ namespace Appointment_Mgr.Model
                 RaisePropertyChanged("Email");
             }
         }
-        public string StreetNo 
+        public int StreetNo 
         {
             get { return _streetNumber; }
             set { value = _streetNumber; RaisePropertyChanged("StreetNo"); }
@@ -155,7 +158,7 @@ namespace Appointment_Mgr.Model
         public void SetPatientNo(int number) { _patientNum = number; }
         public void SetGender(string gender) { _gender = gender; }
         public void SetEmail(string email) { _email = email; }
-        public void SetStreetNum(string number) { _streetNumber = number; }
+        public void SetStreetNum(int number) { _streetNumber = number; }
         public void SetPostcode(string postcode) { _postcode = postcode; }
     }
 }
