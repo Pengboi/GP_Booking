@@ -38,6 +38,7 @@ namespace Appointment_Mgr.Model
             return doctorList;
         }
 
+        // Respondsible for returning all booked appointments for all working doctors on any given working day.
         public static List<List<int>> GetBookedTimeslots(DateTime date, List<int> ids) 
         {
             List<List<int>> bookedTimeslots = new List<List<int>>();
