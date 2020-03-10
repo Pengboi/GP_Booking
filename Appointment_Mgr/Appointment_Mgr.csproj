@@ -116,7 +116,6 @@
       <DependentUpon>OTPBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\OTP\OTPBoxViewModel.cs" />
-    <Compile Include="Helper\CalendarYearView.cs" />
     <Compile Include="Helper\GenderConverter.cs" />
     <Compile Include="Helper\NumberOnlyRule.cs" />
     <Compile Include="Helper\OptionalFieldTextOnlyRule.cs" />

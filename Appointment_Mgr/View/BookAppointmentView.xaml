@@ -109,7 +109,7 @@
             <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
                    FontSize="30" FontWeight="DemiBold" Content="Patient Details" />
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="20,80,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="35,80,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="First Name:"/>
             <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,130,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*" 
@@ -123,10 +123,10 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="20,190,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Margin="0,80,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Middle Name:"/>
             
-            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,240,0,0" Width="420"
+            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="250,130,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Optional" 
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
                 <TextBox.Text>
@@ -138,10 +138,10 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="20,300,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,210,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Last Name:"/>
             
-            <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="35,50,0,0" Width="420"
+            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,260,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
                 <TextBox.Text>
@@ -153,27 +153,54 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="20,420,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Margin="0,210,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Date of Birth: *"/>
-            <DatePicker Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="150" Height="30" Margin="30,0,0,210"
-                        Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}"  >
-                <DatePicker.CalendarStyle>
-                    <Style TargetType="Calendar" BasedOn="{StaticResource {x:Type Calendar}}">
-                        <Setter Property="helper:CalendarYearView.DisplayMode" Value="Year" />
-                    </Style>
-                </DatePicker.CalendarStyle>
+            
+            <DatePicker Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Height="30" Margin="0,265,10,210"
+                        Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}"
+                        CalendarOpened="DatePicker_CalendarOpened">
             </DatePicker>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="20,495,0,0"
-                   FontSize="25" FontWeight="DemiBold" Content="E-mail Address:"
-                   materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13"/>
-            <TextBox Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="35,50,0,115" Width="420"
+            <Label Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left" Margin="30,30,0,0"
+                   FontSize="25" FontWeight="DemiBold" Content="E-mail Address:" />
+            
+            <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="35,230,0,115" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
                 <TextBox.Text>
                     <Binding Path="Email" UpdateSourceTrigger="PropertyChanged" >
                         <Binding.ValidationRules>
                             <helper:ValidEmailRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <Label Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="0,30,0,0"
+                   FontSize="25" FontWeight="DemiBold" Content="Door Number: " />
+
+            <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="250,230,0,115" Width="420"
+                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*" MaxLength="3"
+                     materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
+                <TextBox.Text>
+                    <Binding Path="StreetNo" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <helper:NumberOnlyRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <Label Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Right" Margin="0,30,100,0"
+                   FontSize="25" FontWeight="DemiBold" Content="Post Code: " />
+
+            <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,230,30,115" Width="200"
+                     FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
+                     materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
+                <TextBox.Text>
+                    <Binding Path="Postcode" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <helper:PostcodeRule />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>

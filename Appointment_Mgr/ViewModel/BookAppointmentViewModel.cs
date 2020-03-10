@@ -30,6 +30,8 @@ namespace Appointment_Mgr.ViewModel
         public string Lastname { get; set; }
         public DateTime? DOB { get; set; }
         public string Email { get; set; }
+        public string StreetNo { get; set; }
+        public string Postcode { get; set; }
 
         public string PatientCaptureWidth
         {
@@ -108,7 +110,10 @@ namespace Appointment_Mgr.ViewModel
             if (string.IsNullOrWhiteSpace(Firstname)||
                 string.IsNullOrWhiteSpace(Lastname) ||
                 !DOB.HasValue                       ||
-                string.IsNullOrWhiteSpace(Email)) 
+                string.IsNullOrWhiteSpace(Email)    ||
+                string.IsNullOrWhiteSpace(StreetNo) ||
+                string.IsNullOrWhiteSpace(Postcode)
+               )
             {
                 Alert("Required Fields not Complete", "Please complete all required fields in the patient details form." +
                       " If you are not a registered patient, please speak to the receptionist for further assistance.");
@@ -133,7 +138,8 @@ namespace Appointment_Mgr.ViewModel
             if (RequiredNotComplete())
                 return;
 
-            PatientUser patient = new PatientUser(Firstname, Middlename, Lastname, (DateTime)DOB);
+            Console.WriteLine("ST NUM:" + StreetNo.ToString() + Postcode);
+            PatientUser patient = new PatientUser(Firstname, Middlename, Lastname, (DateTime)DOB, int.Parse(StreetNo), Postcode);
             if (!VerifyPatientDetails(patient)) 
             {
                 return;
@@ -152,7 +158,7 @@ namespace Appointment_Mgr.ViewModel
             if (RequiredNotComplete())
                 return;
 
-            PatientUser patient = new PatientUser(Firstname, Middlename, Lastname, (DateTime)DOB);
+            PatientUser patient = new PatientUser(Firstname, Middlename, Lastname, (DateTime)DOB, int.Parse(StreetNo), Postcode);
             if (!VerifyPatientDetails(patient))
                 return;
 
