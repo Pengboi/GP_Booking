@@ -194,12 +194,8 @@
 
         <DatePicker Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" 
                     Width="180" Height="35" Margin="0,220,80,10"
-                    Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}"  >
-            <DatePicker.CalendarStyle>
-                <Style TargetType="Calendar" BasedOn="{StaticResource {x:Type Calendar}}">
-                    <Setter Property="helper:CalendarYearView.DisplayMode" Value="Year" />
-                </Style>
-            </DatePicker.CalendarStyle>
+                    Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}"
+                    CalendarOpened="DatePicker_CalendarOpened">
         </DatePicker>
 
         <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
