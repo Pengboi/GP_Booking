@@ -20,6 +20,24 @@ namespace Appointment_Mgr.Model
             return connection;
         }
 
+        public static int GetPatientID(PatientUser p) 
+        {
+            SQLiteConnection conn = OpenConnection();
+            // If middlename is not null, include in search
+            string cmdString = $"SELECT Patient# FROM Patient_Data WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(p.Middlename) ? " Middlename = @mname AND" : "") +
+                                " Lastname = @lname AND DOB = @dob";
+
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.Prepare();
+
+            cmd.Parameters.Add("@fname", DbType.String).Value = p.Firstname;
+            if (!string.IsNullOrWhiteSpace(p.Middlename))
+                cmd.Parameters.Add("@mname", DbType.String).Value = p.Middlename;
+            cmd.Parameters.Add("@lname", DbType.String).Value = p.Lastname;
+            cmd.Parameters.Add("@dob", DbType.String).Value = p.DOB;
+
+            return 0;
+        }
         public static DataTable GetPatients()
         {
             
@@ -51,11 +69,16 @@ namespace Appointment_Mgr.Model
         {
             string cmdString = @"DELETE FROM Patient_Data WHERE Firstname in (SELECT Firstname FROM Patient_Data LIMIT 1 OFFSET " 
                 + index + ")";
-            Console.WriteLine(cmdString); //DEBUG
             SQLiteConnection conn = OpenConnection("Patients");
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.ExecuteNonQuery();
             conn.Close();
+        }
+
+        public static void BookAppointment(string timeslot, int doctorID, int patientID, string comment = null, string date = null) 
+        {
+            if (date == null)
+                date = DateTime.Today.ToShortDateString();
         }
     }
 }

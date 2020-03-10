@@ -72,10 +72,6 @@ namespace Appointment_Mgr.Model
              */
             List<List<int>> reservationTimeslots = new List<List<int>>(); // All possible appointments
 
-            //Debugging
-            Console.WriteLine("id length ~ starts length ~ ends length ~ bookedTimeslots length");
-            Console.WriteLine(ids.Count + " " + starts.Count + " " + ends.Count + " " + bookedTimeslots.Count);
-
             // ERROR: Code will not run as all lists are recognised as "Empty" as shown by debugging print statement above which was printed below during runtime.
             // POSSIBLE SOLUTION: Check StaffDBConverter to ensure Lists are properly defined from DataTable values.
             for (int element=0; element < starts.Count; element++)
@@ -118,6 +114,7 @@ namespace Appointment_Mgr.Model
                 reservationTimeslots.Add(timeslots);
             }
 
+            // Removes any timeslots which have already been booked, filtering only avaliable timeslots.
             for (int i=0; i < reservationTimeslots.Count; i++) 
             {
                 List<int> existingTimes = bookedTimeslots[i];
@@ -141,6 +138,11 @@ namespace Appointment_Mgr.Model
                     Console.WriteLine("ROW ------ ID: " + ids[i].ToString() + "   TIMESLOTS: " + timeslot.ToString());
                 }
             }
+
+            // Code sorts datatable based on timeslots in ascending order.
+            DataView sortTimeslots = doctorTimeslots.DefaultView;
+            sortTimeslots.Sort = "Avaliable_Reservations asc";
+            doctorTimeslots = sortTimeslots.ToTable();
 
             return doctorTimeslots;
         }
