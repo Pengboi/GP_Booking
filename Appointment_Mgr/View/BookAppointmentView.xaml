@@ -61,9 +61,8 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        
-        
-        <Grid Width="1600" Height="700">
+
+        <Grid Width="1600" Height="800" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition>
                     <ColumnDefinition.Style>
@@ -92,26 +91,35 @@
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
             <!-- Black lines for each column -->
-            <Rectangle Grid.Column="0" Width="3" HorizontalAlignment="Right" Fill="#2f3640">
+            <Rectangle Grid.Column="0" Width="3" HorizontalAlignment="Right" Fill="#2f3640" Height="700">
                 <Rectangle.Effect>
                     <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
                                   ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <Rectangle Grid.Column="2" Width="3" HorizontalAlignment="Left" Fill="#2f3640">
+            <Rectangle Grid.Column="2" Width="3" HorizontalAlignment="Left" Fill="#2f3640" Height="700">
                 <Rectangle.Effect>
                     <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
                                   ShadowDepth="3" Opacity="0.8"/>
                 </Rectangle.Effect>
             </Rectangle>
-
+            
+            <!-- Back button to home view -->
+            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Height="50" Width="80"
+                FontWeight="Bold" FontSize="19"
+                Background="Transparent" BorderThickness="0"
+                Command="{Binding ShowHomeView}" Grid.ColumnSpan="2" >
+                <Image Source="pack://application:,,,/Assets/Back-icon.png"></Image>
+            </Button>
+            
             <!-- Column 1 Elements -->
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="300"
+                   Margin="0,50,0,0"
                    FontSize="30" FontWeight="DemiBold" Content="Patient Details" />
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="35,80,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="35,130,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="First Name:"/>
-            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,130,0,0" Width="420"
+            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,180,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*" 
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13" >
                 <TextBox.Text>
@@ -123,10 +131,10 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Margin="0,80,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Margin="0,130,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Middle Name:"/>
-            
-            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="250,130,0,0" Width="420"
+
+            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="250,180,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Optional" 
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
                 <TextBox.Text>
@@ -138,10 +146,10 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,210,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Left" Margin="30,260,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Last Name:"/>
-            
-            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,260,0,0" Width="420"
+
+            <TextBox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,310,0,0" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
                 <TextBox.Text>
@@ -153,17 +161,17 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Margin="0,210,0,0"
+            <Label Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Margin="0,260,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="Date of Birth: *"/>
-            
-            <DatePicker Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Height="30" Margin="0,265,10,210"
+
+            <DatePicker Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Height="30" Margin="0,315,10,210"
                         Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}"
                         CalendarOpened="DatePicker_CalendarOpened">
             </DatePicker>
 
             <Label Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left" Margin="30,30,0,0"
                    FontSize="25" FontWeight="DemiBold" Content="E-mail Address:" />
-            
+
             <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="35,230,0,115" Width="420"
                      FontSize="20" Style="{StaticResource placeHolder}" Tag="Required*"
                      materialDesign:ValidationAssist.PopupPlacement="Absolute" materialDesign:ValidationAssist.Background="#ffeaa7" materialDesign:ValidationAssist.FontSize="13">
@@ -207,7 +215,8 @@
             </TextBox>
 
             <!-- Column 2 Elements -->
-            <Label Grid.Column="1" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
+            <Label Grid.Column="1" VerticalAlignment="Top" HorizontalContentAlignment="Center"
+                   Margin="0,50,0,0"
                    FontSize="30" FontWeight="DemiBold" Content="Appointment Type" />
 
             <Button Grid.Column="1" VerticalAlignment="Top" Width="250" Height="100" Margin="0,200,0,0"
@@ -217,21 +226,27 @@
                     Content="Reservation" FontSize="20" FontWeight="Bold" Command="{Binding ReservationCommand}"></Button>
 
             <!-- Column 3 Elements -->
-            
-            <Label Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
-                   FontSize="30" FontWeight="DemiBold" Content="Confirm Appointment" />
+            <Button Grid.Column="2"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,60,0,0" Height="40" Width="70"
+                FontWeight="Bold" FontSize="19"
+                Style="{DynamicResource MaterialDesignFlatAccentBgButton}"
+                Command="{Binding ShowPatientCapture}">
+                <Image Source="pack://application:,,,/Assets/Back-icon.png"></Image>
+            </Button>
+
+            <Label Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Center"
+                   Margin="0,50,0,0"
+                   FontSize="30" FontWeight="DemiBold" Content="Confirm Appointment" Width="400" />
             <Grid Visibility="{Binding BookingSubviewVisible}" Grid.Column="2" Margin="30,60,30,30">
-                <Rectangle Grid.Column="1"
+                <Rectangle Grid.Column="1" Margin="0,50,0,50"
                        Fill="#f5f6fa" RadiusX="20" RadiusY="20">
                     <Rectangle.Effect>
                         <DropShadowEffect Color="#FF838383" Direction="180" RenderingBias="Quality" BlurRadius="10"
                                       ShadowDepth="3" Opacity="0.8"/>
                     </Rectangle.Effect>
                 </Rectangle>
-                <ContentControl Content="{Binding AppointmentTypeView}"/>
+                <ContentControl Margin="0,50,0,50" Content="{Binding AppointmentTypeView}"/>
             </Grid>
-
         </Grid>
-
     </Grid>
 </UserControl>

@@ -8,6 +8,7 @@ using Appointment_Mgr.Model;
 using Appointment_Mgr.Dialog;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Appointment_Mgr.ViewModel
 {
@@ -24,6 +25,8 @@ namespace Appointment_Mgr.ViewModel
 
         public RelayCommand WalkInCommand { private set; get; }
         public RelayCommand ReservationCommand { private set; get; }
+        public RelayCommand ShowPatientCapture { private set; get; }
+        public RelayCommand ShowHomeView { private set; get; }
 
         public string Firstname { get; set; }
         public string Middlename { get; set; }
@@ -102,6 +105,8 @@ namespace Appointment_Mgr.ViewModel
 
             BookingSubviewVisible = "Hidden";
             AppointmentTypeView = ReservationView;
+            ShowPatientCapture = new RelayCommand(ShowPatientGrid);
+            ShowHomeView = new RelayCommand(ShowHome);
         }
 
         private bool RequiredNotComplete()
@@ -167,6 +172,16 @@ namespace Appointment_Mgr.ViewModel
             //BookingVisible = "Visible";
         }
 
-       
+        public void ShowPatientGrid() 
+        {
+            IsBookingVisible = false;
+            //BookingWidth = "0";
+            PatientCaptureWidth = "*";
+        }
+
+        public void ShowHome()
+        {
+            Messenger.Default.Send<string>("DecideHomeView");
+        }
     }
 }

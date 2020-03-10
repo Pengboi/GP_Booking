@@ -136,6 +136,27 @@ namespace Appointment_Mgr.ViewModel
                 CurrentToolbarViewModel = HomeToolbarVM;
                 ViewModelLocator.Cleanup();
             }
+            if (value == "DecideHomeView") 
+            {
+                if (CurrentToolbarViewModel.GetType().ToString() == "Appointment_Mgr.ViewModel.ReceptionistToolbarViewModel")
+                {
+                    CurrentViewModel = ReceptionistVM;
+                }
+                else if (CurrentToolbarViewModel.GetType().ToString() == "Appointment_Mgr.ViewModel.HomeToolbarViewModel") 
+                {
+                    //Re-add the Messengers defined in the constructor which have been cleared
+                    Messenger.Default.Register<StaffUser>
+                    (
+                        this,
+                        (action) => ReceiveLoginMessage(action)
+                    );
+                    Messenger.Default.Register<string>(this, ChangeView);
+
+                    CurrentViewModel = HomeVM;
+                    CurrentToolbarViewModel = HomeToolbarVM;
+                    ViewModelLocator.Cleanup();
+                }
+            }
 
             if (value == "BookingView")
                 CurrentViewModel = BookingVM;

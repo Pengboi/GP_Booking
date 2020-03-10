@@ -333,6 +333,7 @@
     <Resource Include="Assets\Confirmation-icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Back-icon.png" />
     <Content Include="AverageTAT\AvgApptDuration.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
