@@ -13,7 +13,7 @@ namespace Appointment_Mgr.Model
     public class PatientDBConverter
     {
         private static string LoadConnectionString(string id) { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
-        public static SQLiteConnection OpenConnection(string id = "Staff")
+        public static SQLiteConnection OpenConnection(string id = "Patients")
         {
             SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(id));
             connection.Open();
@@ -24,8 +24,8 @@ namespace Appointment_Mgr.Model
         {
             SQLiteConnection conn = OpenConnection();
             // If middlename is not null, include in search
-            string cmdString = $"SELECT Patient# FROM Patient_Data WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(p.Middlename) ? " Middlename = @mname AND" : "") +
-                                " Lastname = @lname AND DOB = @dob";
+            string cmdString = $"SELECT \"Patient#\" FROM Patient_Data WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(p.Middlename) ? " Middlename = @mname AND" : "") +
+                                " Lastname = @lname AND DOB = @dob AND ST_Number = @stNum AND Postcode = @postcode";
 
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
@@ -34,15 +34,19 @@ namespace Appointment_Mgr.Model
             if (!string.IsNullOrWhiteSpace(p.Middlename))
                 cmd.Parameters.Add("@mname", DbType.String).Value = p.Middlename;
             cmd.Parameters.Add("@lname", DbType.String).Value = p.Lastname;
-            cmd.Parameters.Add("@dob", DbType.String).Value = p.DOB;
+            cmd.Parameters.Add("@dob", DbType.String).Value = p.DOB.ToShortDateString();
+            cmd.Parameters.Add("@stNum", DbType.Int32).Value = p.StreetNo;
+            cmd.Parameters.Add("@postcode", DbType.String).Value = p.Postcode;
 
-            return 0;
+            //returns patient's ID number
+            int pID = int.Parse(cmd.ExecuteScalar().ToString());
+            return pID;
         }
         public static DataTable GetPatients()
         {
             
             //load from db into pList
-            SQLiteConnection conn = OpenConnection("Patients");
+            SQLiteConnection conn = OpenConnection();
             string cmdString = $"SELECT * FROM Patient_Data";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             SQLiteDataAdapter sqlda = new SQLiteDataAdapter(cmd);
@@ -56,7 +60,7 @@ namespace Appointment_Mgr.Model
         public static void SaveChanges(DataTable dt) 
         {
             string cmdString = "SELECT * FROM Patient_Data";
-            SQLiteConnection conn = OpenConnection("Patients");
+            SQLiteConnection conn = OpenConnection();
             SQLiteDataAdapter sqlDa = new SQLiteDataAdapter();
             sqlDa.SelectCommand = new SQLiteCommand(cmdString, conn);
             sqlDa.Fill(dt);
@@ -69,16 +73,30 @@ namespace Appointment_Mgr.Model
         {
             string cmdString = @"DELETE FROM Patient_Data WHERE Firstname in (SELECT Firstname FROM Patient_Data LIMIT 1 OFFSET " 
                 + index + ")";
-            SQLiteConnection conn = OpenConnection("Patients");
+            SQLiteConnection conn = OpenConnection();
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.ExecuteNonQuery();
             conn.Close();
         }
 
-        public static void BookAppointment(string timeslot, int doctorID, int patientID, string comment = null, string date = null) 
+        public static void BookAppointment(string timeslot, int doctorID, int patientID, string notes = null, string date = null) 
         {
             if (date == null)
                 date = DateTime.Today.ToShortDateString();
+
+            string cmdString = @"INSERT INTO Booked_Appointments (Date, Patient_ID, Assigned_Doctor_ID, Patient_Notes, Appointment_Time)
+                                 VALUES (@date, @patientID, @doctorID, @patientNotes, @apptTime)";
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, OpenConnection());
+
+            cmd.Parameters.Add("@date", DbType.String).Value = date;
+            cmd.Parameters.Add("@patientID", DbType.Int32).Value = patientID;
+            cmd.Parameters.Add("@doctorID", DbType.Int32).Value = doctorID;
+            if (string.IsNullOrWhiteSpace(notes))
+                cmd.Parameters.Add("@patientNotes", DbType.String).Value = DBNull.Value;
+            else
+                cmd.Parameters.Add("@patientNotes", DbType.String).Value = notes;
+            cmd.Parameters.Add("@apptTime", DbType.Int32).Value = int.Parse(timeslot.Replace(":", ""));
+            cmd.ExecuteNonQuery();
         }
     }
 }
