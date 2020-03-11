@@ -151,7 +151,7 @@ namespace Appointment_Mgr.ViewModel
                 );
             Messenger.Default.Register<int>(this, UpdateTimeslotIndex);
             // When patientID message is received (from PatientDBConverter), set patient ID in VM.
-            Messenger.Default.Register<NotificationMessage>(this, SetPatientID);
+            Messenger.Default.Register<int>(this, SetPatientID);
             BookAppointmentCommand = new RelayCommand(BookAppointment);
         }
 
@@ -167,7 +167,8 @@ namespace Appointment_Mgr.ViewModel
                 NoAvaliableTime = "";
         }
         private void UpdateTimeslotIndex(int index) { TimeslotIndex = index; }
-        private void SetPatientID(NotificationMessage msg) { patientID = int.Parse(msg.Notification); }
+        // BUG --> WHEN LOGGING IN AFTER OPENING APPT BOOK, BECAUSE OF NOTIFMSG
+        private void SetPatientID(int msg) { patientID = msg; }
 
         // Interacts with Data Layer Model to book appointment
         public void BookAppointment()
@@ -185,7 +186,6 @@ namespace Appointment_Mgr.ViewModel
                 Comment = "";
 
             PatientDBConverter.BookAppointment(selectedTimeslot, reservationDoctorID, patientID, Comment, SelectedDate.ToShortDateString());
-            // insert successful boi here.
             Confirmation("Appointment Booked.", "Appointment has been successfully booked.");
             MessengerInstance.Send<string>("DecideHomeView");
         }

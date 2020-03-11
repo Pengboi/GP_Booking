@@ -147,13 +147,13 @@ namespace Appointment_Mgr.ViewModel
             if (!VerifyPatientDetails(patient))
                 return;
 
-            string patientID = PatientDBConverter.GetPatientID(patient).ToString(); //************* FINISH IMPLEMENTING
+            int patientID = PatientDBConverter.GetPatientID(patient); //************* FINISH IMPLEMENTING
             // Shows the booking view after patient details & desired reservation type verified
             // sends patient user details as message to view
             IsBookingVisible = true;
             BookingSubviewVisible = "Visible";
             PatientCaptureWidth = "0";
-            MessengerInstance.Send<NotificationMessage>(new NotificationMessage(patientID));
+            MessengerInstance.Send<int>(patientID);
         }
         public void ShowWalkInView() 
         {
