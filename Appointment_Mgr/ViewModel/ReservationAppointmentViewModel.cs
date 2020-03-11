@@ -119,6 +119,7 @@ namespace Appointment_Mgr.ViewModel
         }
 
         public RelayCommand BookAppointmentCommand { get; set; }
+        private void SetPatientID(int msg) { patientID = msg; }
 
 
 
@@ -167,9 +168,7 @@ namespace Appointment_Mgr.ViewModel
                 NoAvaliableTime = "";
         }
         private void UpdateTimeslotIndex(int index) { TimeslotIndex = index; }
-        // BUG --> WHEN LOGGING IN AFTER OPENING APPT BOOK, BECAUSE OF NOTIFMSG
-        private void SetPatientID(int msg) { patientID = msg; }
-
+        
         // Interacts with Data Layer Model to book appointment
         public void BookAppointment()
         {

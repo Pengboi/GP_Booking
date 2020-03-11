@@ -172,7 +172,6 @@ namespace Appointment_Mgr.ViewModel
         public void ShowPatientGrid() 
         {
             IsBookingVisible = false;
-            //BookingWidth = "0";
             PatientCaptureWidth = "*";
         }
 

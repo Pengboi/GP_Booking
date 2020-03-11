@@ -72,8 +72,7 @@ namespace Appointment_Mgr.Model
              */
             List<List<int>> reservationTimeslots = new List<List<int>>(); // All possible appointments
 
-            // ERROR: Code will not run as all lists are recognised as "Empty" as shown by debugging print statement above which was printed below during runtime.
-            // POSSIBLE SOLUTION: Check StaffDBConverter to ensure Lists are properly defined from DataTable values.
+
             for (int element=0; element < starts.Count; element++)
             {
                 /*

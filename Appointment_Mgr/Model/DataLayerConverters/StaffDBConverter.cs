@@ -49,11 +49,11 @@ namespace Appointment_Mgr.Model
             {
                 List<int> selectedDoctorTimeslots = new List<int>();
 
-                string cmdString = @"SELECT Booked_Appointments.Appointment_Time " +
+                string cmdString = @"SELECT Appointment_Time " +
                                      "FROM Booked_Appointments WHERE Date = @date AND Assigned_Doctor_ID = @id ";
                 SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
                 cmd.Prepare();
-                cmd.Parameters.Add("@Date", DbType.String).Value = date;
+                cmd.Parameters.Add("@Date", DbType.String).Value = date.ToShortDateString();
                 cmd.Parameters.Add("@id", DbType.String).Value = id;
                 SQLiteDataReader reader = cmd.ExecuteReader();
                 while (reader.Read()) 
