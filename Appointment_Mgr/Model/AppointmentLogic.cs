@@ -82,8 +82,6 @@ namespace Appointment_Mgr.Model
                  *      & their scheduled work hours.
                  *  Half of predicted possible appointments for each doctor working are reserverd as reservation only, with 50/50 priority on same-day to reservation
                  */
-                Console.WriteLine(starts[element].ToString());
-                Console.WriteLine(ends[element].ToString());
                 int shiftDuration = getTimeDifference(starts[element], ends[element]); //error here
                 int predictedAppointments = shiftDuration / averageDuration;
                 int reservationsPerHour = (predictedAppointments / (shiftDuration / 60)) / 2; //reservations per hour = average per hour / 2
