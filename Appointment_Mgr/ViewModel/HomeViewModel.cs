@@ -110,11 +110,17 @@ namespace Appointment_Mgr.ViewModel
         public void SetBookingView()
         {
             //Notification Message to open Booking View
-            Messenger.Default.Send<string>("BookingView");
+            MessengerInstance.Send<string>("BookingView");
+            Cleanup();
         }
 
-       
 
-        
+        public override void Cleanup()
+        {
+            Messenger.Default.Unregister(this);
+            MessengerInstance.Unregister(this);
+            base.Cleanup();
+            ViewModelLocator.Cleanup();
+        }
     }
 }

@@ -154,7 +154,6 @@ namespace Appointment_Mgr.ViewModel
 
                     CurrentViewModel = HomeVM;
                     CurrentToolbarViewModel = HomeToolbarVM;
-                    ViewModelLocator.Cleanup();
                 }
             }
 
@@ -166,6 +165,7 @@ namespace Appointment_Mgr.ViewModel
 
             if (value == "ManagePatientView")
                 CurrentViewModel = ManagePatientVM;
+
         }
 
         

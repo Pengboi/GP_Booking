@@ -44,6 +44,9 @@
                     <DataTemplate DataType="{x:Type vm:ReservationAppointmentViewModel}">
                         <views:ReservationAppointmentView />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:WalkInAppointmentViewModel}">
+                        <views:WalkInAppointmentView />
+                    </DataTemplate>
                     
                     <DataTemplate DataType="{x:Type vm:LoginViewModel}">
                         <views:LoginView/>

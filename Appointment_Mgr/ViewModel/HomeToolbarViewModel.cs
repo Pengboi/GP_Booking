@@ -54,7 +54,8 @@ namespace Appointment_Mgr.ViewModel
         public void LoginCommandMethod()
         {
             //Notification Message to open Login View
-            Messenger.Default.Send<string>("LoginView");
+            MessengerInstance.Send<string>("LoginView");
+            Cleanup();
         }
 
         public HomeToolbarViewModel() 
@@ -80,6 +81,14 @@ namespace Appointment_Mgr.ViewModel
 
             }
             ShowLoginCommand = new RelayCommand(LoginCommandMethod);
+        }
+
+        public override void Cleanup()
+        {
+            Messenger.Default.Unregister(this);
+            MessengerInstance.Unregister(this);
+            base.Cleanup();
+            ViewModelLocator.Cleanup();
         }
     }
 }

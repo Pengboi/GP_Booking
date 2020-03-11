@@ -90,7 +90,7 @@ namespace Appointment_Mgr.ViewModel
             }
             else
             {
-                timer = new DispatcherTimer(DispatcherPriority.Render);
+                timer = new DispatcherTimer(DispatcherPriority.Normal);
                 timer.Interval = TimeSpan.FromSeconds(1);
                 timer.Tick += (sender, args) =>
                 {
@@ -114,19 +114,23 @@ namespace Appointment_Mgr.ViewModel
         {
             HomeButtonTextColour = "#40739e";
             ManagePatientButtonTextColour = "#2f3640";
-            Messenger.Default.Send<string>("ReceptionistHomeView");
+            MessengerInstance.Send<string>("ReceptionistHomeView");
+            MessengerInstance.Unregister(this); // moves messenger to garbage collection
         }
 
         public void SetManagePatientView() 
         {
             HomeButtonTextColour = "#2f3640";
             ManagePatientButtonTextColour = "#40739e";
-            Messenger.Default.Send<string>("ManagePatientView");
+            MessengerInstance.Send<string>("ManagePatientView");
+            MessengerInstance.Unregister(this); // moves messenger to garbage collection
         }
 
         public void ExecuteLogoutCommand() 
         {
-            Messenger.Default.Send<string>("HomeView");
+            MessengerInstance.Send<string>("HomeView");
+            MessengerInstance.Unregister(this); // moves messenger to garbage collection
+            ViewModelLocator.Cleanup();
         }
 
     }
