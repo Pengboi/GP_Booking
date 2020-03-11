@@ -5,6 +5,7 @@ using System.Data;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
 using Appointment_Mgr.Dialog;
+using System.Text.RegularExpressions;
 
 namespace Appointment_Mgr.ViewModel
 {
@@ -47,7 +48,9 @@ namespace Appointment_Mgr.ViewModel
 
         public void SaveToDB() 
         {
-            //EntryValidation(); // Add Validation laters
+            //  Validation applies before changes are executted to Data Layer
+            if (!EntryValidation())
+                return;
             PatientDBConverter.SaveChanges(Patients);
             // Refreshes DataGrid view
             Patients = null;
@@ -56,10 +59,44 @@ namespace Appointment_Mgr.ViewModel
             Confirmation("Database Updated.", "Changes to the database were successfully updated.");
         }
 
-        private void EntryValidation()
+        private bool EntryValidation()
         {
-            // string.IsNullOrEmpty --> set as null.
-            throw new NotImplementedException();
+            // For each row, in each column the following validation checks are performed:
+            // If whitespace is contained in otherwise valid strings --> remove whitespace (assume unintended user error)
+            // If value contains nothing but whitespace --> set value as null
+
+            // If column is Postcode --> validate against postcode, if not a match, error presented and changes are prevented until issue is fixed
+            foreach (DataRow dr in Patients.Rows) 
+            {
+                foreach (DataColumn col in Patients.Columns) 
+                {
+                    if (col.DataType == typeof(System.String)) 
+                    {
+                        dr[col] = dr[col].ToString().Replace(" ", "");
+                        if (string.IsNullOrWhiteSpace(dr[col].ToString()))
+                            dr[col] = DBNull.Value;
+                    }
+                    if (col.ColumnName == "Postcode")
+                    {
+                        if (!Regex.IsMatch(dr[col].ToString(),
+                            @"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})") ||
+                            string.IsNullOrWhiteSpace(dr[col].ToString()))
+                        {
+                            Error("Changes not saved!", "An invalid postcode has been entered. Changes have not been saved. Please resolve issue and try again.");
+                            return false;
+                        }
+                    }
+                    if (col.ColumnName == "E-mail") 
+                    {
+                        if (!Regex.IsMatch(dr[col].ToString(), @"[\w-_.]*[@]{1}([\w]+[.][\w]+)+$") && !string.IsNullOrWhiteSpace(dr[col].ToString()))
+                        {
+                            Error("Changes not saved!", "An invalid email has been entered. Changes have not been saved. Please resolve issue and try again.");
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public EditPatientViewModel() 
