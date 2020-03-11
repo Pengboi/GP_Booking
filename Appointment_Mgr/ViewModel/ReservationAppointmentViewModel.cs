@@ -1,4 +1,5 @@
 ﻿using Appointment_Mgr.Dialog;
+using Appointment_Mgr.Dialog.Confirmation;
 using Appointment_Mgr.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -20,12 +21,14 @@ namespace Appointment_Mgr.ViewModel
         private int? _selectedTimeslot = null;
         private DateTime _selectedDate = DateTime.Now.AddDays(1).Date;
         private DataTable _avaliableTimes;
-
         private IDialogBoxService _dialogService;
+
+        private int patientID;
 
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
         public ICommand OtpCommand { get; private set; }
+        public ICommand ConfirmCommand { get; private set; }
 
         public List<string> Genders { get { return _genders; } }
         public List<string> Doctors { get { return _doctors; } }
@@ -45,6 +48,12 @@ namespace Appointment_Mgr.ViewModel
             var dialog = new AlertBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
+        private void Confirmation(string title, string message) 
+        {
+            var dialog = new ConfirmationBoxViewModel(title, message);
+            var result = _dialogService.OpenDialog(dialog);
+        }
+
         public string RequestedDoctor
         {
             get { return _requestedDoctor; }
@@ -111,6 +120,9 @@ namespace Appointment_Mgr.ViewModel
 
         public RelayCommand BookAppointmentCommand { get; set; }
 
+
+
+
         public ReservationAppointmentViewModel()
         {
             _dialogService = new DialogBoxService();
@@ -133,14 +145,18 @@ namespace Appointment_Mgr.ViewModel
             else
                 NoAvaliableTime = "";
 
-            Messenger.Default.Register<DateTime>
-                (
+            Messenger.Default.Register<DateTime> (
                     this,
                     (action) => UpdateTimeslots()
                 );
             Messenger.Default.Register<int>(this, UpdateTimeslotIndex);
+            // When patientID message is received (from PatientDBConverter), set patient ID in VM.
+            Messenger.Default.Register<NotificationMessage>(this, SetPatientID);
             BookAppointmentCommand = new RelayCommand(BookAppointment);
         }
+
+
+
 
         public void UpdateTimeslots()
         {
@@ -151,6 +167,7 @@ namespace Appointment_Mgr.ViewModel
                 NoAvaliableTime = "";
         }
         private void UpdateTimeslotIndex(int index) { TimeslotIndex = index; }
+        private void SetPatientID(NotificationMessage msg) { patientID = int.Parse(msg.Notification); }
 
         // Interacts with Data Layer Model to book appointment
         public void BookAppointment()
@@ -166,10 +183,11 @@ namespace Appointment_Mgr.ViewModel
 
             if (string.IsNullOrWhiteSpace(Comment))
                 Comment = "";
-            
 
-            PatientDBConverter.BookAppointment(selectedTimeslot, reservationDoctorID, 1, Comment, SelectedDate.ToShortDateString());
-
+            PatientDBConverter.BookAppointment(selectedTimeslot, reservationDoctorID, patientID, Comment, SelectedDate.ToShortDateString());
+            // insert successful boi here.
+            Confirmation("Appointment Booked.", "Appointment has been successfully booked.");
+            MessengerInstance.Send<string>("DecideHomeView");
         }
     }
 }
