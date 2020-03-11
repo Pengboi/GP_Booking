@@ -111,7 +111,6 @@ namespace Appointment_Mgr.ViewModel
 
         private bool RequiredNotComplete()
         {
-            Console.WriteLine(Firstname); Console.WriteLine(Lastname); Console.WriteLine(DOB); Console.WriteLine(Email);
             if (string.IsNullOrWhiteSpace(Firstname)||
                 string.IsNullOrWhiteSpace(Lastname) ||
                 !DOB.HasValue                       ||
@@ -143,20 +142,18 @@ namespace Appointment_Mgr.ViewModel
             if (RequiredNotComplete())
                 return;
 
-            Console.WriteLine("ST NUM:" + StreetNo.ToString() + Postcode);
             PatientUser patient = new PatientUser(Firstname, Middlename, Lastname, (DateTime)DOB, int.Parse(StreetNo), Postcode);
-            if (!VerifyPatientDetails(patient)) 
-            {
+            // If existing patient record is not found, return.
+            if (!VerifyPatientDetails(patient))
                 return;
-            }
 
-            int patientID = PatientDBConverter.GetPatientID(patient); //************* FINISH IMPLEMENTING
+            string patientID = PatientDBConverter.GetPatientID(patient).ToString(); //************* FINISH IMPLEMENTING
             // Shows the booking view after patient details & desired reservation type verified
             // sends patient user details as message to view
             IsBookingVisible = true;
             BookingSubviewVisible = "Visible";
             PatientCaptureWidth = "0";
-            MessengerInstance.Send<int>(patientID);
+            MessengerInstance.Send<NotificationMessage>(new NotificationMessage(patientID));
         }
         public void ShowWalkInView() 
         {
