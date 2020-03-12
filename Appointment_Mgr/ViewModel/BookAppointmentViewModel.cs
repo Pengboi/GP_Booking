@@ -22,6 +22,7 @@ namespace Appointment_Mgr.ViewModel
 
         public ViewModelBase _appointmentTypeViewModel;
         public ViewModelBase ReservationView { get { return (ViewModelBase)ViewModelLocator.ReservationAppointment; } }
+        public ViewModelBase WalkInView { get { return (ViewModelBase)ViewModelLocator.WalkInAppointment; } }
 
         public RelayCommand WalkInCommand { private set; get; }
         public RelayCommand ReservationCommand { private set; get; }
@@ -165,8 +166,10 @@ namespace Appointment_Mgr.ViewModel
                 return;
 
             // Change VM of AppointmentTypeView
-            //AppointmentTypeView = *Walk in view*; --> IMPLEMENT CHANGE TO WALKING
-            //BookingVisible = "Visible";
+            AppointmentTypeView = WalkInView;
+            IsBookingVisible = true;
+            BookingSubviewVisible = "Visible";
+            PatientCaptureWidth = "0";
         }
 
         public void ShowPatientGrid() 
