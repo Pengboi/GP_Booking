@@ -93,7 +93,7 @@ namespace Appointment_Mgr.ViewModel
             set
             {
                 _appointmentTypeViewModel = value;
-                RaisePropertyChanged(() => CurrentViewModel);
+                RaisePropertyChanged(() => AppointmentTypeView);
             }
         }
 
@@ -151,6 +151,7 @@ namespace Appointment_Mgr.ViewModel
             int patientID = PatientDBConverter.GetPatientID(patient); //************* FINISH IMPLEMENTING
             // Shows the booking view after patient details & desired reservation type verified
             // sends patient user details as message to view
+            AppointmentTypeView = ReservationView;
             IsBookingVisible = true;
             BookingSubviewVisible = "Visible";
             PatientCaptureWidth = "0";
