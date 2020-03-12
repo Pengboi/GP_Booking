@@ -97,11 +97,5 @@ namespace Appointment_Mgr.ViewModel
             DeletePatientCommand = new RelayCommand(SetDeleteView);
         }
 
-        public override void Cleanup()
-        {
-            MessengerInstance.Unregister(this);
-            base.Cleanup();
-            ViewModelLocator.Cleanup();
-        }
     }
 }

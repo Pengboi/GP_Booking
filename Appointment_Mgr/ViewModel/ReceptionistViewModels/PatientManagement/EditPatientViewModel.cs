@@ -70,7 +70,7 @@ namespace Appointment_Mgr.ViewModel
             {
                 foreach (DataColumn col in Patients.Columns) 
                 {
-                    if (col.DataType == typeof(System.String)) 
+                    if (col.DataType == typeof(System.String))
                     {
                         dr[col] = dr[col].ToString().Replace(" ", "");
                         if (string.IsNullOrWhiteSpace(dr[col].ToString()))
@@ -86,12 +86,25 @@ namespace Appointment_Mgr.ViewModel
                             return false;
                         }
                     }
+                    //  If firstname, middlename (if not null), or lastname contains: numbers
+                    //  Raise Error.
+                    if (col.ColumnName == "Firstname" || (col.ColumnName == "Middlename" && !string.IsNullOrWhiteSpace(dr[col].ToString())) || col.ColumnName == "Lastname")
+                    {
+                        if (!Regex.IsMatch(dr[col].ToString(), @"^[a-zA-Z]+$"))
+                        {
+                            Error("Changes not saved!", "An invalid name has been entered. Changes have not been saved. Names must only contain letters. Please resolve issue and try again.");
+                            return false;
+                        }
+                    }
                     if (col.ColumnName == "E-mail") 
                     {
-                        if (!Regex.IsMatch(dr[col].ToString(), @"[\w-_.]*[@]{1}([\w]+[.][\w]+)+$") && !string.IsNullOrWhiteSpace(dr[col].ToString()))
+                        if (!(dr[col].ToString().Replace(" ", "") == "")) 
                         {
-                            Error("Changes not saved!", "An invalid email has been entered. Changes have not been saved. Please resolve issue and try again.");
-                            return false;
+                            if (!(Regex.IsMatch(dr[col].ToString(), @"[\w-_.]*[@]{1}([\w]+[.][\w]+)+$")))
+                            {
+                                Error("Changes not saved!", "An invalid email has been entered. Changes have not been saved. Please resolve issue and try again.");
+                                return false;
+                            }
                         }
                     }
                 }

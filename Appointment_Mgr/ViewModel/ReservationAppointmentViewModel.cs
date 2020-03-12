@@ -1,6 +1,7 @@
 ﻿using Appointment_Mgr.Dialog;
 using Appointment_Mgr.Dialog.Confirmation;
 using Appointment_Mgr.Model;
+using Appointment_Mgr.Helper;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -119,10 +120,6 @@ namespace Appointment_Mgr.ViewModel
         }
 
         public RelayCommand BookAppointmentCommand { get; set; }
-        private void SetPatientID(int msg) { patientID = msg; }
-
-
-
 
         public ReservationAppointmentViewModel()
         {
@@ -146,13 +143,13 @@ namespace Appointment_Mgr.ViewModel
             else
                 NoAvaliableTime = "";
 
-            Messenger.Default.Register<DateTime> (
+            MessengerInstance.Register<DateTime> (
                     this,
                     (action) => UpdateTimeslots()
                 );
-            Messenger.Default.Register<int>(this, UpdateTimeslotIndex);
+            MessengerInstance.Register<int>(this, UpdateTimeslotIndex);
             // When patientID message is received (from PatientDBConverter), set patient ID in VM.
-            Messenger.Default.Register<int>(this, SetPatientID);
+            MessengerInstance.Register<double>(this, SetPatientID);
             BookAppointmentCommand = new RelayCommand(BookAppointment);
         }
 
@@ -167,8 +164,9 @@ namespace Appointment_Mgr.ViewModel
             else
                 NoAvaliableTime = "";
         }
-        private void UpdateTimeslotIndex(int index) { TimeslotIndex = index; }
-        
+        private void UpdateTimeslotIndex(int index) { TimeslotIndex = index; Console.WriteLine("THIS IS THE INDEX: " + index); }
+        private void SetPatientID(double id) { patientID = (int)id; Console.WriteLine("THIS IS THE ID: " + id); }
+
         // Interacts with Data Layer Model to book appointment
         public void BookAppointment()
         {
@@ -185,7 +183,14 @@ namespace Appointment_Mgr.ViewModel
                 Comment = "";
 
             PatientDBConverter.BookAppointment(selectedTimeslot, reservationDoctorID, patientID, Comment, SelectedDate.ToShortDateString());
+
+            //insert email
+            //EmailConfirmation.Main(patientID);
+
             Confirmation("Appointment Booked.", "Appointment has been successfully booked.");
+            
+            MessengerInstance.Unregister(this);
+
             MessengerInstance.Send<string>("DecideHomeView");
         }
     }
