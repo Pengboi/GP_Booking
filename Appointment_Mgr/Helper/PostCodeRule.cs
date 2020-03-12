@@ -19,6 +19,8 @@ namespace Appointment_Mgr.Helper
                 return new ValidationResult(false, "Please enter a valid postcode");
             }
             // REGEX For postcodes provided by Gov.Uk --> UK Government
+            // https://webarchive.nationalarchives.gov.uk/+/http://www.cabinetoffice.gov.uk/media/291370/bs7666-v2-0-xsd-PostCodeType.htm
+            // Not a perfect regex, but is being treated as nations standard.
             if (!Regex.IsMatch(str, @"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})"))
                 return new ValidationResult(false, String.Format("Please enter a valid postcode"));
 

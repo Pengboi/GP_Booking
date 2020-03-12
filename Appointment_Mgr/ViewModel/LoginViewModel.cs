@@ -125,7 +125,7 @@ namespace Appointment_Mgr.ViewModel
                     {
                         //Returns user signed in to MainViewModel
                         Messenger.Default.Send<StaffUser>(new StaffUser(staffUser.getUsername(), ""));
-                        Cleanup();
+                        
                     }
                     else 
                     {
@@ -148,17 +148,7 @@ namespace Appointment_Mgr.ViewModel
         {
             // Closes Login View
             // FROM: LoginViewModel TO: MainViewModel
-            MessengerInstance.Send<string>("HomeView");
-            Cleanup();
-            
-        }
-
-        public override void Cleanup()
-        {
-            Messenger.Default.Unregister(this);
-            MessengerInstance.Unregister(this);
-            base.Cleanup();
-            ViewModelLocator.Cleanup();
+            Messenger.Default.Send<string>("HomeView");
         }
     }
 }
