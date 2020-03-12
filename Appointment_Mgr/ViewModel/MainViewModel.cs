@@ -60,14 +60,14 @@ namespace Appointment_Mgr.ViewModel
             }
         }
 
-        public ViewModelBase HomeToolbarVM { get { return (ViewModelBase)ViewModelLocator.HomeToolbar; } }
-        public ViewModelBase HomeVM { get { return (ViewModelBase)ViewModelLocator.Home; } }
-        public ViewModelBase ReceptionistToolbarVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistToolbar; } }
-        public ViewModelBase ReceptionistVM { get { return (ViewModelBase)ViewModelLocator.ReceptionistHome; } }
-        public ViewModelBase LoginVM { get { return (ViewModelBase)ViewModelLocator.Login; } }
+        public ViewModelBase HomeToolbarVM { get { return ViewModelLocator.HomeToolbar; } }
+        public ViewModelBase HomeVM { get { return ViewModelLocator.Home; } }
+        public ViewModelBase ReceptionistToolbarVM { get { return ViewModelLocator.ReceptionistToolbar; } }
+        public ViewModelBase ReceptionistVM { get { return ViewModelLocator.ReceptionistHome; } }
+        public ViewModelBase LoginVM { get { return ViewModelLocator.Login; } }
         
-        public ViewModelBase BookingVM { get { return (ViewModelBase)ViewModelLocator.BookAppointment; } }
-        public ViewModelBase ManagePatientVM { get { return (ViewModelBase)ViewModelLocator.ManagePatient; } }
+        public ViewModelBase BookingVM { get { return ViewModelLocator.BookAppointment; } }
+        public ViewModelBase ManagePatientVM { get { return ViewModelLocator.ManagePatient; } }
         
 
         /// <summary>
@@ -124,14 +124,6 @@ namespace Appointment_Mgr.ViewModel
             }
             if (value == "HomeView")
             {
-                //Re-add the Messengers defined in the constructor which have been cleared
-                Messenger.Default.Register<StaffUser>
-                (
-                    this,
-                    (action) => ReceiveLoginMessage(action)
-                );
-                Messenger.Default.Register<string>(this, ChangeView);
-
                 CurrentViewModel = HomeVM;
                 CurrentToolbarViewModel = HomeToolbarVM;
                 ViewModelLocator.Cleanup();
@@ -144,17 +136,8 @@ namespace Appointment_Mgr.ViewModel
                 }
                 else if (CurrentToolbarViewModel.GetType().ToString() == "Appointment_Mgr.ViewModel.HomeToolbarViewModel") 
                 {
-                    //Re-add the Messengers defined in the constructor which have been cleared
-                    Messenger.Default.Register<StaffUser>
-                    (
-                        this,
-                        (action) => ReceiveLoginMessage(action)
-                    );
-                    Messenger.Default.Register<string>(this, ChangeView);
-
                     CurrentViewModel = HomeVM;
                     CurrentToolbarViewModel = HomeToolbarVM;
-                    ViewModelLocator.Cleanup();
                 }
             }
 
@@ -166,6 +149,7 @@ namespace Appointment_Mgr.ViewModel
 
             if (value == "ManagePatientView")
                 CurrentViewModel = ManagePatientVM;
+
         }
 
         

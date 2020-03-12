@@ -65,22 +65,23 @@ namespace Appointment_Mgr.ViewModel
             EditRecordTextColour = "#2f3640"; // Dark Black for non-selected navigation VM element
             DeleteRecordTextColour = "#2f3640"; // Dark Black for non-selected navigation VM element
             CurrentViewModel = AddPatientVM;
+            Cleanup();
         }
         public void SetEditView() 
         {
             AddRecordTextColour = "#2f3640"; 
             EditRecordTextColour = "#1e3799"; 
             DeleteRecordTextColour = "#2f3640";
-            ViewModelLocator.Cleanup();
             CurrentViewModel = EditPatientVM;
+            Cleanup();
         }
         public void SetDeleteView()
         {
             AddRecordTextColour = "#2f3640";
             EditRecordTextColour = "#2f3640";
             DeleteRecordTextColour = "#1e3799";
-            ViewModelLocator.Cleanup();
             CurrentViewModel = DeletePatientVM;
+            Cleanup();
         }
 
         public ManagePatientViewModel() 
@@ -96,5 +97,11 @@ namespace Appointment_Mgr.ViewModel
             DeletePatientCommand = new RelayCommand(SetDeleteView);
         }
 
+        public override void Cleanup()
+        {
+            MessengerInstance.Unregister(this);
+            base.Cleanup();
+            ViewModelLocator.Cleanup();
+        }
     }
 }

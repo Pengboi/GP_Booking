@@ -29,8 +29,17 @@ namespace Appointment_Mgr.ViewModel
 
         public void SetBookingView()
         {
+            //Cleanup();
             //Notification Message to open Login View
-            Messenger.Default.Send<string>("BookingView");
+            MessengerInstance.Send<string>("BookingView");
+            Cleanup();
+        }
+
+        public override void Cleanup()
+        {
+            MessengerInstance.Unregister(this);
+            base.Cleanup();
+            ViewModelLocator.Cleanup();
         }
     }
 }

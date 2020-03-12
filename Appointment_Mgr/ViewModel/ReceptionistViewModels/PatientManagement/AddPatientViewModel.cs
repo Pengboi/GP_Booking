@@ -112,8 +112,7 @@ namespace Appointment_Mgr.ViewModel
             int recordsFound = Convert.ToInt32(cmd.ExecuteScalar());
             if (recordsFound == 1)
             {
-                Error("Record Already Exists.", "Patient Record already exists. Please speak to the receptionist for any assistance in booking" +
-                    " an appointment");
+                Error("Record Already Exists.", "Patient Record already exists. Please verify patient details, if issues persist contact support.");
                 return;
             }
 

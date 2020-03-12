@@ -48,21 +48,9 @@ namespace Appointment_Mgr.ViewModel
 
             
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<LoginViewModel>();
 
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<HomeToolbarViewModel>();
-
-            SimpleIoc.Default.Register<ReceptionistHomeViewModel>();
-            SimpleIoc.Default.Register<ReceptionistToolbarViewModel>();
-
-            SimpleIoc.Default.Register<BookAppointmentViewModel>();
-            SimpleIoc.Default.Register<ReservationAppointmentViewModel>();
-
-            SimpleIoc.Default.Register<ManagePatientViewModel>();
-            SimpleIoc.Default.Register<AddPatientViewModel>();
-            SimpleIoc.Default.Register<EditPatientViewModel>();
-            SimpleIoc.Default.Register<DeletePatientViewModel>();
 
         }
 
@@ -105,6 +93,10 @@ namespace Appointment_Mgr.ViewModel
         {
             get { return ServiceLocator.Current.GetInstance<ReservationAppointmentViewModel>(); }
         }
+        public static WalkInAppointmentViewModel WalkInAppointment 
+        {
+            get { return ServiceLocator.Current.GetInstance<WalkInAppointmentViewModel>(); }
+        }
 
 
         public static ManagePatientViewModel ManagePatient
@@ -139,6 +131,7 @@ namespace Appointment_Mgr.ViewModel
 
             SimpleIoc.Default.Register<BookAppointmentViewModel>();
             SimpleIoc.Default.Register<ReservationAppointmentViewModel>();
+            SimpleIoc.Default.Register<WalkInAppointmentViewModel>();
 
             SimpleIoc.Default.Register<ManagePatientViewModel>();
             SimpleIoc.Default.Register<AddPatientViewModel>();

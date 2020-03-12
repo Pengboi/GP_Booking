@@ -59,5 +59,10 @@ namespace Appointment_Mgr.View
             int selectedIndex = int.Parse(TimeListView.SelectedIndex.ToString());
             Messenger.Default.Send(selectedIndex);
         }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Unregister(this);
+        }
     }
 }

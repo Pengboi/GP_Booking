@@ -140,6 +140,7 @@
     <Compile Include="ViewModel\ReceptionistViewModels\PatientManagement\ManagePatientViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\Home\ReceptionistHomeViewModel.cs" />
     <Compile Include="ViewModel\ReservationAppointmentViewModel.cs" />
+    <Compile Include="ViewModel\WalkInAppointmentViewModel.cs" />
     <Compile Include="View\ReceptionistViews\PatientManagement\AddPatientView.xaml.cs">
       <DependentUpon>AddPatientView.xaml</DependentUpon>
     </Compile>
@@ -167,6 +168,9 @@
     </Compile>
     <Compile Include="View\ReservationAppointmentView.xaml.cs">
       <DependentUpon>ReservationAppointmentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WalkInAppointmentView.xaml.cs">
+      <DependentUpon>WalkInAppointmentView.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialog\Alert\AlertBoxView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -258,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ReservationAppointmentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WalkInAppointmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
