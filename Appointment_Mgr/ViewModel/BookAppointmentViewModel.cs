@@ -22,7 +22,6 @@ namespace Appointment_Mgr.ViewModel
 
         public ViewModelBase _appointmentTypeViewModel;
         public ViewModelBase ReservationView { get { return (ViewModelBase)ViewModelLocator.ReservationAppointment; } }
-        public ViewModelBase WalkInView { get { return (ViewModelBase)ViewModelLocator.WalkInAppointment; } }
 
         public RelayCommand WalkInCommand { private set; get; }
         public RelayCommand ReservationCommand { private set; get; }
@@ -93,7 +92,7 @@ namespace Appointment_Mgr.ViewModel
             set
             {
                 _appointmentTypeViewModel = value;
-                RaisePropertyChanged(() => AppointmentTypeView);
+                RaisePropertyChanged(() => CurrentViewModel);
             }
         }
 
@@ -105,6 +104,7 @@ namespace Appointment_Mgr.ViewModel
             ReservationCommand = new RelayCommand(ShowReservationView);
 
             BookingSubviewVisible = "Hidden";
+            AppointmentTypeView = ReservationView;
             ShowPatientCapture = new RelayCommand(ShowPatientGrid);
             ShowHomeView = new RelayCommand(ShowHome);
         }
@@ -147,11 +147,7 @@ namespace Appointment_Mgr.ViewModel
             if (!VerifyPatientDetails(patient))
                 return;
 
-            int patientID = PatientDBConverter.GetPatientID(patient);
-            PatientDBConverter.UpdateEmail(patientID, Email);
-
-            AppointmentTypeView = ReservationView;
-            
+            int patientID = PatientDBConverter.GetPatientID(patient); //************* FINISH IMPLEMENTING
             // Shows the booking view after patient details & desired reservation type verified
             // sends patient user details as message to view
             IsBookingVisible = true;
@@ -168,11 +164,9 @@ namespace Appointment_Mgr.ViewModel
             if (!VerifyPatientDetails(patient))
                 return;
 
-            int patientID = PatientDBConverter.GetPatientID(patient);
-            AppointmentTypeView = WalkInView;
-            IsBookingVisible = true;
-            BookingSubviewVisible = "Visible";
-            PatientCaptureWidth = "0";
+            // Change VM of AppointmentTypeView
+            //AppointmentTypeView = *Walk in view*; --> IMPLEMENT CHANGE TO WALKING
+            //BookingVisible = "Visible";
         }
 
         public void ShowPatientGrid() 
@@ -183,17 +177,7 @@ namespace Appointment_Mgr.ViewModel
 
         public void ShowHome()
         {
-            MessengerInstance.Send<string>("DecideHomeView");
-            Cleanup();
-
-        }
-
-        public override void Cleanup()
-        {
-            Messenger.Default.Unregister(this);
-            MessengerInstance.Unregister(this);
-            base.Cleanup();
-            ViewModelLocator.Cleanup();
+            Messenger.Default.Send<string>("DecideHomeView");
         }
     }
 }

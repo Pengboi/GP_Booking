@@ -164,8 +164,8 @@ namespace Appointment_Mgr.ViewModel
             else
                 NoAvaliableTime = "";
         }
-        private void UpdateTimeslotIndex(int index) { TimeslotIndex = index; Console.WriteLine("THIS IS THE INDEX: " + index); }
-        private void SetPatientID(double id) { patientID = (int)id; Console.WriteLine("THIS IS THE ID: " + id); }
+        private void UpdateTimeslotIndex(int index) { TimeslotIndex = index; }
+        private void SetPatientID(double id) { patientID = (int)id;}
 
         // Interacts with Data Layer Model to book appointment
         public void BookAppointment()
@@ -184,13 +184,12 @@ namespace Appointment_Mgr.ViewModel
 
             PatientDBConverter.BookAppointment(selectedTimeslot, reservationDoctorID, patientID, Comment, SelectedDate.ToShortDateString());
 
-            //insert email
-            //EmailConfirmation.Main(patientID);
+            // Sends email confirmation
+            EmailConfirmation.ReservationEmail(patientID, SelectedDate, selectedTimeslot);
 
             Confirmation("Appointment Booked.", "Appointment has been successfully booked.");
-            
-            MessengerInstance.Unregister(this);
 
+            MessengerInstance.Unregister(this);
             MessengerInstance.Send<string>("DecideHomeView");
         }
     }
