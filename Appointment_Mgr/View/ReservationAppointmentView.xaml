@@ -120,7 +120,8 @@
                           DataContext="{Binding Path=AvaliableTimes, UpdateSourceTrigger=PropertyChanged}"
                           SelectedIndex="{Binding TimeslotIndex}"
                           FontSize="15"
-                          HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" Width="200">
+                          HorizontalAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" 
+                          Width="250" MaxHeight="350">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Avaliable Timeslots" DisplayMemberBinding="{Binding Path=Avaliable_Reservations}">
