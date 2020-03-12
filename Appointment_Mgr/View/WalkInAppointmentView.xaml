@@ -36,7 +36,7 @@
             <TextBlock Grid.Column="1" Grid.Row="2"
                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,30,100"
                    FontSize="25" FontWeight="Normal" Foreground="#3d3d3d" TextWrapping="Wrap" TextAlignment="Center"
-                   Text="Please keep an eye on your emails for updates on your appointment. Remember to return within 10 minutes of receiving an update." />
+                   Text="Please keep an eye on your emails for updates on your appointment. Remember to return within 10 minutes of being asked to do so." />
             
             <!-- Bottom row elements -->
             <Button Grid.Column="1" Grid.Row="3"
