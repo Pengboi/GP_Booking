@@ -18,11 +18,11 @@ namespace Appointment_Mgr.Helper
 
             // Modifies email html to input date and time in email.
             DateTime time = DateTime.Parse(timeslot);
-            timeslot = time.TimeOfDay.Hours.ToString() + ":" + time.TimeOfDay.Minutes.ToString();
+            timeslot = time.ToString("hh:mm tt");
 
             string text = File.ReadAllText("Assets\\reservation_email.html");
             text = text.Replace("InsertDate1", date.ToShortDateString());
-            text = text.Replace("InsertDate2", date.ToShortDateString() + ", " + timeslot);
+            text = text.Replace("InsertDate2", date.ToString("dd MMMM yyyy") + ", " + timeslot);
             File.WriteAllText("reservation_email.html", text);
 
             // Gets patient email
@@ -47,18 +47,6 @@ namespace Appointment_Mgr.Helper
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
                     client.EnableSsl = true;
 
-
-                    string htmlString = @"<html>
-                      <body>
-                      <p>Dear Ms. Susan,</p>
-                      <p>Thank you for your letter of yesterday inviting me to come for an interview on Friday afternoon, 5th July, at 2:30.
-                              I shall be happy to be there as requested and will bring my diploma and other papers with me.</p>
-                      <p>Sincerely,<br>-Jack</br></p>
-                      </body>
-                      </html>
-                     ";
-
-
                     client.Send(message);
                     Console.WriteLine("Mail delivered successfully!!!");
                     Console.ReadLine();
@@ -71,7 +59,7 @@ namespace Appointment_Mgr.Helper
                 var result = _dialogService.OpenDialog(dialog);
 
                 // Saves error to error log
-                using (StreamWriter writer = new StreamWriter("\\logs\\", true))
+                using (StreamWriter writer = new StreamWriter("logs\\", true))
                 {
                     writer.WriteLine("-----------------------------------------------------------------------------");
                     writer.WriteLine("Date : " + DateTime.Now.ToString());
