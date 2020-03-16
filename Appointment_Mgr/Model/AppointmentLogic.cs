@@ -110,8 +110,14 @@ namespace Appointment_Mgr.Model
                             int minutes = currentTimeslot % 100;
                             if (minutes + averageDuration < 60)
                                 currentTimeslot += averageDuration;
-                            else
-                                break;
+                            else 
+                            {
+                                // if timeslot will run into next hour, average duration is added, then 60 is taken away (to represent the new hour) + 100 moves to next hour
+                                // Please see use cases below where: average duration = 20 & timeslot is first number
+                                // 1740 + 20 = 1760 ---> 1760 - 60 = 1700 ---> 1700 + 100 = 1800 ----> 18:00
+                                // 1750 + 20 = 1770 ---> 1770 - 60 = 1710 ---> 1710 + 100 = 1810 ----> 18:10
+                                currentTimeslot += averageDuration - 60 + 100;
+                            }
                         }
                     }
                     currentTime += 100; //Add 1 hr        
