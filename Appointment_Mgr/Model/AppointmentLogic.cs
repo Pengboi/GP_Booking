@@ -106,7 +106,12 @@ namespace Appointment_Mgr.Model
                         for (int i = 0; i < appointmentsPerHour; i++)
                         {
                             timeslots.Add(currentTimeslot);
-                            currentTimeslot += averageDuration;
+
+                            int minutes = currentTimeslot % 100;
+                            if (minutes + averageDuration < 60)
+                                currentTimeslot += averageDuration;
+                            else
+                                break;
                         }
                     }
                     currentTime += 100; //Add 1 hr        
@@ -155,11 +160,13 @@ namespace Appointment_Mgr.Model
         {
             foreach (DataRow dataRow in dt.Rows)
             {
+                Console.WriteLine(dataRow[0].ToString() + "         " + dataRow[1].ToString());
                 string rowValue = dataRow["Avaliable_Reservations"].ToString();
-                TimeSpan selectedTime = TimeSpan.Parse(rowValue);
+                Console.WriteLine(rowValue);
+                DateTime selectedTime = DateTime.Parse(rowValue);
 
                 //  If time of avaliable appointment is before current time --> remove from options.
-                if (DateTime.Now.TimeOfDay < selectedTime)
+                if (DateTime.Now.TimeOfDay < selectedTime.TimeOfDay)
                 {
                     return dataRow;
                 }
