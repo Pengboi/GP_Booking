@@ -10,7 +10,6 @@ namespace Appointment_Mgr.Helper
     public class EmailConfirmation
     {
         private static IDialogBoxService _dialogService;
-        public ICommand ErrorCommand { get; private set; }
 
         public static void ReservationEmail(int patientID, DateTime date, string timeslot)
         {
@@ -18,7 +17,7 @@ namespace Appointment_Mgr.Helper
 
             // Modifies email html to input date and time in email.
             DateTime time = DateTime.Parse(timeslot);
-            timeslot = time.TimeOfDay.Hours.ToString() + ":" + time.TimeOfDay.Minutes.ToString();
+            timeslot = time.ToString("hh:mm tt");
 
             string text = File.ReadAllText("Assets\\reservation_email.html");
             text = text.Replace("InsertDate1", date.ToShortDateString());
@@ -47,21 +46,10 @@ namespace Appointment_Mgr.Helper
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
                     client.EnableSsl = true;
 
-
-                    string htmlString = @"<html>
-                      <body>
-                      <p>Dear Ms. Susan,</p>
-                      <p>Thank you for your letter of yesterday inviting me to come for an interview on Friday afternoon, 5th July, at 2:30.
-                              I shall be happy to be there as requested and will bring my diploma and other papers with me.</p>
-                      <p>Sincerely,<br>-Jack</br></p>
-                      </body>
-                      </html>
-                     ";
-
-
                     client.Send(message);
-                    Console.WriteLine("Mail delivered successfully!!!");
-                    Console.ReadLine();
+
+                    var dialog = new Dialog.Confirmation.ConfirmationBoxViewModel("Appointment Booked.", "Appointment has been successfully booked.");
+                    var result = _dialogService.OpenDialog(dialog);
                 }
             }
             catch (Exception ex)
@@ -71,7 +59,9 @@ namespace Appointment_Mgr.Helper
                 var result = _dialogService.OpenDialog(dialog);
 
                 // Saves error to error log
-                using (StreamWriter writer = new StreamWriter("\\logs\\", true))
+                string exePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                string logPath = exePath + @"\\logs\\log.txt";
+                using (StreamWriter writer = new StreamWriter(logPath, true))
                 {
                     writer.WriteLine("-----------------------------------------------------------------------------");
                     writer.WriteLine("Date : " + DateTime.Now.ToString());
