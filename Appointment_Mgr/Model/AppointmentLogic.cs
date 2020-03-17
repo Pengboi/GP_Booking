@@ -70,7 +70,7 @@ namespace Appointment_Mgr.Model
              * Calculate timeslots assuming there are no existing appointments then remove timeslots afterwards 
              * if appointments already exist for each doctor 
              */
-            List<List<int>> reservationTimeslots = new List<List<int>>(); // All possible appointments
+            List<List<int>> appointmentTimeslots = new List<List<int>>(); // All possible appointments
 
 
             for (int element=0; element < starts.Count; element++)
@@ -84,11 +84,18 @@ namespace Appointment_Mgr.Model
                 int shiftDuration = getTimeDifference(starts[element], ends[element]); //error here
                 int predictedAppointments = shiftDuration / averageDuration;
                 int appointmentsPerHour = 0;
+                int currentTime;
                 if (isReservation)
                     appointmentsPerHour = (predictedAppointments / (shiftDuration / 60)) / 2; //reservations per hour = average per hour / 2 (For Reservations, avaliable appointments halved)
                 else
                     appointmentsPerHour = (predictedAppointments / (shiftDuration / 60)); //reservations per hour = average per hour  (For walk-in, any possible appointment calculated)
-                int currentTime = starts[element];
+                if (isReservation)
+                    currentTime = starts[element];
+                else 
+                {
+                    Console.WriteLine(DateTime.Now.ToString("HH:mm"));
+                    currentTime = int.Parse(DateTime.Now.ToString("HH:mm").Replace(":", ""));
+                }
                 int remainingTime = ends[element] - currentTime; //Time left in shift
 
                 Console.WriteLine("Shift Duration: " + shiftDuration + " Predicted Appointments: " + predictedAppointments + " reservations Per Hour: " + appointmentsPerHour);
@@ -116,25 +123,42 @@ namespace Appointment_Mgr.Model
                                 // Please see use cases below where: average duration = 20 & timeslot is first number
                                 // 1740 + 20 = 1760 ---> 1760 - 60 = 1700 ---> 1700 + 100 = 1800 ----> 18:00
                                 // 1750 + 20 = 1770 ---> 1770 - 60 = 1710 ---> 1710 + 100 = 1810 ----> 18:10
-                                currentTimeslot += averageDuration - 60 + 100;
+                                currentTimeslot += averageDuration + 40;
                             }
                         }
                     }
                     currentTime += 100; //Add 1 hr        
                 }
-                reservationTimeslots.Add(timeslots);
+                appointmentTimeslots.Add(timeslots);
             }
 
             // Removes any timeslots which have already been booked, filtering only avaliable timeslots.
-            for (int i=0; i < reservationTimeslots.Count; i++) 
+            for (int i=0; i < appointmentTimeslots.Count; i++) 
             {
                 List<int> existingTimes = bookedTimeslots[i];
-                List<int> avaliableTimes = reservationTimeslots[i];
+
+                // If calculations are occuring for walk-in times, then the estimated duration of each appointment
+                // must also be considered as an "unavaliable time"
+                // I.e. if an appointment exists at 11:00AM and the average duration is 20 mins
+                // Times from 11:00 - 11:20 must be added to existing times.
+                if (isReservation == false)
+                {
+                    int existingCount = existingTimes.Count;
+                    for (int j = 0; j < existingCount; j++)
+                    {
+                        existingTimes.Add(existingTimes[j] + 1);
+
+                        for (int k = 1; k <= averageDuration; k++)
+                            existingTimes.Add(existingTimes[j] + k);
+                    }
+                }
+
+                List<int> avaliableTimes = appointmentTimeslots[i];
 
                 avaliableTimes.RemoveAll(timeslot => existingTimes.Contains(timeslot)); //lambda expression removes all avaliable times ints that are also in existingtimes for any given doctor
-                reservationTimeslots[i] = avaliableTimes;
+                appointmentTimeslots[i] = avaliableTimes;
             }
-            
+
             DataTable doctorTimeslots = new DataTable();
             doctorTimeslots.Columns.Add("Doctor_ID");
             doctorTimeslots.Columns.Add("Avaliable_Reservations");
@@ -145,9 +169,9 @@ namespace Appointment_Mgr.Model
                     Console.WriteLine("-----------------------------------RESERVATION TIMES-------------------------------");
                 else
                     Console.WriteLine("-----------------------------------WALK IN TIMES-------------------------------");
-                for (int j = 0; j < reservationTimeslots[i].Count; j++) 
+                for (int j = 0; j < appointmentTimeslots[i].Count; j++) 
                 {
-                    string timeslot = reservationTimeslots[i][j].ToString("D4");
+                    string timeslot = appointmentTimeslots[i][j].ToString("D4");
                     timeslot = timeslot.Insert(timeslot.Length - 2, ":");
                     doctorTimeslots.Rows.Add(ids[i], timeslot);
                     Console.WriteLine("ROW ------ ID: " + ids[i].ToString() + "   TIMESLOTS: " + timeslot.ToString());
