@@ -62,7 +62,7 @@ namespace Appointment_Mgr.Model
             return (int)endTime.Subtract(startTime).TotalMinutes;
         }
 
-        public static DataTable CalcReservationTimeslots(List<int> ids, List<int> starts, List<int> ends, List<List<int>> bookedTimeslots) 
+        public static DataTable CalcTimeslots(List<int> ids, List<int> starts, List<int> ends, List<List<int>> bookedTimeslots, bool isReservation) 
         {
             // Gets average appointment time
             int averageDuration = getAverage();
@@ -83,12 +83,15 @@ namespace Appointment_Mgr.Model
                  */
                 int shiftDuration = getTimeDifference(starts[element], ends[element]); //error here
                 int predictedAppointments = shiftDuration / averageDuration;
-                int reservationsPerHour = (predictedAppointments / (shiftDuration / 60)) / 2; //reservations per hour = average per hour / 2
-
+                int appointmentsPerHour = 0;
+                if (isReservation)
+                    appointmentsPerHour = (predictedAppointments / (shiftDuration / 60)) / 2; //reservations per hour = average per hour / 2 (For Reservations, avaliable appointments halved)
+                else
+                    appointmentsPerHour = (predictedAppointments / (shiftDuration / 60)); //reservations per hour = average per hour  (For walk-in, any possible appointment calculated)
                 int currentTime = starts[element];
                 int remainingTime = ends[element] - currentTime; //Time left in shift
 
-                Console.WriteLine("Shift Duration: " + shiftDuration + " Predicted Appointments: " + predictedAppointments + " reservations Per Hour: " + reservationsPerHour);
+                Console.WriteLine("Shift Duration: " + shiftDuration + " Predicted Appointments: " + predictedAppointments + " reservations Per Hour: " + appointmentsPerHour);
 
                 List<int> timeslots = new List<int>();
                
@@ -100,7 +103,7 @@ namespace Appointment_Mgr.Model
                     {
                         int currentTimeslot = currentTime;
                         // Reservation timeslots for next hour of doctor's shift are added to list.
-                        for (int i = 0; i < reservationsPerHour; i++)
+                        for (int i = 0; i < appointmentsPerHour; i++)
                         {
                             timeslots.Add(currentTimeslot);
                             currentTimeslot += averageDuration;
@@ -127,6 +130,10 @@ namespace Appointment_Mgr.Model
 
             for (int i = 0; i < ids.Count; i++) 
             {
+                if (isReservation)
+                    Console.WriteLine("-----------------------------------RESERVATION TIMES-------------------------------");
+                else
+                    Console.WriteLine("-----------------------------------WALK IN TIMES-------------------------------");
                 for (int j = 0; j < reservationTimeslots[i].Count; j++) 
                 {
                     string timeslot = reservationTimeslots[i][j].ToString("D4");
@@ -142,6 +149,22 @@ namespace Appointment_Mgr.Model
             doctorTimeslots = sortTimeslots.ToTable();
 
             return doctorTimeslots;
+        }
+
+        public static DataRow CalcWalkInTimeslot(DataTable dt) 
+        {
+            foreach (DataRow dataRow in dt.Rows)
+            {
+                string rowValue = dataRow["Avaliable_Reservations"].ToString();
+                TimeSpan selectedTime = TimeSpan.Parse(rowValue);
+
+                //  If time of avaliable appointment is before current time --> remove from options.
+                if (DateTime.Now.TimeOfDay < selectedTime)
+                {
+                    return dataRow;
+                }
+            }
+            return null;
         }
     }
 }

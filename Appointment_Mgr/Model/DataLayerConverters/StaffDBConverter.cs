@@ -70,7 +70,7 @@ namespace Appointment_Mgr.Model
         public static DataTable GetAvaliableTimeslots(DateTime date, string doctor = "None", string gender = "None") 
         {
             date = date.Date;
-            DataTable workingDoctors = GetWorkingDoctors(date, doctor, gender); //Dont delete name rows so you know if someone selects a doctor/gender pref, which doctor to use as assigned doctor in DB
+            DataTable workingDoctors = GetWorkingDoctors(date, doctor, gender);
 
             // Doctor shift start & end times stored to be used to calculate 
             List<int> staffID = new List<int>();
@@ -79,18 +79,36 @@ namespace Appointment_Mgr.Model
             foreach (DataRow row in workingDoctors.Rows) 
             {
                 staffID.Add(int.Parse(row["Id"].ToString()));
-                // PERSONAL NOTE: // //////////
-                // Remember these numbers are stored as ints ---- so no leading digits. i.e. 9:15AM IS NOT 0915 but is 915
+
                 shiftStarts.Add(int.Parse(row["Shift_Start"].ToString()));
                 shiftEnds.Add(int.Parse(row["Shift_End"].ToString()));
             }
             
-            DataTable dt = AppointmentLogic.CalcReservationTimeslots(staffID, shiftStarts, shiftEnds, GetBookedTimeslots(date, staffID));
+            DataTable dt = AppointmentLogic.CalcTimeslots(staffID, shiftStarts, shiftEnds, GetBookedTimeslots(date, staffID), true);
 
-            // Calls Appointment Logic Model class method.
             return  dt;
         }
-        
+        public static DataTable GetWalkInTimeslots() 
+        {
+            DataTable workingDoctors = GetWorkingDoctors(DateTime.Today.Date, "None", "None");
+
+            // Doctor shift start & end times stored to be used to calculate 
+            List<int> staffID = new List<int>();
+            List<int> shiftStarts = new List<int>();
+            List<int> shiftEnds = new List<int>();
+            foreach (DataRow row in workingDoctors.Rows)
+            {
+                staffID.Add(int.Parse(row["Id"].ToString()));
+
+                shiftStarts.Add(int.Parse(row["Shift_Start"].ToString()));
+                shiftEnds.Add(int.Parse(row["Shift_End"].ToString()));
+            }
+
+            DataTable dt = AppointmentLogic.CalcTimeslots(staffID, shiftStarts, shiftEnds, GetBookedTimeslots(DateTime.Today.Date, staffID), false);
+
+            return dt;
+        }
+
         /*
          *  Function Purpose: Return DataTable of doctors working on given day with optional filter parameters of doctor name and gender
          *  

@@ -17,7 +17,7 @@ namespace Appointment_Mgr.ViewModel
     public class WalkInAppointmentViewModel : ViewModelBase
     {
         private string _estimatedTime;
-        private DataTable _timeslot;
+        private DataRow _timeslot;
 
         public string EstimatedTime 
         {
@@ -28,32 +28,56 @@ namespace Appointment_Mgr.ViewModel
                 RaisePropertyChanged("EstimatedTime");
             }
         }
-        public DataTable Timeslot{ get; set; }
+        public DataRow Timeslot{ get; set; }
         
         public WalkInAppointmentViewModel() 
         {
-            Timeslot = StaffDBConverter.GetAvaliableTimeslots(DateTime.Today.Date);
-            Console.WriteLine(timeslotToString(Timeslot));
+            Timeslot = AppointmentLogic.CalcWalkInTimeslot(StaffDBConverter.GetWalkInTimeslots());
             if (IsInDesignMode)
             {
                 EstimatedTime = "2 Hours 45 Minutes";
             }
             else 
             {
-                if (Timeslot.Rows.Count <= 0)
+                if (Timeslot == null) 
+                {
                     EstimatedTime = "No Avaliable Time. Try booking a reservation.";
+                    //insert disabe button feature.
+                }
                 else
                 {
-                    //EstimatedTime = timeslotToString(Timeslot);
+                    EstimatedTime = CalcWaitTime(Timeslot);
                 }
             }
             
             //insert button command
         }
 
-        public string timeslotToString(DataTable dt) 
+        public DataRow SelectTimeslot(DataTable dt) 
         {
-            return dt.Rows.ToString();
+            if (dt.Rows.Count <= 0) 
+            {
+                return null;
+            }
+
+            return dt.Rows[0];
+        }
+
+        public string CalcWaitTime(DataRow dr) 
+        {
+            TimeSpan timeslot = TimeSpan.Parse(dr[1].ToString());
+            TimeSpan timeNow = DateTime.Now.TimeOfDay;
+
+            TimeSpan timeDifference = timeslot - timeNow;
+
+            string waitEstimation = "";
+
+            if (timeDifference.Hours == 0)
+                waitEstimation = timeDifference.Minutes.ToString() + " Minutes.";
+            else
+                waitEstimation = timeDifference.Hours.ToString() + " Hours. " + timeDifference.Minutes.ToString() + " Minutes.";
+
+            return waitEstimation ;
         }
     }
 }

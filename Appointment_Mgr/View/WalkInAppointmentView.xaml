@@ -32,12 +32,17 @@
             <Label Grid.Column="1" Grid.Row="1"
                    HorizontalContentAlignment="Center" VerticalContentAlignment="Top"
                    FontSize="40" FontWeight="DemiBold" Foreground="#3d3d3d" Content="{Binding EstimatedTime}" />
-
+            
             <TextBlock Grid.Column="1" Grid.Row="2"
                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,30,100"
                    FontSize="25" FontWeight="Normal" Foreground="#3d3d3d" TextWrapping="Wrap" TextAlignment="Center"
                    Text="Please keep an eye on your emails for updates on your appointment. Remember to return within 10 minutes of being asked to do so." />
-            
+
+            <TextBlock Grid.Column="1" Grid.Row="2"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"
+                   FontSize="15" FontWeight="Normal" Foreground="#3d3d3d" TextWrapping="Wrap" TextAlignment="Center"
+                   Text="*Estimated time is an estimation and is subject to change depending on operational status," />
+
             <!-- Bottom row elements -->
             <Button Grid.Column="1" Grid.Row="3"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,100"
