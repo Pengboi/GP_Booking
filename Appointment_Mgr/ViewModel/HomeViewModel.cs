@@ -113,7 +113,9 @@ namespace Appointment_Mgr.ViewModel
             MessengerInstance.Send<string>("BookingView");
             Cleanup();
         }
-
+        public void SetCheckInView() 
+        {
+        }
 
         public override void Cleanup()
         {
