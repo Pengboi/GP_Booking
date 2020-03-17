@@ -97,8 +97,17 @@ namespace Appointment_Mgr.Model
                     // however, if the current time is before the start time of any working doctor, then the time is 
                     // set to the ending time of the doctors shift to indicate there is no remaining time to see patients
                     // as the doctor is not actually assumed to be working
-                    if (starts[element] < int.Parse(DateTime.Now.ToString("HH:mm").Replace(":", "")))
+                    if (starts[element] < int.Parse(DateTime.Now.ToString("HH:mm").Replace(":", ""))) 
+                    {
                         currentTime = int.Parse(DateTime.Now.ToString("HH:mm").Replace(":", ""));
+                        // If adding 5 minutes to the current time runs into the next hour, add 45 to number to represent next hour
+                        // This is explained in detail below --> but basically, the gist is, if you just take the current time
+                        // the system will not recognise it as an avaliable timeslot and will default to postponing when the patient can
+                        // be seen. We avoid this by taking the current time THEN adding 5 minutes so the patient is show 5 mins until next appt
+                        int minutes = currentTime % 100;
+                        if (minutes + 5 > 60)
+                            currentTime += 45;
+                    }  
                     else
                         currentTime = ends[element];
                 }
@@ -160,9 +169,30 @@ namespace Appointment_Mgr.Model
                 }
 
                 List<int> avaliableTimes = appointmentTimeslots[i];
+                //DEBUG
+                Console.WriteLine("===================================================================================================");
+                Console.WriteLine("BEFORE THE SHITSTORM");
+                Console.WriteLine(" ");
+                for (int k = 0; k < avaliableTimes.Count; k++)
+                {
+                    Console.Write(" | " + avaliableTimes[k] + " | ");
+                }
+                Console.WriteLine(" ");
+                Console.WriteLine("===================================================================================================");
 
                 avaliableTimes.RemoveAll(timeslot => existingTimes.Contains(timeslot)); //lambda expression removes all avaliable times ints that are also in existingtimes for any given doctor
                 appointmentTimeslots[i] = avaliableTimes;
+
+                //DEBUG
+                Console.WriteLine("===================================================================================================");
+                Console.WriteLine("AFTER THE SHITSTORM");
+                Console.WriteLine(" ");
+                for (int k = 0; k < avaliableTimes.Count; k++)
+                {
+                    Console.Write(" | " + avaliableTimes[k] + " | ");
+                }
+                Console.WriteLine(" ");
+                Console.WriteLine("===================================================================================================");
             }
 
             DataTable doctorTimeslots = new DataTable();
