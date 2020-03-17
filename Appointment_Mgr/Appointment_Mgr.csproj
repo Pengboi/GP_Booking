@@ -347,6 +347,9 @@
     <Resource Include="Assets\Confirmation-icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="logs\log.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Assets\Back-icon.png" />
     <Content Include="Assets\reservation_email.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
