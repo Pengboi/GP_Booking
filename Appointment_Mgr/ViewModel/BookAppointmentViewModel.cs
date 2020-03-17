@@ -148,7 +148,8 @@ namespace Appointment_Mgr.ViewModel
             if (!VerifyPatientDetails(patient))
                 return;
 
-            int patientID = PatientDBConverter.GetPatientID(patient); //************* FINISH IMPLEMENTING
+            int patientID = PatientDBConverter.GetPatientID(patient);
+            PatientDBConverter.UpdateEmail(patientID, Email);
             // Shows the booking view after patient details & desired reservation type verified
             // sends patient user details as message to view
             AppointmentTypeView = ReservationView;
@@ -166,6 +167,8 @@ namespace Appointment_Mgr.ViewModel
             if (!VerifyPatientDetails(patient))
                 return;
 
+            int patientID = PatientDBConverter.GetPatientID(patient);
+            PatientDBConverter.UpdateEmail(patientID, Email);
             // Change VM of AppointmentTypeView
             AppointmentTypeView = WalkInView;
             IsBookingVisible = true;

@@ -66,6 +66,18 @@ namespace Appointment_Mgr.Model
             conn.Close();
             return email;
         }
+        public static void UpdateEmail(int patientID, string email)
+        {
+            string cmdString = "UPDATE Patient_Data SET \"E-mail\" = @email WHERE \"Patient#\" = @id";
+            SQLiteConnection conn = OpenConnection();
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.Prepare();
+            cmd.Parameters.Add("@email", DbType.String).Value = email;
+            cmd.Parameters.Add("@id", DbType.Int32).Value = patientID;
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            return;
+        }
 
         public static void SaveChanges(DataTable dt) 
         {
@@ -87,19 +99,6 @@ namespace Appointment_Mgr.Model
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.ExecuteNonQuery();
             conn.Close();
-        }
-
-        public static void UpdateEmail(int patientID, string email) 
-        {
-            string cmdString = "UPDATE Patient_Data SET \"E-mail\" = @email WHERE \"Patient#\" = @id";
-            SQLiteConnection conn = OpenConnection();
-            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
-            cmd.Prepare();
-            cmd.Parameters.Add("@email", DbType.String).Value = email;
-            cmd.Parameters.Add("@id", DbType.Int32).Value = patientID;
-            cmd.ExecuteNonQuery();
-            conn.Close();
-            return;
         }
 
         public static void BookAppointment(string timeslot, int doctorID, int patientID, string notes = null, string date = null) 
