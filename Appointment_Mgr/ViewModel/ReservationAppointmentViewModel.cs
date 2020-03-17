@@ -49,11 +49,6 @@ namespace Appointment_Mgr.ViewModel
             var dialog = new AlertBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
-        private void Confirmation(string title, string message) 
-        {
-            var dialog = new ConfirmationBoxViewModel(title, message);
-            var result = _dialogService.OpenDialog(dialog);
-        }
 
         public string RequestedDoctor
         {
@@ -186,8 +181,6 @@ namespace Appointment_Mgr.ViewModel
 
             // Sends email confirmation
             EmailConfirmation.ReservationEmail(patientID, SelectedDate, selectedTimeslot);
-
-            Confirmation("Appointment Booked.", "Appointment has been successfully booked.");
 
             MessengerInstance.Unregister(this);
             MessengerInstance.Send<string>("DecideHomeView");
