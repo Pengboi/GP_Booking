@@ -17,6 +17,7 @@ namespace Appointment_Mgr.ViewModel
     public class WalkInAppointmentViewModel : ViewModelBase
     {
         private string _estimatedTime;
+        private DataTable _timeslot;
 
         public string EstimatedTime 
         {
@@ -27,17 +28,32 @@ namespace Appointment_Mgr.ViewModel
                 RaisePropertyChanged("EstimatedTime");
             }
         }
+        public DataTable Timeslot{ get; set; }
         
         public WalkInAppointmentViewModel() 
         {
+            Timeslot = StaffDBConverter.GetAvaliableTimeslots(DateTime.Today.Date);
+            Console.WriteLine(timeslotToString(Timeslot));
             if (IsInDesignMode)
             {
                 EstimatedTime = "2 Hours 45 Minutes";
             }
             else 
             {
-                EstimatedTime = "2 hours 10 mins";
+                if (Timeslot.Rows.Count <= 0)
+                    EstimatedTime = "No Avaliable Time. Try booking a reservation.";
+                else
+                {
+                    //EstimatedTime = timeslotToString(Timeslot);
+                }
             }
+            
+            //insert button command
+        }
+
+        public string timeslotToString(DataTable dt) 
+        {
+            return dt.Rows.ToString();
         }
     }
 }
