@@ -93,8 +93,14 @@ namespace Appointment_Mgr.Model
                     currentTime = starts[element];
                 else 
                 {
-                    Console.WriteLine(DateTime.Now.ToString("HH:mm"));
-                    currentTime = int.Parse(DateTime.Now.ToString("HH:mm").Replace(":", ""));
+                    // If the current time is after the doctor starts then the current time is used
+                    // however, if the current time is before the start time of any working doctor, then the time is 
+                    // set to the ending time of the doctors shift to indicate there is no remaining time to see patients
+                    // as the doctor is not actually assumed to be working
+                    if (starts[element] < int.Parse(DateTime.Now.ToString("HH:mm").Replace(":", "")))
+                        currentTime = int.Parse(DateTime.Now.ToString("HH:mm").Replace(":", ""));
+                    else
+                        currentTime = ends[element];
                 }
                 int remainingTime = ends[element] - currentTime; //Time left in shift
 
