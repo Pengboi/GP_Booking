@@ -107,6 +107,8 @@ namespace Appointment_Mgr.Model
                         int minutes = currentTime % 100;
                         if (minutes + 5 > 60)
                             currentTime += 45;
+                        else
+                            currentTime += 5;
                     }  
                     else
                         currentTime = ends[element];
@@ -169,30 +171,8 @@ namespace Appointment_Mgr.Model
                 }
 
                 List<int> avaliableTimes = appointmentTimeslots[i];
-                //DEBUG
-                Console.WriteLine("===================================================================================================");
-                Console.WriteLine("BEFORE THE SHITSTORM");
-                Console.WriteLine(" ");
-                for (int k = 0; k < avaliableTimes.Count; k++)
-                {
-                    Console.Write(" | " + avaliableTimes[k] + " | ");
-                }
-                Console.WriteLine(" ");
-                Console.WriteLine("===================================================================================================");
-
                 avaliableTimes.RemoveAll(timeslot => existingTimes.Contains(timeslot)); //lambda expression removes all avaliable times ints that are also in existingtimes for any given doctor
                 appointmentTimeslots[i] = avaliableTimes;
-
-                //DEBUG
-                Console.WriteLine("===================================================================================================");
-                Console.WriteLine("AFTER THE SHITSTORM");
-                Console.WriteLine(" ");
-                for (int k = 0; k < avaliableTimes.Count; k++)
-                {
-                    Console.Write(" | " + avaliableTimes[k] + " | ");
-                }
-                Console.WriteLine(" ");
-                Console.WriteLine("===================================================================================================");
             }
 
             DataTable doctorTimeslots = new DataTable();
