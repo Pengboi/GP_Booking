@@ -14,10 +14,14 @@
                 Margin="30,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                 Background="#1dd1a1" Command="{Binding AddPatientCommand}">
                 <StackPanel Orientation="Vertical" Margin="0,0,30,0" Width="200">
-                    <Label Content="Add" FontSize="20" FontWeight="Bold"
-                           Foreground="{Binding AddRecordTextColour, Mode=TwoWay}"></Label>
-                    <Label Content="Patient Record" FontSize="20" FontWeight="Bold"
-                           Foreground="{Binding AddRecordTextColour, Mode=TwoWay}"></Label>
+                    <Label Content="Add" FontSize="18" FontWeight="Bold"
+                           FontFamily="{StaticResource Montserrat}"
+                           Foreground="{Binding AddRecordTextColour, Mode=TwoWay}" 
+                    />
+                    <Label Content="Patient Record" FontSize="18" FontWeight="Bold"
+                           FontFamily="{StaticResource Montserrat}"
+                           Foreground="{Binding AddRecordTextColour, Mode=TwoWay}"
+                    />
                 </StackPanel>
             </Button>
 
@@ -25,10 +29,14 @@
                     Margin="30,100,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                     Command="{Binding EditPatientCommand}">
                 <StackPanel Orientation="Vertical" Margin="0,0,30,0" Width="200">
-                    <Label Content="Edit" FontSize="20" FontWeight="Bold"
-                           Foreground="{Binding EditRecordTextColour, Mode=TwoWay}"></Label>
-                    <Label Content="Patient Records" FontSize="20" FontWeight="Bold"
-                           Foreground="{Binding EditRecordTextColour, Mode=TwoWay}"></Label>
+                    <Label Content="Edit" FontSize="18" FontWeight="Bold"
+                           Foreground="{Binding EditRecordTextColour, Mode=TwoWay}"
+                           FontFamily="{StaticResource Montserrat}"
+                    />
+                    <Label Content="Patient Record" FontSize="18" FontWeight="Bold"
+                           Foreground="{Binding EditRecordTextColour, Mode=TwoWay}"
+                           FontFamily="{StaticResource Montserrat}"
+                    />
                 </StackPanel>
             </Button>
 
@@ -37,10 +45,14 @@
                 Background="#e84118"
                 Command="{Binding DeletePatientCommand}">
                 <StackPanel Orientation="Vertical" Margin="0,0,30,0" Width="200">
-                    <Label Content="Delete" FontSize="20" FontWeight="Bold"
-                           Foreground="{Binding DeleteRecordTextColour, Mode=TwoWay}"></Label>
-                    <Label Content="Patient Record" FontSize="20" FontWeight="Bold"
-                           Foreground="{Binding DeleteRecordTextColour, Mode=TwoWay}"></Label>
+                    <Label Content="Delete" FontSize="18" FontWeight="Bold"
+                           Foreground="{Binding DeleteRecordTextColour, Mode=TwoWay}"
+                           FontFamily="{StaticResource Montserrat}"
+                    />
+                    <Label Content="Patient Record" FontSize="18" FontWeight="Bold"
+                           Foreground="{Binding DeleteRecordTextColour, Mode=TwoWay}"
+                           FontFamily="{StaticResource Montserrat}"
+                    />
                 </StackPanel>
             </Button>
 

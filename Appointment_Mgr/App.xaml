@@ -7,9 +7,6 @@
              xmlns:vm="clr-namespace:Appointment_Mgr.ViewModel"
              xmlns:model="clr-namespace:Appointment_Mgr.Model"
              xmlns:dialog="clr-namespace:Appointment_Mgr.Dialog"
-             xmlns:otp="clr-namespace:Appointment_Mgr.Dialog.OTP"
-             xmlns:confirmation="clr-namespace:Appointment_Mgr.Dialog.Confirmation"
-             xmlns:error="clr-namespace:Appointment_Mgr.Dialog.Error"
              d1p1:Ignorable="d" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <Application.Resources>
@@ -32,12 +29,27 @@
                     <DataTemplate DataType="{x:Type vm:HomeToolbarViewModel}">
                         <views:HomeToolbarView />
                     </DataTemplate>
+                    
                     <DataTemplate DataType="{x:Type vm:ReceptionistHomeViewModel}">
                         <views:ReceptionistHomeView />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type vm:ReceptionistToolbarViewModel}">
                         <views:ReceptionistToolbarView />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ManageAppointmentsViewModel}">
+                        <views:ManageAppointmentsView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:WaitingListViewModel}">
+                        <views:WaitingListView />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type vm:DoctorHomeToolbarViewModel}">
+                        <views:DoctorHomeToolbarView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:DoctorHomeViewModel}">
+                        <views:DoctorHomeView />
+                    </DataTemplate>
+                    
                     <DataTemplate DataType="{x:Type vm:BookAppointmentViewModel}">
                         <views:BookAppointmentView />
                     </DataTemplate>
@@ -47,9 +59,16 @@
                     <DataTemplate DataType="{x:Type vm:WalkInAppointmentViewModel}">
                         <views:WalkInAppointmentView />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EmergencyAppointmentViewModel}">
+                        <views:EmergencyAppointmentView />
+                    </DataTemplate>
                     
                     <DataTemplate DataType="{x:Type vm:LoginViewModel}">
                         <views:LoginView/>
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type vm:CheckInViewModel}">
+                        <views:CheckInView/>
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type vm:ManagePatientViewModel}" >
@@ -69,17 +88,23 @@
                     <DataTemplate DataType="{x:Type dialog:DialogBoxViewModel}">
                         <dialog:DialogBoxView/>
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type error:ErrorBoxViewModel}">
-                        <error:ErrorBoxView />
+                    <DataTemplate DataType="{x:Type dialog:ErrorBoxViewModel}">
+                        <dialog:ErrorBoxView />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type dialog:AlertBoxViewModel}">
                         <dialog:AlertBoxView />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type otp:OTPBoxViewModel}">
-                        <otp:OTPBoxView/>
+                    <DataTemplate DataType="{x:Type dialog:ConfirmationBoxViewModel}">
+                        <dialog:ConfirmationBoxView />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type confirmation:ConfirmationBoxViewModel}">
-                        <confirmation:ConfirmationBoxView />
+                    <DataTemplate DataType="{x:Type dialog:PatientIDBoxViewModel}">
+                        <dialog:PatientIDBoxView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type dialog:OTPBoxViewModel}">
+                        <dialog:OTPBoxView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type dialog:SuccessBoxViewModel}">
+                        <dialog:SuccessBoxView />
                     </DataTemplate>
                     
                 </ResourceDictionary>
@@ -89,6 +114,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.amber.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.deeppurple.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <!-- External Font Folder -->
+            <FontFamily x:Key="Montserrat">pack://application:,,,/Assets/Fonts/#Montserrat</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

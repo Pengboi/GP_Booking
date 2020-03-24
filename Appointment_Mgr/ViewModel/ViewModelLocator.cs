@@ -16,7 +16,7 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Appointment_Mgr.Dialog;
-using Appointment_Mgr.Dialog.OTP;
+using Appointment_Mgr.Dialog;
 using GalaSoft.MvvmLight.Messaging;
 //using Microsoft.Practices.ServiceLocation;
 
@@ -74,7 +74,7 @@ namespace Appointment_Mgr.ViewModel
             get { return ServiceLocator.Current.GetInstance<HomeToolbarViewModel>(); }
         }
 
-
+        #region Receptionist VMs
         public static ReceptionistHomeViewModel ReceptionistHome 
         {
             get { return ServiceLocator.Current.GetInstance<ReceptionistHomeViewModel>(); }
@@ -83,8 +83,37 @@ namespace Appointment_Mgr.ViewModel
         {
             get { return ServiceLocator.Current.GetInstance<ReceptionistToolbarViewModel>(); }
         }
+        public static ManageAppointmentsViewModel ManageAppointments
+        {
+            get { return ServiceLocator.Current.GetInstance<ManageAppointmentsViewModel>(); }
+        }
+        public static WaitingListViewModel WaitingList 
+        {
+            get { return ServiceLocator.Current.GetInstance<WaitingListViewModel>(); }
+        }
+        public static ManagePatientViewModel ManagePatient
+        {
+            get { return ServiceLocator.Current.GetInstance<ManagePatientViewModel>(); }
+        }
+        public static AddPatientViewModel AddPatient
+        {
+            get { return ServiceLocator.Current.GetInstance<AddPatientViewModel>(); }
+        }
+        public static EditPatientViewModel EditPatient
+        {
+            get { return ServiceLocator.Current.GetInstance<EditPatientViewModel>(); }
+        }
+        public static DeletePatientViewModel DeletePatient
+        {
+            get { return ServiceLocator.Current.GetInstance<DeletePatientViewModel>(); }
+        }
+        public static EmergencyAppointmentViewModel BookEmergencyAppointment
+        {
+            get { return ServiceLocator.Current.GetInstance<EmergencyAppointmentViewModel>(); }
+        }
+        #endregion
 
-
+        #region Appointment VMs
         public static BookAppointmentViewModel BookAppointment
         {
             get { return ServiceLocator.Current.GetInstance<BookAppointmentViewModel>(); }
@@ -97,24 +126,23 @@ namespace Appointment_Mgr.ViewModel
         {
             get { return ServiceLocator.Current.GetInstance<WalkInAppointmentViewModel>(); }
         }
+        public static CheckInViewModel CheckIn 
+        {
+            get { return ServiceLocator.Current.GetInstance<CheckInViewModel>(); }
+        }
+        #endregion
 
+        #region Doctor VMs
+        public static DoctorHomeViewModel DoctorHome 
+        {
+            get { return ServiceLocator.Current.GetInstance<DoctorHomeViewModel>(); }
+        }
+        public static DoctorHomeToolbarViewModel DoctorToolbar 
+        {
+            get { return ServiceLocator.Current.GetInstance<DoctorHomeToolbarViewModel>(); }
+        }
+        #endregion
 
-        public static ManagePatientViewModel ManagePatient
-        {
-            get { return ServiceLocator.Current.GetInstance<ManagePatientViewModel>(); }
-        }
-        public static AddPatientViewModel AddPatient 
-        {
-            get  { return ServiceLocator.Current.GetInstance<AddPatientViewModel>(); }
-        }
-        public static EditPatientViewModel EditPatient
-        {
-            get { return ServiceLocator.Current.GetInstance<EditPatientViewModel>(); }
-        }
-        public static DeletePatientViewModel DeletePatient 
-        {
-            get { return ServiceLocator.Current.GetInstance<DeletePatientViewModel>(); }
-        }
 
         public static void Cleanup()
         {
@@ -132,11 +160,19 @@ namespace Appointment_Mgr.ViewModel
             SimpleIoc.Default.Register<BookAppointmentViewModel>();
             SimpleIoc.Default.Register<ReservationAppointmentViewModel>();
             SimpleIoc.Default.Register<WalkInAppointmentViewModel>();
+            SimpleIoc.Default.Register<EmergencyAppointmentViewModel>();
+            SimpleIoc.Default.Register<CheckInViewModel>();
+
+            SimpleIoc.Default.Register<ManageAppointmentsViewModel>();
+            SimpleIoc.Default.Register<WaitingListViewModel>();
 
             SimpleIoc.Default.Register<ManagePatientViewModel>();
             SimpleIoc.Default.Register<AddPatientViewModel>();
             SimpleIoc.Default.Register<EditPatientViewModel>();
             SimpleIoc.Default.Register<DeletePatientViewModel>();
+
+            SimpleIoc.Default.Register<DoctorHomeViewModel>();
+            SimpleIoc.Default.Register<DoctorHomeToolbarViewModel>();
         }
     }
 }

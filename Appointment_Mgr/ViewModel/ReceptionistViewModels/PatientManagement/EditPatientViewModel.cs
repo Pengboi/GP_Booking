@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
 using Appointment_Mgr.Dialog;
 using System.Text.RegularExpressions;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Appointment_Mgr.ViewModel
 {
@@ -14,7 +15,7 @@ namespace Appointment_Mgr.ViewModel
         private IDialogBoxService _dialogService;
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
-        public ICommand ConfirmationCommand { get; private set; }
+        public ICommand SuccessCommand { get; private set; }
 
         private DataTable _patients = new DataTable();
         public RelayCommand SaveCommand { get; private set; }
@@ -25,7 +26,7 @@ namespace Appointment_Mgr.ViewModel
             set 
             { 
                 _patients = value;
-                RaisePropertyChanged("Patients");
+                RaisePropertyChanged(nameof(Patients));
             }
         }
 
@@ -37,12 +38,12 @@ namespace Appointment_Mgr.ViewModel
         }
         private void Error(string title, string message)
         {
-            var dialog = new Dialog.Error.ErrorBoxViewModel(title, message);
+            var dialog = new Dialog.ErrorBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
-        private void Confirmation(string title, string message)
+        private void Success(string title, string message)
         {
-            var dialog = new Dialog.Confirmation.ConfirmationBoxViewModel(title, message);
+            var dialog = new Dialog.SuccessBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
 
@@ -53,10 +54,9 @@ namespace Appointment_Mgr.ViewModel
                 return;
             PatientDBConverter.SaveChanges(Patients);
             // Refreshes DataGrid view
-            Patients = null;
-            Patients = PatientDBConverter.GetPatients();
+            UpdateDB();
 
-            Confirmation("Database Updated.", "Changes to the database were successfully updated.");
+            Success("Database Updated.", "Changes to the database were successfully updated.");
         }
 
         private bool EntryValidation()
@@ -102,15 +102,22 @@ namespace Appointment_Mgr.ViewModel
         public EditPatientViewModel() 
         {
             _dialogService = new DialogBoxService();
-            if (IsInDesignMode) 
-            {
 
-            }
-            else 
-            {
-                Patients = PatientDBConverter.GetPatients();
-            }
+            Patients = PatientDBConverter.GetPatients();
+            Messenger.Default.Register<NotificationMessage>(
+                this,
+                message =>
+                {
+                    UpdateDB();
+                }
+            );
+
             SaveCommand = new RelayCommand(SaveToDB);
+        }
+
+        private void UpdateDB()
+        {
+            Patients = PatientDBConverter.GetPatients();
         }
     }
 }

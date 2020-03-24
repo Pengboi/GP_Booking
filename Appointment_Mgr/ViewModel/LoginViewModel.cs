@@ -41,7 +41,7 @@ namespace Appointment_Mgr.ViewModel
 
         private string Otp()
         {
-            var dialog = new Dialog.OTP.OTPBoxViewModel("", "Input your OTP code below:");
+            var dialog = new Dialog.OTPBoxViewModel("", "Input your OTP code below:");
             var result = _dialogService.OpenDialog(dialog);
             return result;
         }
@@ -75,8 +75,6 @@ namespace Appointment_Mgr.ViewModel
                 _buttonText = value;
             }
         }
-
-        
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.

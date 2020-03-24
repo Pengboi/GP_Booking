@@ -32,22 +32,27 @@ namespace Appointment_Mgr.Model
         public PatientUser(string firstname, string middlename, string lastname,
                            DateTime dob, int streetNumber, string postcode)
         {
-            this._firstname = firstname.ToLower(); this._middlename = string.IsNullOrWhiteSpace(middlename) ? middlename : middlename.ToLower(); this._lastname = lastname.ToLower();
+            this._firstname = firstname.ToLower(new System.Globalization.CultureInfo("en-UK", false)); this._middlename = string.IsNullOrWhiteSpace(middlename) ? middlename : middlename.ToLower(new System.Globalization.CultureInfo("en-UK", false)); this._lastname = lastname.ToLower(new System.Globalization.CultureInfo("en-UK", false));
             this._DOB = dob.ToString("dd/MM/yyyy");
             this._streetNumber = streetNumber;
             this._postcode = postcode.ToUpper().Replace(" ", "");
         }
 
-        public bool RecordExists()
+        public int RecordsFound(int? optionalID = null)
         {
             SQLiteConnection conn = OpenConnection();
-            // If middlename is not null, include in search
-            string cmdString = $"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(this._middlename) ? " Middlename = @mname AND" : "") +
-                                " Lastname = @lname AND DOB = @dob AND ST_Number = @stNum AND Postcode = @postcode";
+            string cmdString;
+            // If middlename is not null, include in search, if ID of patient has been specified, include in search. 
+            // (used for when multiple records have same attribute values, so primary key needs to be employed.)
+            if (optionalID != null)
+                cmdString = $"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(this._middlename) ? " Middlename = @mname AND" : "") +
+                                 " Lastname = @lname AND DOB = @dob AND ST_Number = @stNum AND Postcode = @postcode AND PatientID = @id";
+            else
+                cmdString = $"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(this._middlename) ? " Middlename = @mname AND" : "") +
+                                 " Lastname = @lname AND DOB = @dob AND ST_Number = @stNum AND Postcode = @postcode";
 
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
             cmd.Prepare();
-
             cmd.Parameters.Add("@fname", DbType.String).Value = this._firstname;
             if (!string.IsNullOrWhiteSpace(this._middlename))
                 cmd.Parameters.Add("@mname", DbType.String).Value = this._middlename;
@@ -55,17 +60,14 @@ namespace Appointment_Mgr.Model
             cmd.Parameters.Add("@dob", DbType.String).Value = this._DOB;
             cmd.Parameters.Add("@stNum", DbType.Int32).Value = this._streetNumber;
             cmd.Parameters.Add("@postcode", DbType.String).Value = this._postcode;
+            if (optionalID.HasValue)
+                cmd.Parameters.Add("@id", DbType.Int32).Value = (int)optionalID;
 
 
-            int recordFound = Convert.ToInt32(cmd.ExecuteScalar());
+            int recordsFound = Convert.ToInt32(cmd.ExecuteScalar());
 
-            if (recordFound == 1)
-            {
-                conn.Close();
-                return true;
-            }
             conn.Close();
-            return false;
+            return recordsFound;
         }
 
         public int PatientNo 

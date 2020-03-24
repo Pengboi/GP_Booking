@@ -21,7 +21,7 @@ namespace Appointment_Mgr.Helper
             }
             // if not a match
             if (!Regex.IsMatch(str, @"^([A-Z]|[a-z]){1}(([a-z])*([-]{1}[A-Za-z]{1})|([-]{0}[A-Z]{0}))[a-z]*$"))
-                return new ValidationResult(false, String.Format("Name must contain letters (may appropriate use '-')"));
+                return new ValidationResult(false, String.Format("Name must contain letters (may use '-' where appropriate)"));
 
             return new ValidationResult(true, null);
 

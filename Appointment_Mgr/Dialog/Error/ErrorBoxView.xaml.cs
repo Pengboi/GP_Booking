@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Appointment_Mgr.Dialog.Error
+namespace Appointment_Mgr.Dialog
 {
     /// <summary>
     /// Interaction logic for ErrorBoxView.xaml

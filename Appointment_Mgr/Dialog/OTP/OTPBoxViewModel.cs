@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace Appointment_Mgr.Dialog.OTP
+namespace Appointment_Mgr.Dialog
 {
     public class OTPBoxViewModel : DialogBoxViewModelBase<DialogResults>
     {
@@ -16,6 +16,7 @@ namespace Appointment_Mgr.Dialog.OTP
         public string Title { get; set; }
         public string Message { get; set; }
 
+
         public string NumberBox1 
         {
             get { return this._numberBox1; }
@@ -24,16 +25,22 @@ namespace Appointment_Mgr.Dialog.OTP
                 int isInt;
                 if(!string.Equals(this._numberBox1, value))
                 {
-                    if (Int32.TryParse(value, out isInt))
+                    if (string.IsNullOrWhiteSpace(value)) // if value is null --> let it be null (user may want to go back and change incorrect number)
+                    {
+                        this._numberBox1 = value;
+                        return;
+                    }
+                    if (Int32.TryParse(value, out isInt)) // if value is numerical --> update existing value
                     {
                         this._numberBox1 = value;
                     }
-                    else 
+                    else                                 // if value is NOT numerical --> dont accept it.
                     {
                         value = "";
                         return;
                     }
                 }
+                
             } 
         }
         public string NumberBox2
@@ -44,6 +51,11 @@ namespace Appointment_Mgr.Dialog.OTP
                 int isInt;
                 if (!string.Equals(this._numberBox2, value))
                 {
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        this._numberBox2 = value;
+                        return;
+                    }
                     if (Int32.TryParse(value, out isInt))
                     {
                         this._numberBox2 = value;
@@ -64,6 +76,11 @@ namespace Appointment_Mgr.Dialog.OTP
                 int isInt;
                 if (!string.Equals(this._numberBox3, value))
                 {
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        this._numberBox3 = value;
+                        return;
+                    }
                     if (Int32.TryParse(value, out isInt))
                     {
                         this._numberBox3 = value;
@@ -84,6 +101,11 @@ namespace Appointment_Mgr.Dialog.OTP
                 int isInt;
                 if (!string.Equals(this._numberBox4, value))
                 {
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        this._numberBox4 = value;
+                        return;
+                    }
                     if (Int32.TryParse(value, out isInt))
                     {
                         this._numberBox4 = value;
@@ -104,6 +126,11 @@ namespace Appointment_Mgr.Dialog.OTP
                 int isInt;
                 if (!string.Equals(this._numberBox5, value))
                 {
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        this._numberBox5 = value;
+                        return;
+                    }
                     if (Int32.TryParse(value, out isInt))
                     {
                         this._numberBox5 = value;
@@ -124,6 +151,11 @@ namespace Appointment_Mgr.Dialog.OTP
                 int isInt;
                 if (!string.Equals(this._numberBox6, value))
                 {
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        this._numberBox6 = value;
+                        return;
+                    }
                     if (Int32.TryParse(value, out isInt))
                     {
                         this._numberBox6 = value;

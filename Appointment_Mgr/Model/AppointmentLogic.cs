@@ -8,6 +8,7 @@ using System.IO;
 using System.Data.SQLite;
 using System.Globalization;
 using System.Data;
+using Appointment_Mgr.Helper;
 
 namespace Appointment_Mgr.Model
 {
@@ -24,11 +25,11 @@ namespace Appointment_Mgr.Model
 
         public static int averageDuration 
         {
-            get { return getAverage(); }
-            set { value = getAverage(); }
+            get { return GetAverage(); }
+            set { value = GetAverage(); }
         }
 
-        public static int getAverage()
+        public static int GetAverage()
         {
             int averageTime;
 
@@ -38,7 +39,7 @@ namespace Appointment_Mgr.Model
 
             return averageTime;
         }
-        public static void setAverage() 
+        public static void SetAverage() 
         {
             int calculatedAverage;
 
@@ -53,6 +54,7 @@ namespace Appointment_Mgr.Model
         }
 
 
+
         public static int getTimeDifference(int a, int b) 
         {
             // pads strings with leading 0 if time is less than 4 digits i.e. time is "900" for 9AM --> "0900"
@@ -65,7 +67,7 @@ namespace Appointment_Mgr.Model
         public static DataTable CalcTimeslots(List<int> ids, List<int> starts, List<int> ends, List<List<int>> bookedTimeslots, bool isReservation) 
         {
             // Gets average appointment time
-            int averageDuration = getAverage();
+            int averageDuration = GetAverage();
             /*
              * Calculate timeslots assuming there are no existing appointments then remove timeslots afterwards 
              * if appointments already exist for each doctor 
@@ -218,6 +220,25 @@ namespace Appointment_Mgr.Model
                 }
             }
             return null;
+        }
+
+
+        public static void ScheduleWalkInNotification(TimeSpan timeslot, int patientID) 
+        {
+            TimeSpan timeNow = DateTime.Now.TimeOfDay;
+
+            TimeSpan timeDifference = timeslot - timeNow;
+
+            if (timeDifference.Hours == 0 && timeDifference.Minutes < 10)
+            {
+                EmailSuccess.AlmostReadyEmail(patientID);
+            }
+            else 
+            {
+                EmailSuccess.SamedaySuccessEmail(patientID);
+                string minutes = timeDifference.Minutes.ToString();
+                CallSchedular.ExecuteSchedular(patientID, double.Parse(minutes));
+            }
         }
     }
 }

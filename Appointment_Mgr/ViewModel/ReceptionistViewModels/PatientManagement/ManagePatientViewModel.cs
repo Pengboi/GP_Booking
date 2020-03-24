@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,23 +66,22 @@ namespace Appointment_Mgr.ViewModel
             EditRecordTextColour = "#2f3640"; // Dark Black for non-selected navigation VM element
             DeleteRecordTextColour = "#2f3640"; // Dark Black for non-selected navigation VM element
             CurrentViewModel = AddPatientVM;
-            Cleanup();
         }
         public void SetEditView() 
         {
+            MessengerInstance.Send<NotificationMessage>(new NotificationMessage("UpdateDB"));  // forces refresh when tabs are switched
             AddRecordTextColour = "#2f3640"; 
             EditRecordTextColour = "#1e3799"; 
             DeleteRecordTextColour = "#2f3640";
             CurrentViewModel = EditPatientVM;
-            Cleanup();
         }
         public void SetDeleteView()
         {
+            MessengerInstance.Send<NotificationMessage>(new NotificationMessage("UpdateDB"));  // forces refresh when tabs are switched
             AddRecordTextColour = "#2f3640";
             EditRecordTextColour = "#2f3640";
             DeleteRecordTextColour = "#1e3799";
             CurrentViewModel = DeletePatientVM;
-            Cleanup();
         }
 
         public ManagePatientViewModel() 

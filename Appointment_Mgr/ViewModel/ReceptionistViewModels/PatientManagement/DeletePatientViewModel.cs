@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
 using Appointment_Mgr.Dialog;
 using System.Windows.Controls;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Appointment_Mgr.ViewModel
 {
@@ -14,7 +15,7 @@ namespace Appointment_Mgr.ViewModel
         private IDialogBoxService _dialogService;
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
-        public ICommand ConfirmationCommand { get; private set; }
+        public ICommand SuccessCommand { get; private set; }
 
         private DataTable _patients = new DataTable();
         private int? _selectedRow = null;
@@ -26,7 +27,7 @@ namespace Appointment_Mgr.ViewModel
             set
             {
                 _patients = value;
-                RaisePropertyChanged("Patients");
+                RaisePropertyChanged(nameof(Patients));
             }
         }
 
@@ -36,7 +37,7 @@ namespace Appointment_Mgr.ViewModel
             set 
             {
                 _selectedRow = value;
-                RaisePropertyChanged("SelectedRow");
+                RaisePropertyChanged(nameof(SelectedRow));
             }
         }
 
@@ -48,12 +49,12 @@ namespace Appointment_Mgr.ViewModel
         }
         private void Error(string title, string message)
         {
-            var dialog = new Dialog.Error.ErrorBoxViewModel(title, message);
+            var dialog = new Dialog.ErrorBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
-        private void Confirmation(string title, string message)
+        private void Success(string title, string message)
         {
-            var dialog = new Dialog.Confirmation.ConfirmationBoxViewModel(title, message);
+            var dialog = new Dialog.SuccessBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
 
@@ -65,26 +66,33 @@ namespace Appointment_Mgr.ViewModel
                 Alert("No Row Selected!", "No record selected. Please select a record before attempting to delete a patient record.");
                 return;
             }
-
-            PatientDBConverter.SaveRemoval(SelectedRow.ToString());
+            int patientID = int.Parse(Patients.Rows[(int)SelectedRow][0].ToString(), System.Globalization.CultureInfo.InvariantCulture);
+            PatientDBConverter.DeleteRecord(patientID);
             // Refreshes DataGrid view, Resets selected row to null
-            Patients = null; SelectedRow = null;
-            Patients = PatientDBConverter.GetPatients();
-            Confirmation("Database Updated.", "Changes to the database were successfully updated.");
+            SelectedRow = null;
+            Success("Database Updated.", "Changes to the database were successfully updated.");
+            UpdateDB();
         }
 
         public DeletePatientViewModel()
         {
             _dialogService = new DialogBoxService();
-            if (IsInDesignMode)
-            {
 
-            }
-            else
-            {
-                Patients = PatientDBConverter.GetPatients();
-            }
+            Patients = PatientDBConverter.GetPatients();
+            Messenger.Default.Register<NotificationMessage>(
+                this,
+                message =>
+                {
+                    UpdateDB();
+                }
+            );
             DeleteCommand = new RelayCommand(DeleteFromDB);
+
+        }
+
+        private void UpdateDB()
+        {
+            Patients = PatientDBConverter.GetPatients();
         }
     }
 }

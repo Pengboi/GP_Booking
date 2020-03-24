@@ -76,7 +76,7 @@ namespace Schedule_Mgr
 
         private void filterAccounts(string searchtext) 
         {
-            string searchRequest = searchtext.Replace(" ", String.Empty).ToLower();   //Removes whitespace
+            string searchRequest = searchtext.Replace(" ", String.Empty).ToLower(new System.Globalization.CultureInfo("en-UK", false));   //Removes whitespace
 
             SQLiteConnection connection = OpenConnection();
             string sqlQuery = "SELECT Suffix, Firstname, Middlename, Lastname, Account_Type FROM Accounts";
@@ -96,7 +96,7 @@ namespace Schedule_Mgr
                     middlename = row["Middlename"].ToString();
                 string name = row["Suffix"].ToString() + " " + row["Firstname"].ToString() + " " + (!(string.IsNullOrWhiteSpace(middlename)) ? middlename + " " : "" ) + row["Lastname"].ToString();
 
-                string searchResult = name.Replace(" ", String.Empty).ToLower();
+                string searchResult = name.Replace(" ", String.Empty).ToLower(new System.Globalization.CultureInfo("en-UK", false));
                 if (searchResult.Contains(searchRequest)) 
                 {
                     if (accountType == 1)

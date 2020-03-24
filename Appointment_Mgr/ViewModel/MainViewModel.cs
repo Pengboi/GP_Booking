@@ -1,3 +1,4 @@
+using Appointment_Mgr.Helper;
 using Appointment_Mgr.Model;
 using Appointment_Mgr.Dialog;
 using GalaSoft.MvvmLight;
@@ -36,7 +37,7 @@ namespace Appointment_Mgr.ViewModel
             set
             {
                 this._userLogin = value;
-                RaisePropertyChanged("UserLogin");
+                RaisePropertyChanged(nameof(UserLogin));
             }
         }
 
@@ -64,10 +65,18 @@ namespace Appointment_Mgr.ViewModel
         public ViewModelBase HomeVM { get { return ViewModelLocator.Home; } }
         public ViewModelBase ReceptionistToolbarVM { get { return ViewModelLocator.ReceptionistToolbar; } }
         public ViewModelBase ReceptionistVM { get { return ViewModelLocator.ReceptionistHome; } }
+        public ViewModelBase ManageAppointmentsVM { get { return ViewModelLocator.ManageAppointments; } }
+        public ViewModelBase ManageWaitListVM { get { return ViewModelLocator.WaitingList; } }
         public ViewModelBase LoginVM { get { return ViewModelLocator.Login; } }
         
         public ViewModelBase BookingVM { get { return ViewModelLocator.BookAppointment; } }
+        public ViewModelBase EmergencyBookingVM { get { return ViewModelLocator.BookEmergencyAppointment; } }
+        public ViewModelBase CheckInVM { get { return ViewModelLocator.CheckIn; } }
+
         public ViewModelBase ManagePatientVM { get { return ViewModelLocator.ManagePatient; } }
+
+        public ViewModelBase DoctorVM { get { return ViewModelLocator.DoctorHome; } }
+        public ViewModelBase DoctorToolbarVM { get { return ViewModelLocator.DoctorToolbar; } }
         
 
         /// <summary>
@@ -93,6 +102,7 @@ namespace Appointment_Mgr.ViewModel
                  (action) => ReceiveLoginMessage(action)
             );
             MessengerInstance.Register<string>(this, ChangeView);
+            _ = CancelTardyAppointments.Start();
         }
 
         private void ReceiveLoginMessage(StaffUser userAccount)
@@ -108,7 +118,9 @@ namespace Appointment_Mgr.ViewModel
             else if (userAccount.isDoctor())
             {
                 //open Doctor toolbar here
-                Console.WriteLine("I think you are a doctor");
+                CurrentToolbarViewModel = DoctorToolbarVM;
+                CurrentViewModel = DoctorVM;
+                MessengerInstance.Send<int>(StaffDBConverter.GetAccountIDByUsername(userAccount.getUsername()));
             }
         }
 
@@ -143,13 +155,26 @@ namespace Appointment_Mgr.ViewModel
 
             if (value == "BookingView")
                 CurrentViewModel = BookingVM;
+            if (value == "EmergencyBookingView")
+                CurrentViewModel = EmergencyBookingVM;
 
             if (value == "ReceptionistHomeView")
                 CurrentViewModel = ReceptionistVM;
 
+            if (value == "ManageAppointmentsView")
+                CurrentViewModel = ManageAppointmentsVM;
+
+            if (value == "WaitingListView")
+                CurrentViewModel = ManageWaitListVM;
+
             if (value == "ManagePatientView")
                 CurrentViewModel = ManagePatientVM;
 
+            if (value == "CheckInView")
+                CurrentViewModel = CheckInVM;
+
+            if (value == "DoctorHomeView")
+                CurrentViewModel = DoctorVM;
         }
 
         

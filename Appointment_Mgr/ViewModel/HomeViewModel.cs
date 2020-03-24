@@ -51,6 +51,7 @@ namespace Appointment_Mgr.ViewModel
         }
 
         public RelayCommand BookAppointmentCommand { private set; get; }
+        public RelayCommand CheckInCommand { private set; get; }
 
         public HomeViewModel()
         {
@@ -77,6 +78,7 @@ namespace Appointment_Mgr.ViewModel
             }
 
             BookAppointmentCommand = new RelayCommand(SetBookingView);
+            CheckInCommand = new RelayCommand(SetCheckInView);
         }
 
         public static string getGreeting()
@@ -115,6 +117,9 @@ namespace Appointment_Mgr.ViewModel
         }
         public void SetCheckInView() 
         {
+            //Notification Message to open Check-in View
+            MessengerInstance.Send<string>("CheckInView");
+            Cleanup();
         }
 
         public override void Cleanup()

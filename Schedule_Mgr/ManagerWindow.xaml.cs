@@ -335,7 +335,7 @@ namespace Schedule_Mgr
         }
 
 
-        private string getDoctorName(string username, SQLiteConnection connection)
+        private string GetDoctorNameByID(string username, SQLiteConnection connection)
         {
             string doctorName = "";
             SQLiteCommand cmd = new SQLiteCommand($"SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Username = @Username", connection);
@@ -371,7 +371,7 @@ namespace Schedule_Mgr
             SQLiteDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                string doctorName = getDoctorName(reader["Username"].ToString(), connection);
+                string doctorName = GetDoctorNameByID(reader["Username"].ToString(), connection);
                 string shiftStart = reader["Shift_Start"].ToString().Insert(2, ":");
                 string shiftEnd = reader["Shift_End"].ToString().Insert(2, ":");
                 var doctorShiftRow = new ShiftRow { DoctorHeader = doctorName, ShiftStartHeader = shiftStart, ShiftEndHeader = shiftEnd };

@@ -18,29 +18,33 @@
                 <Image HorizontalAlignment="Left"  Height="50" Margin="0,0,0,0" Source="pack://application:,,,/Assets/Book-icon.png" />
                 <StackPanel Orientation="Vertical" Width="170">
                     <TextBlock Margin="15,0,0,0" Height="25" VerticalAlignment="Top"
-                               FontSize="20"  FontWeight="Bold" Text="Book" />
+                               FontSize="20"  FontWeight="Bold" Text="Book" FontFamily="{StaticResource Montserrat}" />
                     <TextBlock Margin="15,0,0,0" Height="25"
-                               FontSize="20"  FontWeight="Bold" Text="Appointment" />
+                               FontSize="20"  FontWeight="Bold" Text="Appointment" FontFamily="{StaticResource Montserrat}" />
                 </StackPanel>
             </StackPanel>
         </Button>
 
-        <Button Width="260" Height="90" Margin="0,200,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#ff6b6b">
+        <Button Width="260" Height="90" Margin="0,200,0,0" 
+                VerticalAlignment="Center" HorizontalAlignment="Center"
+                Background="#ff6b6b" BorderBrush="#ff6b6b"
+                Command="{Binding EmergencyBookAppointmentCommand}">
             <StackPanel Orientation="Horizontal" Width="240">
                 <Image HorizontalAlignment="Left" Width="80"  Height="70" Margin="-15,0,0,15" Source="pack://application:,,,/Assets/Emergency-icon.png" />
                 <StackPanel Orientation="Vertical" Width="170">
                     <TextBlock Margin="0,10,0,0" Height="25" VerticalAlignment="Top"
-                               FontSize="20"  FontWeight="Bold" Text="Emergency" />
+                               FontSize="20"  FontWeight="Bold" Text="Emergency" FontFamily="{StaticResource Montserrat}" />
                     <TextBlock Margin="0,0,0,0" Height="25"
-                               FontSize="20"  FontWeight="Bold" Text="Appointment" />
+                               FontSize="20"  FontWeight="Bold" Text="Appointment" FontFamily="{StaticResource Montserrat}" />
                 </StackPanel>
             </StackPanel>
         </Button>
 
-        <Button Width="260" Height="90" Margin="0,450,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Button Width="260" Height="90" Margin="0,450,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                Command="{Binding CheckInCommand}">
             <StackPanel Orientation="Horizontal" Width="197">
                 <Image HorizontalAlignment="Left"  Height="50" Margin="-15,0,0,0" Source="pack://application:,,,/Assets/Clock-icon.png" />
-                <TextBlock Margin="15,12,0,0" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold" Text="Check In"></TextBlock>
+                <TextBlock Margin="15,12,0,0" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold" Text="Check In" FontFamily="{StaticResource Montserrat}" />
             </StackPanel>
         </Button>
 

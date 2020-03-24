@@ -41,9 +41,15 @@ namespace Appointment_Mgr.ViewModel
         private IDialogBoxService _dialogService;
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
-        public ICommand ConfirmationCommand { get; private set; }
+        public ICommand SuccessCommand { get; private set; }
 
         //Dialog box definitions
+        private string Confirmation(string title, string message) 
+        {
+            var dialog = new ConfirmationBoxViewModel(title, message);
+            var result = _dialogService.OpenDialog(dialog);
+            return result;
+        }
         private void Alert(string title, string message)
         {
             var dialog = new AlertBoxViewModel(title, message);
@@ -51,12 +57,12 @@ namespace Appointment_Mgr.ViewModel
         }
         private void Error(string title, string message)
         {
-            var dialog = new Dialog.Error.ErrorBoxViewModel(title, message);
+            var dialog = new Dialog.ErrorBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
-        private void Confirmation(string title, string message)
+        private void Success(string title, string message)
         {
-            var dialog = new Dialog.Confirmation.ConfirmationBoxViewModel(title, message);
+            var dialog = new Dialog.SuccessBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
 
@@ -72,10 +78,6 @@ namespace Appointment_Mgr.ViewModel
                 DOB = DateTime.Parse("04/04/1991");
                 AddressNo = "24";
                 Postcode = "IG12DH";
-            }
-            else 
-            {
-
             }
 
             CreateRecordCommand = new RelayCommand(AddPatientRecord);
@@ -99,21 +101,24 @@ namespace Appointment_Mgr.ViewModel
 
             SQLiteCommand cmd = new SQLiteCommand(cmdString, connection); 
             cmd.Prepare();
-            cmd.Parameters.Add("@firstname", DbType.String).Value = Firstname.ToLower();
+            cmd.Parameters.Add("@firstname", DbType.String).Value = Firstname.ToLower(new System.Globalization.CultureInfo("en-UK", false));
             if (!string.IsNullOrWhiteSpace(Middlename))
-                cmd.Parameters.Add("@middlename", DbType.String).Value = Middlename.ToLower();
-            cmd.Parameters.Add("@lastname", DbType.String).Value = Lastname.ToLower();
+                cmd.Parameters.Add("@middlename", DbType.String).Value = Middlename.ToLower(new System.Globalization.CultureInfo("en-UK", false));
+            cmd.Parameters.Add("@lastname", DbType.String).Value = Lastname.ToLower(new System.Globalization.CultureInfo("en-UK", false));
             cmd.Parameters.Add("@dob", DbType.String).Value = dateOfBirth.ToString("dd/MM/yyyy");
             cmd.Parameters.Add("@gender", DbType.String).Value = Gender;
             cmd.Parameters.Add("@streetNumber", DbType.String).Value = AddressNo;
-            cmd.Parameters.Add("@postcode", DbType.String).Value = Postcode.Replace(" ", "");
+            cmd.Parameters.Add("@postcode", DbType.String).Value = Postcode.Replace(" ", "").ToUpper();
 
-            //  Checks if record already exists
+            //  Checks if record already exists, if it does a prompt is shown to the user,
+            //  user decides if duplicate record is required.
             int recordsFound = Convert.ToInt32(cmd.ExecuteScalar());
-            if (recordsFound == 1)
+            if (recordsFound > 0)
             {
-                Error("Record Already Exists.", "Patient Record already exists. Please verify patient details, if issues persist contact support.");
-                return;
+                string createDuplicate = Confirmation("Are you sure?",
+                    "Patient Record with identical information already exists. Are you sure you want to create another record with this data?");
+                if (createDuplicate != "Yes")
+                    return;
             }
 
 
@@ -128,17 +133,17 @@ namespace Appointment_Mgr.ViewModel
 
             cmd = new SQLiteCommand(cmdString, connection);
             cmd.Prepare();
-            cmd.Parameters.Add("@firstname", DbType.String).Value = Firstname.ToLower();
+            cmd.Parameters.Add("@firstname", DbType.String).Value = Firstname.ToLower(new System.Globalization.CultureInfo("en-UK", false));
             if (!string.IsNullOrEmpty(Middlename))
-                cmd.Parameters.Add("@middlename", DbType.String).Value = Middlename.ToLower();
-            cmd.Parameters.Add("@lastname", DbType.String).Value = Lastname.ToLower();
+                cmd.Parameters.Add("@middlename", DbType.String).Value = Middlename.ToLower(new System.Globalization.CultureInfo("en-UK", false));
+            cmd.Parameters.Add("@lastname", DbType.String).Value = Lastname.ToLower(new System.Globalization.CultureInfo("en-UK", false));
             cmd.Parameters.Add("@dob", DbType.String).Value = dateOfBirth.ToString("dd/MM/yyyy");
             cmd.Parameters.Add("@gender", DbType.String).Value = Gender;
             cmd.Parameters.Add("@streetNumber", DbType.String).Value = AddressNo;
-            cmd.Parameters.Add("@postcode", DbType.String).Value = Postcode.Replace(" ", "");
+            cmd.Parameters.Add("@postcode", DbType.String).Value = Postcode.Replace(" ", "").ToUpper();
             cmd.ExecuteNonQuery();
 
-            Confirmation("Success", "Record created. You can now proceed to create an appointment.");
+            Success("Success", "Record created. You can now proceed to create an appointment.");
             connection.Close();
         }
 

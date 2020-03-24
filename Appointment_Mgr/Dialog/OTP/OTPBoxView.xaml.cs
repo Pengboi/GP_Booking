@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Appointment_Mgr.Dialog.OTP
+namespace Appointment_Mgr.Dialog
 {
     /// <summary>
     /// Interaction logic for OTPBoxView.xaml

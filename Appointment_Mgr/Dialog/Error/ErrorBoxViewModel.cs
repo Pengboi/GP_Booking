@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Appointment_Mgr.Dialog.Error
+namespace Appointment_Mgr.Dialog
 {
     public class ErrorBoxViewModel : DialogBoxViewModelBase<DialogResults>
     {

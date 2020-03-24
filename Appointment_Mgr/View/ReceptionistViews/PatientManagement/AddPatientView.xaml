@@ -23,7 +23,7 @@
                                                 Mode=TwoWay,
                                                 UpdateSourceTrigger=PropertyChanged}"
                                  x:Name="textSource" 
-                                 Background="Transparent" 
+                                 Background="Transparent"
                                  Panel.ZIndex="2" />
                             <TextBox Text="{TemplateBinding Tag}" BorderThickness="0" Focusable="False" Background="{TemplateBinding Background}" Panel.ZIndex="1">
                                 <TextBox.Style>
@@ -65,11 +65,11 @@
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+        <Label Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontFamily="{StaticResource Montserrat}"
                Content="Please Complete All Below Fields." FontSize="50" FontWeight="Bold" Foreground="#1e272e" />
 
         <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Margin="20,30,0,0"
+               Margin="20,30,0,0" FontFamily="{StaticResource Montserrat}"
                Content="First Name:" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
         <Rectangle Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="5,75,5,0"
                    Width="520" Height="60"
@@ -79,7 +79,8 @@
                                       ShadowDepth="3" Opacity="0.8"/>
             </Rectangle.Effect>
         </Rectangle>
-        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <TextBox Focusable="False"
+                 Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
                  Margin="30,83,30,0" Width="490"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Required*"
@@ -93,8 +94,9 @@
             </TextBox.Text>
         </TextBox>
 
-        <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Margin="20,160,0,0"
+        <Label Focusable="False"
+               Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Margin="20,160,0,0" FontFamily="{StaticResource Montserrat}"
                Content="Last Name:" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
         <Rectangle Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="5,205,5,0"
                    Width="520" Height="60"
@@ -104,7 +106,8 @@
                                       ShadowDepth="3" Opacity="0.8"/>
             </Rectangle.Effect>
         </Rectangle>
-        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <TextBox Focusable="False"
+                 Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
                  Margin="30,213,30,0" Width="490"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Required*"
@@ -119,7 +122,7 @@
         </TextBox>
 
         <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Margin="20,300,0,0"
+               Margin="20,300,0,0" FontFamily="{StaticResource Montserrat}"
                Content="Address 1 (Door No.):" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
         <Rectangle Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="5,350,5,0"
                    Width="520" Height="60"
@@ -129,7 +132,8 @@
                                       ShadowDepth="3" Opacity="0.8"/>
             </Rectangle.Effect>
         </Rectangle>
-        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <TextBox Focusable="False"
+                 Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
                  Margin="30,355,30,0" Width="490"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Required*"
@@ -147,7 +151,7 @@
 
         <!-- Column 2 Elements -->
         <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Margin="20,30,0,0"
+               Margin="20,30,0,0" FontFamily="{StaticResource Montserrat}"
                Content="Middle Name:" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
         <Rectangle Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" Margin="5,75,5,0"
                    Width="520" Height="60"
@@ -157,7 +161,8 @@
                                       ShadowDepth="3" Opacity="0.8"/>
             </Rectangle.Effect>
         </Rectangle>
-        <TextBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <TextBox Focusable="False"
+                 Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
                  Margin="30,83,30,0" Width="490"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Optional"
@@ -172,34 +177,34 @@
         </TextBox>
 
         <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Margin="20,160,0,0"
+               Margin="20,160,0,0" FontFamily="{StaticResource Montserrat}"
                Content="Gender: *" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
         <StackPanel Orientation="Horizontal"
                     Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
                     Margin="20,200,0,0" Width="200" Height="100">
-            <RadioButton Margin="0,20,0,50" VerticalContentAlignment="Center"
-                         Content="Male" FontSize="25" FontWeight="Light" Foreground="#1e272e"
-                         IsChecked="{Binding Gender, Converter={StaticResource ResourceKey=genderToStringKey}, ConverterParameter=Male}" >
+            <RadioButton Margin="0,20,0,50" VerticalContentAlignment="Center" 
+                         Content="Male" FontSize="20" FontWeight="Light" Foreground="#1e272e"
+                         IsChecked="{Binding Gender, Converter={StaticResource ResourceKey=genderToStringKey}, ConverterParameter=Male}" FontFamily="{StaticResource Montserrat}" >
             </RadioButton>
             <RadioButton Margin="15,20,0,50" VerticalContentAlignment="Center"
-                         Content="Female" FontSize="25" FontWeight="Light" Foreground="#1e272e"
-                         IsChecked="{Binding Gender, Converter={StaticResource ResourceKey=genderToStringKey}, ConverterParameter=Female}" >
+                         Content="Female" FontSize="20" FontWeight="Light" Foreground="#1e272e"
+                         IsChecked="{Binding Gender, Converter={StaticResource ResourceKey=genderToStringKey}, ConverterParameter=Female}" FontFamily="{StaticResource Montserrat}" >
             </RadioButton>
             
         </StackPanel>
 
         <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top"
-               Margin="0,160,55,0"
+               Margin="0,160,55,0" FontFamily="{StaticResource Montserrat}"
                Content="Date of Birth: *" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
 
         <DatePicker Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" 
-                    Width="180" Height="35" Margin="0,220,80,10"
+                    Width="220" Height="35" Margin="0,220,70,10"
                     Focusable="False" DisplayDateEnd="{x:Static System:DateTime.Today}" SelectedDate="{Binding DOB}"
                     CalendarOpened="DatePicker_CalendarOpened">
         </DatePicker>
 
         <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Margin="20,300,0,0"
+               Margin="20,300,0,0" FontFamily="{StaticResource Montserrat}"
                Content="Post Code:" FontSize="30" FontWeight="DemiBold" Foreground="#1e272e"/>
         <Rectangle Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="25,350,0,0"
                    Width="200" Height="60"
@@ -209,8 +214,9 @@
                                       ShadowDepth="3" Opacity="0.8"/>
             </Rectangle.Effect>
         </Rectangle>
-        <!-- ADD VALIDATION RULE IN HELPER -->
-        <TextBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
+
+        <TextBox Focusable="False"
+                 Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"
                  Margin="35,355,30,0" Width="180"
                  FontSize="25"
                  Style="{StaticResource placeHolder}" Tag="Required*"

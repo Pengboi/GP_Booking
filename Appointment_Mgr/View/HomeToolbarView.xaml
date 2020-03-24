@@ -14,12 +14,12 @@
                 <Image x:Name="LoginImage" Source="pack://application:,,,/Assets/Login-icon.png" Grid.Row="0"
                         Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Label x:Name="UserLogin" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"
-                        FontSize="20" FontWeight="DemiBold" Content="{Binding UserLogin}"></Label>
+                        FontSize="20" FontWeight="DemiBold" Content="Login." FontFamily="{StaticResource Montserrat}"></Label>
             </StackPanel>
         </Button>
 
-        <Label x:Name="LiveClock" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,30,0" FontSize="35" Content="{Binding LiveClock}"></Label>
-        <Label x:Name="LiveDate" Grid.Row="0" HorizontalAlignment="Right" Margin="0,45,30,0" FontSize="20" Content="{Binding LiveDate}"></Label>
+        <Label x:Name="LiveClock" Grid.Row="0" HorizontalAlignment="Right" Margin="0,5,30,0" FontSize="35" Content="{Binding LiveClock}" FontFamily="{StaticResource Montserrat}" />
+        <Label x:Name="LiveDate" Grid.Row="0" HorizontalAlignment="Right" Margin="0,45,30,0" FontSize="20" Content="{Binding LiveDate}"  FontFamily="{StaticResource Montserrat}" />
 
     </Grid>
 </UserControl>

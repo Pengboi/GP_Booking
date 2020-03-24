@@ -6,26 +6,31 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Appointment_Mgr.Dialog.Confirmation
+namespace Appointment_Mgr.Dialog
 {
     public class ConfirmationBoxViewModel : DialogBoxViewModelBase<DialogResults>
     {
-
-        public ICommand OKCommand { get; private set; }
+        public ICommand YesCommand { get; private set; }
+        public ICommand NoCommand { get; private set; }
         public string Message { get; set; }
         public string Title { get; set; }
 
 
         public ConfirmationBoxViewModel(string title, string message) : base(title, message)
         {
-            OKCommand = new RelayCommand<IDialogWindow>(OK);
+            YesCommand = new RelayCommand<IDialogWindow>(Yes);
+            NoCommand = new RelayCommand<IDialogWindow>(No);
             Message = message;
             Title = title;
         }
 
-        private void OK(IDialogWindow window)
+        private void Yes(IDialogWindow window)
         {
-            CloseDialogWithResult(window, "OK");
+            CloseDialogWithResult(window, "Yes");
+        }
+        private void No(IDialogWindow window)
+        {
+            CloseDialogWithResult(window, "No");
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Appointment_Mgr.ViewModel
     /// </summary>
     public class ReceptionistToolbarViewModel : ViewModelBase
     {
-        private string _homeButtonTextColour, _managePatientButtonTextColour;
+        private string _homeButtonTextColour, _managePatientButtonTextColour, _manageWaitingListButtonTextColour, _manageAppointmentsButtonTextColour;
         private string _clockTime = DateTime.Now.ToString("HH:mm"); private string _dateValue = DateTime.Now.ToString("dd/MM/yy");
         private DispatcherTimer timer;
 
@@ -36,7 +36,25 @@ namespace Appointment_Mgr.ViewModel
             set 
             {
                 this._homeButtonTextColour = value;
-                RaisePropertyChanged("HomeButtonTextColour");
+                RaisePropertyChanged(nameof(HomeButtonTextColour));
+            }
+        }
+        public string ManageAppointmentsButtonTextColour
+        {
+            get { return this._manageAppointmentsButtonTextColour; }
+            set
+            {
+                this._manageAppointmentsButtonTextColour = value;
+                RaisePropertyChanged(nameof(ManageAppointmentsButtonTextColour));
+            }
+        }
+        public string ManageWaitingListButtonTextColour
+        {
+            get { return this._manageWaitingListButtonTextColour; }
+            set
+            {
+                this._manageWaitingListButtonTextColour = value;
+                RaisePropertyChanged(nameof(ManageWaitingListButtonTextColour));
             }
         }
         public string ManagePatientButtonTextColour
@@ -45,9 +63,11 @@ namespace Appointment_Mgr.ViewModel
             set
             {
                 this._managePatientButtonTextColour = value;
-                RaisePropertyChanged("ManagePatientButtonTextColour");
+                RaisePropertyChanged(nameof(ManagePatientButtonTextColour));
             }
         }
+
+        
 
         public string LiveClock
         {
@@ -75,6 +95,8 @@ namespace Appointment_Mgr.ViewModel
         public string UserLoggedIn { get; set; }
 
         public RelayCommand BookingCheckIn { private set; get; }
+        public RelayCommand ManageAppointments { private set; get; }
+        public RelayCommand ViewCheckIn { private set; get; }
         public RelayCommand ManagePatient { private set; get; }
 
         public RelayCommand ExecuteLogout { private set; get; }
@@ -103,9 +125,13 @@ namespace Appointment_Mgr.ViewModel
             Messenger.Default.Register<NotificationMessage>(this, name => { UserLoggedIn = "Welcome, " + name.Notification + "."; });
 
             HomeButtonTextColour = "#40739e"; // Light blue hex code for selected navigation VM element
+            ManageAppointmentsButtonTextColour = "#2f3640";
+            ManageWaitingListButtonTextColour = "#2f3640";
             ManagePatientButtonTextColour = "#2f3640"; // Dark Black for non-selected navigation VM element
             BookingCheckIn = new RelayCommand(SetBookingCheckInView);
+            ManageAppointments = new RelayCommand(SetManageAppointmentsView);
             ManagePatient = new RelayCommand(SetManagePatientView);
+            ViewCheckIn = new RelayCommand(SetCheckInView);
             ExecuteLogout = new RelayCommand(ExecuteLogoutCommand);
 
         }
@@ -113,14 +139,40 @@ namespace Appointment_Mgr.ViewModel
         public void SetBookingCheckInView() 
         {
             HomeButtonTextColour = "#40739e";
+            ManageAppointmentsButtonTextColour = "#2f3640";
+            ManageWaitingListButtonTextColour = "#2f3640";
             ManagePatientButtonTextColour = "#2f3640";
             MessengerInstance.Send<string>("ReceptionistHomeView");
             MessengerInstance.Unregister(this); // moves messenger to garbage collection
         }
 
+
+        public void SetManageAppointmentsView()
+        {
+            HomeButtonTextColour = "#2f3640";
+            ManageAppointmentsButtonTextColour = "#40739e";
+            ManageWaitingListButtonTextColour = "#2f3640";
+            ManagePatientButtonTextColour = "#2f3640";
+            MessengerInstance.Send<string>("ManageAppointmentsView");
+            MessengerInstance.Unregister(this); // moves messenger to garbage collection
+        }
+
+        public void SetCheckInView() 
+        {
+            HomeButtonTextColour = "#2f3640";
+            ManageAppointmentsButtonTextColour = "#2f3640";
+            ManageWaitingListButtonTextColour = "#40739e";
+            ManagePatientButtonTextColour = "#2f3640";
+            MessengerInstance.Send<string>("WaitingListView");
+            MessengerInstance.Unregister(this); // moves messenger to garbage collection
+        }
+
+
         public void SetManagePatientView() 
         {
             HomeButtonTextColour = "#2f3640";
+            ManageAppointmentsButtonTextColour = "#2f3640";
+            ManageWaitingListButtonTextColour = "#2f3640";
             ManagePatientButtonTextColour = "#40739e";
             MessengerInstance.Send<string>("ManagePatientView");
             MessengerInstance.Unregister(this); // moves messenger to garbage collection

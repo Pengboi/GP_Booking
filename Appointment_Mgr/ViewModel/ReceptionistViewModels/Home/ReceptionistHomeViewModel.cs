@@ -13,6 +13,8 @@ namespace Appointment_Mgr.ViewModel
     {
         public string ScreenMessage { get; set; }
         public RelayCommand BookAppointmentCommand { private set; get; }
+        public RelayCommand EmergencyBookAppointmentCommand { private set; get; }
+        public RelayCommand CheckInCommand { private set; get; }
 
         public ReceptionistHomeViewModel()
         {
@@ -25,13 +27,23 @@ namespace Appointment_Mgr.ViewModel
                 ScreenMessage = "Placeholder";
             }
             BookAppointmentCommand = new RelayCommand(SetBookingView);
+            EmergencyBookAppointmentCommand = new RelayCommand(SetEmergencyBookingVIew);
+            CheckInCommand = new RelayCommand(SetCheckInView);
         }
 
         public void SetBookingView()
         {
-            //Cleanup();
-            //Notification Message to open Login View
             MessengerInstance.Send<string>("BookingView");
+            Cleanup();
+        }
+        private void SetEmergencyBookingVIew()
+        {
+            MessengerInstance.Send<string>("EmergencyBookingView");
+            Cleanup();
+        }
+        public void SetCheckInView()
+        {
+            MessengerInstance.Send<string>("CheckInView");
             Cleanup();
         }
 
