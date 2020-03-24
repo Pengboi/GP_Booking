@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Lidio\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Lidio\\.nuget\\packages"
+    ]
+  }
+}
