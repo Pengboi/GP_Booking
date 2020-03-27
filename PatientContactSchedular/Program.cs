@@ -67,6 +67,7 @@ namespace PatientContactSchedular
 
                     client.Send(message);
                 }
+                File.Delete("appointment_email.html");
             }
             catch (Exception ex)
             {

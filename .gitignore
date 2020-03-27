@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/Build
+/fBuild
+/Appointment_Mgr/Patients.db.sql
+/Appointment_Mgr/Patient_Records/Patients.db

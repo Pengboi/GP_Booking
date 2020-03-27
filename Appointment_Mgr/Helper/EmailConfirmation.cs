@@ -27,7 +27,6 @@ namespace Appointment_Mgr.Helper
             File.WriteAllText("appointment_email.html", text);
 
             // Gets patient email
-            Console.WriteLine(patientID);
             string patientEmail = PatientDBConverter.GetEmail(patientID);
 
             try
@@ -53,6 +52,7 @@ namespace Appointment_Mgr.Helper
                     var dialog = new Dialog.SuccessBoxViewModel("Appointment Booked.", "Appointment has been successfully booked.");
                     var result = _dialogService.OpenDialog(dialog);
                 }
+                File.Delete("appointment_email.html");
             }
             catch (Exception ex)
             {
