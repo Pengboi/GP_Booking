@@ -15,13 +15,14 @@ using System.Data.SQLite;
 using System.Data;
 using System.Configuration;
 using OtpNet;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Schedule_Mgr
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class ManagerWindow : Window
+    public partial class ManagerWindow : UserControl
     {
         public ManagerWindow()
         {
@@ -328,10 +329,7 @@ namespace Schedule_Mgr
 
         private void logOut(object sender, RoutedEventArgs e)
         {
-            LoginWindow loginWin = new LoginWindow();
-            this.Hide();
-            this.Close();
-            loginWin.ShowDialog();
+            Messenger.Default.Send<string>("HomeView");
         }
 
 

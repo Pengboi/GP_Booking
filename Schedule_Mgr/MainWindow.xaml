@@ -10,41 +10,7 @@
         WindowState="Maximized"
         WindowStyle="None" Height="1080" Width="1920" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" >
     <Grid>
-        <Image Source="Assets/Medicine.png" MaxWidth="210" MaxHeight="263"
-               VerticalAlignment="Top" HorizontalAlignment="Left" Margin="40,40"/>
-        <Label Content="Schedule" 
-               VerticalAlignment="Top" HorizontalAlignment="Left" Margin="260,80"
-               FontSize="85" FontFamily="Arial" FontWeight="Bold" Foreground="White"/>
-        <Label Content="Manager" 
-               VerticalAlignment="Top" HorizontalAlignment="Left" Margin="260,155"
-               FontSize="85" FontFamily="Arial" FontWeight="Bold" Foreground="White"/>
-
-        <Rectangle MinWidth="510" MinHeight="503" HorizontalAlignment="Center" VerticalAlignment="Center" >
-            <Rectangle.Effect>
-                <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
-                                  ShadowDepth="3" Opacity="0.8"/>
-            </Rectangle.Effect>
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF8EC5FC" Offset="0.003"/>
-                    <GradientStop Color="#FFE0C3FC" Offset="1"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Grid MinWidth="510" MinHeight="503" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Please Enter Credentials Below" FontSize="25" FontFamily="Arial"
-                       HorizontalAlignment="Center" VerticalAlignment="Top" Margin="85"/>
-            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="400" Margin="50, 0, 50, 0">
-                <TextBox materialDesign:HintAssist.Hint="Username" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="30, 10, 30, 0"/>
-                <PasswordBox materialDesign:HintAssist.Hint="Password" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="30, 10, 30, 0"/>
-                
-            </StackPanel>
-            <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" 
-                    MinWidth="230" MinHeight="60" Margin="0, 75"
-                    Content="Log In"></Button>
-        </Grid>
-
-        
+        <UserControl x:Name="CurrentView" DataContext="LoginWindow.xaml" />
     </Grid>
 
 </Window>

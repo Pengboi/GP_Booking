@@ -15,12 +15,12 @@ using System.Data.SQLite;
 using System.Data;
 using System.Configuration;
 using OtpNet;
-
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Schedule_Mgr
 {
    
-    public partial class LoginWindow : Window
+    public partial class LoginWindow : UserControl
     {
         
         public LoginWindow()
@@ -120,11 +120,7 @@ namespace Schedule_Mgr
 
                 if (Validate_OTP(inputOTP, username)) 
                 {
-                    ManagerWindow managerWin = new ManagerWindow();
-                    managerWin.Show();
-                    this.Hide();
-                    this.Close();
-
+                    Messenger.Default.Send<string>("GrantedView");
                 }
             }
         }

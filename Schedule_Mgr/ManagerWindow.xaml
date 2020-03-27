@@ -1,4 +1,4 @@
-﻿<Window x:Class="Schedule_Mgr.ManagerWindow"
+﻿<UserControl x:Class="Schedule_Mgr.ManagerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,9 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Schedule_Mgr"
         mc:Ignorable="d"
-        Title="Manager"
-        WindowState="Maximized"
-        Height="1080" Width="1920" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" >
+        Background="#8ec5fc" Cursor="Arrow" >
     <Grid>
         <Rectangle MinWidth="900" MinHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,600,0" >
             <Rectangle.Effect>
@@ -144,7 +142,7 @@
 
     </Grid>
 
-</Window>
+</UserControl>
 
 
 		
