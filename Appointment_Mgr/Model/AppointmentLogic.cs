@@ -44,10 +44,11 @@ namespace Appointment_Mgr.Model
             int calculatedAverage;
 
             SQLiteConnection conn = OpenConnection();
-            string cmdString = @"SELECT AVG(Appointment_Duration) FROM Completed_Appointments";
+            string cmdString = "SELECT AVG(Appointment_Duration) FROM Completed_Appointments";
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
 
-            calculatedAverage = int.Parse(cmd.ExecuteNonQuery().ToString());
+            decimal result = Math.Round(decimal.Parse(cmd.ExecuteScalar().ToString()));
+            calculatedAverage = (int)result;
 
             using (StreamWriter sw = new StreamWriter(path)) 
             { sw.Write(calculatedAverage);  }

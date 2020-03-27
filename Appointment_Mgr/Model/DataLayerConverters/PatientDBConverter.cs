@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Appointment_Mgr.Model
@@ -45,6 +46,22 @@ namespace Appointment_Mgr.Model
             cmd.Dispose();
             return pID;
         }
+
+        public static string GetPatientName(int ID) 
+        {
+            string cmdString = "SELECT Firstname || COALESCE(' ' || Middlename, '') || ' ' || Lastname AS PatientName FROM Patient_Data WHERE PatientID = @id ";
+            SQLiteConnection conn = OpenConnection();
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+            cmd.Prepare();
+            cmd.Parameters.Add("@id", DbType.Int32).Value = ID;
+
+            string patientName = cmd.ExecuteScalar().ToString();
+            conn.Close();
+            cmd.Dispose();
+            return patientName;
+
+        }
+
         public static DataTable GetPatients()
         {
             //load from db into pList
@@ -265,7 +282,8 @@ namespace Appointment_Mgr.Model
                 DataRow dr = dt.NewRow();
                 dr[0] = reader.GetInt32(0);
                 dr[1] = reader.GetInt32(1);
-                dr[2] = reader.GetString(2);
+                string patientName = reader.GetString(2);
+                dr[2] = Regex.Replace(patientName, @"(^\w)|(\s\w)", m => m.Value.ToUpper());
                 dr[3] = reader.GetString(3).Insert(reader.GetString(3).Length - 2, ":");
                 if (reader.IsDBNull(4))
                     dr[4] = "Priority Appointment.";
@@ -312,11 +330,14 @@ namespace Appointment_Mgr.Model
             dt.Columns.Add("AppointmentTime");
             dt.Columns.Add("TimeElapsed");
             dt.Columns.Add("AppointmentDoctor");
+            dt.Columns.Add("AppointmentDoctorID");
+            dt.Columns.Add("isEmergency");
+            dt.Columns.Add("isReservation");
 
 
 
             string cmdString = "SELECT Booked_Appointments.AppointmentID, Booked_Appointments.Patient_ID, Patient_Data.Firstname || COALESCE(' ' || Patient_Data.Middlename, '') || ' ' || Patient_Data.Lastname AS PatientName, " +
-                               "Booked_Appointments.Appointment_Time, Booked_Appointments.Check_In_Time, Booked_Appointments.Assigned_Doctor_ID " +
+                               "Booked_Appointments.Appointment_Time, Booked_Appointments.Check_In_Time, Booked_Appointments.Assigned_Doctor_ID, Booked_Appointments.Overridable, Booked_Appointments.Reservation " +
                                "FROM Booked_Appointments, Patient_Data " +
                                "WHERE Checked_In = \"YES\" AND Booked_Appointments.Patient_ID = Patient_Data.PatientID; ";
             SQLiteConnection conn = OpenConnection();
@@ -328,13 +349,29 @@ namespace Appointment_Mgr.Model
                 DataRow dr = dt.NewRow();
                 dr[0] = reader.GetInt32(0);
                 dr[1] = reader.GetInt32(1);
-                dr[2] = reader.GetString(2);
+                string patientName = reader.GetString(2);
+                dr[2] = Regex.Replace(patientName, @"(^\w)|(\s\w)", m => m.Value.ToUpper());
                 dr[3] = reader.GetString(3).Insert(reader.GetString(3).Length - 2, ":");
                 dr[4] = reader.GetString(4);
                 if (reader.IsDBNull(5))
+                {
                     dr[5] = "Priority Appointment.";
-                else
+                    dr[6] = null;
+                }
+                else 
+                {
                     dr[5] = reader.GetInt32(5);
+                    dr[6] = reader.GetInt32(5);
+                }
+                    
+                if (reader.GetString(6) == "YES")
+                    dr[7] = false;
+                else
+                    dr[7] = true;
+                if (reader.GetString(7) == "YES")
+                    dr[8] = true;
+                else
+                    dr[8] = false;
                 dt.Rows.Add(dr);
             }
 
@@ -369,7 +406,7 @@ namespace Appointment_Mgr.Model
             }
 
             DataView dv = dt.DefaultView;
-            dv.Sort = "AppointmentTime desc, TimeElapsed desc";
+            dv.Sort = "AppointmentTime desc, TimeElapsed desc, isEmergency desc";
             dt = dv.ToTable();
             foreach (DataRow dataRow in dt.Rows)
             {
@@ -379,6 +416,108 @@ namespace Appointment_Mgr.Model
                 }
             }
             return dt;
+        }
+
+        public static void StartAppointment(DataRow appointmentDetails) 
+        {
+            string cmdString = "INSERT INTO Active_Appointments(AppointmentID, \"Date\", Time_Scheduled, PatientID, Patient_Notes, DoctorID, Time_Started) " +
+                "VALUES(@appid, @date, " +
+                "(SELECT Booked_Appointments.Appointment_Time FROM Booked_Appointments WHERE AppointmentID = @appid), " +
+                "@patid, " +
+                "(SELECT Booked_Appointments.Patient_Notes FROM Booked_Appointments WHERE AppointmentID = @appid), @docid, @timestart);" +
+                "DELETE FROM Booked_Appointments WHERE Booked_Appointments.AppointmentID = @appid;";
+            SQLiteConnection conn = OpenConnection();
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+
+            cmd.Parameters.Add("@appid", DbType.Int32).Value = int.Parse(appointmentDetails["AppointmentID"].ToString());
+            cmd.Parameters.Add("@date", DbType.String).Value = DateTime.Today.ToShortDateString();
+            cmd.Parameters.Add("@patid", DbType.Int32).Value = int.Parse(appointmentDetails["PatientID"].ToString());
+            cmd.Parameters.Add("@docid", DbType.String).Value = int.Parse(appointmentDetails["AppointmentDoctorID"].ToString());
+            cmd.Parameters.Add("@timestart", DbType.Int32).Value = int.Parse(DateTime.Now.TimeOfDay.ToString("hhmm"));
+
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            cmd.Dispose();
+            return;
+        }
+
+        public static bool DoctorIsInAppointment(int doctorID) 
+        {
+
+            string cmdString = "SELECT COUNT(*) FROM Active_Appointments WHERE DoctorID = @id";
+            SQLiteConnection conn = OpenConnection();
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+
+            cmd.Parameters.Add("@id", DbType.Int32).Value = doctorID;
+
+            int recordsFound = int.Parse(cmd.ExecuteScalar().ToString());
+
+            conn.Close();
+            cmd.Dispose();
+
+            Console.WriteLine("I think the doctor has this many active appointments: " + recordsFound);
+            if (recordsFound > 0)
+                return true;
+            else
+                return false;
+        }
+        public static DataRow GetDoctorActiveAppointment(int doctorID) 
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("AppointmentID");
+            dt.Columns.Add("Date");
+            dt.Columns.Add("Time_Scheduled");
+            dt.Columns.Add("PatientID");
+            dt.Columns.Add("Patient_Notes");
+            dt.Columns.Add("DoctorID");
+            dt.Columns.Add("Time_Started");
+            DataRow dr = dt.NewRow();
+
+            string cmdString = "SELECT * FROM Active_Appointments WHERE DoctorID = @id";
+            SQLiteConnection conn = OpenConnection();
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+
+            cmd.Parameters.Add("@id", DbType.Int32).Value = doctorID;
+
+            SQLiteDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read()) 
+            {
+                dr[0] = reader.GetInt32(0);                                                 // Appointment ID   i=0
+                dr[1] = reader.GetString(1);                                                // Date             1=1
+                dr[2] = reader.GetString(2).Insert(reader.GetString(2).Length - 2, ":");    // Time Scheduled   1=2
+                dr[3] = reader.GetInt32(3);                                                 // Patient ID       i=3
+                if (reader.IsDBNull(4))                                                     // Patient Notes    i=4
+                    dr[4] = "";
+                else
+                    dr[4] = reader.GetString(4);                                                
+                dr[5] = reader.GetInt32(5);                                                 // Doctor ID        i=5
+                dr[6] = reader.GetString(6);                                                // Time Started     i=6
+            }
+            conn.Close();
+            cmd.Dispose();
+
+            return dr;
+        }
+
+        public static void EndAppointment(DataRow dr, int appointmentDuration) 
+        {
+            string cmdString = "INSERT INTO Completed_Appointments(AppointmentID, \"Date\", Patient_ID, Patient_Notes, Doctor_ID, Appointment_Duration) " +
+                "VALUES(@appid, @date, @patID, (SELECT Active_Appointments.Patient_Notes FROM Active_Appointments WHERE Active_Appointments.AppointmentID = @appid), @docID, @duration);" +
+                "DELETE FROM Active_Appointments WHERE Active_Appointments.AppointmentID = @appid;";
+            SQLiteConnection conn = OpenConnection();
+            SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
+
+            cmd.Parameters.Add("@appid", DbType.Int32).Value = int.Parse(dr[0].ToString());
+            cmd.Parameters.Add("@date", DbType.String).Value = dr[1].ToString();
+            cmd.Parameters.Add("@patID", DbType.Int32).Value = int.Parse(dr[3].ToString());
+            cmd.Parameters.Add("@docID", DbType.Int32).Value = int.Parse(dr[5].ToString());
+            cmd.Parameters.Add("@duration", DbType.Int32).Value = appointmentDuration;
+
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            cmd.Dispose();
+            return;
         }
     }
 }
