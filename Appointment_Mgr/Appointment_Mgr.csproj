@@ -146,6 +146,7 @@
     <Compile Include="Model\StaffUser.cs" />
     <Compile Include="Dialog\DialogBoxViewModel.cs" />
     <Compile Include="ViewModel\AppointmentViewModels\CheckInViewModel.cs" />
+    <Compile Include="ViewModel\DoctorAppointmentViewModel.cs" />
     <Compile Include="ViewModel\DoctorHomeToolbarViewModel.cs" />
     <Compile Include="ViewModel\DoctorHomeViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\EmergencyAppointment\EmergencyAppointmentViewModel.cs" />
@@ -163,6 +164,9 @@
     <Compile Include="ViewModel\AppointmentViewModels\ReservationAppointmentViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\WaitingList\WaitingListViewModel.cs" />
     <Compile Include="ViewModel\AppointmentViewModels\WalkInAppointmentViewModel.cs" />
+    <Compile Include="View\DoctorAppointmentView.xaml.cs">
+      <DependentUpon>DoctorAppointmentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DoctorHomeToolbarView.xaml.cs">
       <DependentUpon>DoctorHomeToolbarView.xaml</DependentUpon>
     </Compile>
@@ -230,6 +234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialog\PatientID\PatientIDBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DoctorAppointmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
