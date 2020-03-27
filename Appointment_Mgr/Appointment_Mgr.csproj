@@ -148,16 +148,16 @@
     <Compile Include="Model\StaffUser.cs" />
     <Compile Include="Dialog\DialogBoxViewModel.cs" />
     <Compile Include="ViewModel\AppointmentViewModels\CheckInViewModel.cs" />
-    <Compile Include="ViewModel\DoctorAppointmentViewModel.cs" />
-    <Compile Include="ViewModel\DoctorHomeToolbarViewModel.cs" />
-    <Compile Include="ViewModel\DoctorHomeViewModel.cs" />
+    <Compile Include="ViewModel\DoctorViewModels\DoctorAppointmentViewModel.cs" />
+    <Compile Include="ViewModel\DoctorViewModels\DoctorHomeToolbarViewModel.cs" />
+    <Compile Include="ViewModel\DoctorViewModels\DoctorHomeViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\EmergencyAppointment\EmergencyAppointmentViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\ManageAppointments\ManageAppointmentsViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\PatientManagement\AddPatientViewModel.cs" />
     <Compile Include="ViewModel\AppointmentViewModels\BookAppointmentViewModel.cs" />
-    <Compile Include="ViewModel\HomeToolbarViewModel.cs" />
-    <Compile Include="ViewModel\HomeViewModel.cs" />
-    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModels\HomeToolbarViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\PatientManagement\DeletePatientViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\PatientManagement\EditPatientViewModel.cs" />
@@ -166,13 +166,13 @@
     <Compile Include="ViewModel\AppointmentViewModels\ReservationAppointmentViewModel.cs" />
     <Compile Include="ViewModel\ReceptionistViewModels\WaitingList\WaitingListViewModel.cs" />
     <Compile Include="ViewModel\AppointmentViewModels\WalkInAppointmentViewModel.cs" />
-    <Compile Include="View\DoctorAppointmentView.xaml.cs">
+    <Compile Include="View\DoctorViews\DoctorAppointmentView.xaml.cs">
       <DependentUpon>DoctorAppointmentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DoctorHomeToolbarView.xaml.cs">
+    <Compile Include="View\DoctorViews\DoctorHomeToolbarView.xaml.cs">
       <DependentUpon>DoctorHomeToolbarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DoctorHomeView.xaml.cs">
+    <Compile Include="View\DoctorViews\DoctorHomeView.xaml.cs">
       <DependentUpon>DoctorHomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ReceptionistViews\EmergencyAppointment\EmergencyAppointmentView.xaml.cs">
@@ -200,7 +200,7 @@
       <DependentUpon>ReceptionistHomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ReceptionistViewModels\Home\ReceptionistToolbarViewModel.cs" />
-    <Compile Include="View\HomeToolbarView.xaml.cs">
+    <Compile Include="View\HomeViews\HomeToolbarView.xaml.cs">
       <DependentUpon>HomeToolbarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ReceptionistViews\HomeView\ReceptionistToolbarView.xaml.cs">
@@ -239,15 +239,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DoctorAppointmentView.xaml">
+    <Page Include="View\DoctorViews\DoctorAppointmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DoctorHomeToolbarView.xaml">
+    <Page Include="View\DoctorViews\DoctorHomeToolbarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DoctorHomeView.xaml">
+    <Page Include="View\DoctorViews\DoctorHomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -291,15 +291,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\HomeToolbarView.xaml">
+    <Page Include="View\HomeViews\HomeToolbarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\HomeView.xaml">
+    <Page Include="View\HomeViews\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LoginView.xaml">
+    <Page Include="View\HomeViews\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -318,10 +318,10 @@
     <Compile Include="Dialog\DialogBoxView.xaml.cs">
       <DependentUpon>DialogBoxView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\HomeView.xaml.cs">
+    <Compile Include="View\HomeViews\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LoginView.xaml.cs">
+    <Compile Include="View\HomeViews\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
