@@ -1,4 +1,5 @@
-﻿using Appointment_Mgr.Model;
+﻿using Appointment_Mgr.Dialog;
+using Appointment_Mgr.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -14,8 +15,10 @@ namespace Appointment_Mgr.ViewModel
 {
     public class DoctorHomeViewModel : ViewModelBase
     {
-        private DispatcherTimer timer;
-        private string _greetingMessage, _doctorName;
+        private IDialogBoxService _dialogService;
+
+        public DispatcherTimer timer;
+        public string _greetingMessage, _doctorName;
 
         public string GreetingMessage 
         {
@@ -38,12 +41,26 @@ namespace Appointment_Mgr.ViewModel
             }
         }
 
-        private int DoctorID { get; set; }
+        private void Alert(string title, string message)
+        {
+            var dialog = new AlertBoxViewModel(title, message);
+            var result = _dialogService.OpenDialog(dialog);
+        }
+        private string Confirmation(string title, string message)
+        {
+            var dialog = new ConfirmationBoxViewModel(title, message);
+            var result = _dialogService.OpenDialog(dialog);
+            return result;
+        }
 
-        private RelayCommand StartAppointmentCommand { get; set; }
+        public int DoctorID { get; set; }
+
+        public RelayCommand StartAppointmentCommand { get; set; }
 
         public DoctorHomeViewModel() 
         {
+            _dialogService = new DialogBoxService();
+
             if (IsInDesignMode)
             {
                 GreetingMessage = "Good Morning,";
@@ -58,7 +75,7 @@ namespace Appointment_Mgr.ViewModel
             };
             timer.Start();
 
-            Messenger.Default.Register<int>(this, SetDoctorDetails);
+            MessengerInstance.Register<int>(this, SetDoctorDetails);
             StartAppointmentCommand = new RelayCommand(StartAppointment);
         }
 
@@ -88,37 +105,60 @@ namespace Appointment_Mgr.ViewModel
         {
 
             DataTable CheckedInPatients = PatientDBConverter.GetCheckedInAppointments();
+            if (CheckedInPatients.Rows.Count == 0) 
+            {
+                Alert("No avaliable appointments.", "No patients are checked in. There are no appointments avalaible to be seen.");
+                return;
+            }
+
             int averageDuration = AppointmentLogic.GetAverage();
             int remainingShiftInMinutes = StaffDBConverter.GetRemainingShiftInMinutes(DoctorID);
 
             if (remainingShiftInMinutes < averageDuration) 
             {
-                //insert alert and return if answer is "NO"
+                if (Confirmation("Are you sure?", "There may not be enough time in your schedule to finish the next appointment. Are you sure you would like to proceed?") == "NO")
+                    return;
             }
-            
 
+            DataRow selectedAppointment = null;
 
-            /*
-             * 
-             * Calculate if doctor has enough time in shift for next appointment
-             *      // if not, ask doctor to confirm they wish to take appointment
-             * Fetch Appointment (to assign)
-             *    {   
-             *         IF Emergency is waiting:
-             *              based on time emergency was created (in scenario there are several emergency appointments waiting) assign one waiting longest
-             *              [this will impact reservation appointment wait time of the doctors]
-             *         
-             *         ELSE IF Doctor A has no RESERVATION appointment for him but there is a walk-in appointment for doctor B that doctor A can see early:
-             *              asked if doctor A would like to take over next appointment --> gets reassigned from doctor B to doctor A
-             *         
-             *         ELSE IF Doctor has reservation waiting for him at same time (or within 10 minutes of) walk-in appointment, reservation appointment takes priority
-             *                 and doctor is assigned reservation
-             *        
-             *         if there is no one waiting doctor is told no patients are checked in yet.
-             *
-             *    }
-             */
-            throw new NotImplementedException();
+            // check if any patients are waiting first.
+
+            if (Convert.ToBoolean(CheckedInPatients.Rows[0]["isEmergency"]) == true)
+            {
+                selectedAppointment = CheckedInPatients.Rows[0];
+            }
+
+            foreach (DataRow dr in CheckedInPatients.Rows) 
+            {
+                if (selectedAppointment == null)
+                {
+                    if (Convert.ToBoolean(dr["isReservation"]) == false)
+                        selectedAppointment = dr;
+                    else if (Convert.ToBoolean(dr["isReservation"]) == true && DoctorID.Equals(int.Parse(dr["AppointmentDoctorID"].ToString())))
+                    {
+                        selectedAppointment = dr;
+                        break;
+                    }
+                }
+                else 
+                {
+                    if (Convert.ToBoolean(dr["isReservation"]) == true && DoctorID.Equals(int.Parse(dr["AppointmentDoctorID"].ToString()))) 
+                    {
+                        TimeSpan selectedAppointmentTime = TimeSpan.Parse(selectedAppointment["AppointmentTime"].ToString());
+                        TimeSpan drAppointmentTime = TimeSpan.Parse(dr["AppointmentTime"].ToString());
+                        if (drAppointmentTime.Subtract(selectedAppointmentTime).TotalMinutes < 10) 
+                        {
+                            selectedAppointment = dr;
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            PatientDBConverter.StartAppointment(selectedAppointment);
+            MessengerInstance.Send<string>("DoctorAppointmentView");
         }
     }
 }

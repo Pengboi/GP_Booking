@@ -28,6 +28,8 @@ namespace Appointment_Mgr.ViewModel
     {
         private string _userLogin = "Login";
         private ViewModelBase _currentViewModel, _currentToolbarViewModel; //maybe not needed? - idk
+        private int _userID;
+
         public RelayCommand BookAppointmentCommand { get; private set; }
         public string Title { get; set; }
  
@@ -38,6 +40,16 @@ namespace Appointment_Mgr.ViewModel
             {
                 this._userLogin = value;
                 RaisePropertyChanged(nameof(UserLogin));
+            }
+        }
+
+        public int UserID 
+        {
+            get { return this._userID; }
+            set 
+            {
+                this._userID = value;
+                RaisePropertyChanged(nameof(UserID));
             }
         }
 
@@ -77,6 +89,7 @@ namespace Appointment_Mgr.ViewModel
 
         public ViewModelBase DoctorVM { get { return ViewModelLocator.DoctorHome; } }
         public ViewModelBase DoctorToolbarVM { get { return ViewModelLocator.DoctorToolbar; } }
+        public ViewModelBase DoctorAppointmentVM { get { return ViewModelLocator.DoctorAppointment; } }
         
 
         /// <summary>
@@ -117,10 +130,18 @@ namespace Appointment_Mgr.ViewModel
             }
             else if (userAccount.isDoctor())
             {
-                //open Doctor toolbar here
+                UserID = StaffDBConverter.GetAccountIDByUsername(userAccount.getUsername());
                 CurrentToolbarViewModel = DoctorToolbarVM;
-                CurrentViewModel = DoctorVM;
-                MessengerInstance.Send<int>(StaffDBConverter.GetAccountIDByUsername(userAccount.getUsername()));
+                if (PatientDBConverter.DoctorIsInAppointment(UserID))
+                {
+                    CurrentViewModel = DoctorAppointmentVM;
+                    MessengerInstance.Send<int>(UserID);
+                }
+                else 
+                {
+                    CurrentViewModel = DoctorVM;
+                    MessengerInstance.Send<int>(UserID);
+                }
             }
         }
 
@@ -175,9 +196,12 @@ namespace Appointment_Mgr.ViewModel
 
             if (value == "DoctorHomeView")
                 CurrentViewModel = DoctorVM;
+            if (value == "DoctorAppointmentView") 
+            {
+                CurrentViewModel = DoctorAppointmentVM;
+                MessengerInstance.Send<int>(UserID);
+            }
+                
         }
-
-        
-
     }
 }

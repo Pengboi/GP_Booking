@@ -141,6 +141,11 @@ namespace Appointment_Mgr.ViewModel
         {
             get { return ServiceLocator.Current.GetInstance<DoctorHomeToolbarViewModel>(); }
         }
+
+        public static DoctorAppointmentViewModel DoctorAppointment 
+        {
+            get { return ServiceLocator.Current.GetInstance<DoctorAppointmentViewModel>(); }
+        }
         #endregion
 
 
@@ -173,6 +178,7 @@ namespace Appointment_Mgr.ViewModel
 
             SimpleIoc.Default.Register<DoctorHomeViewModel>();
             SimpleIoc.Default.Register<DoctorHomeToolbarViewModel>();
+            SimpleIoc.Default.Register<DoctorAppointmentViewModel>();
         }
     }
 }
