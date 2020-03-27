@@ -49,6 +49,9 @@
                     <DataTemplate DataType="{x:Type vm:DoctorHomeViewModel}">
                         <views:DoctorHomeView />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:DoctorAppointmentViewModel}">
+                        <views:DoctorAppointmentView />
+                    </DataTemplate>
                     
                     <DataTemplate DataType="{x:Type vm:BookAppointmentViewModel}">
                         <views:BookAppointmentView />
