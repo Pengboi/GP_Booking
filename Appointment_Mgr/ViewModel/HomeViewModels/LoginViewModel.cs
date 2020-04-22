@@ -62,7 +62,7 @@ namespace Appointment_Mgr.ViewModel
             get { return _username; }
             set
             {
-                _username = value;
+                _username = value.ToLower();
                 RaisePropertyChanged(() => Username);
             }
         }

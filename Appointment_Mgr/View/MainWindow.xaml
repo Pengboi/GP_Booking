@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Title="{Binding Title}" 
         DataContext="{Binding Main, Source={StaticResource Locator}}"
-        WindowStyle="None" ResizeMode="NoResize"
+        ResizeMode="NoResize"
         FontSize="15"  WindowStartupLocation="CenterScreen" WindowState="Maximized" 
-        Height="1080" Width="1920" MinHeight="1080" MinWidth="1920"
+        MinHeight="800" MinWidth="1800"
         >
         <Grid>
         <Rectangle Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"

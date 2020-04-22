@@ -11,6 +11,10 @@ namespace Appointment_Mgr.Helper
 {
     public class CallSchedular
     {
+        // Retrieves patient email and time until they need to be notified before notifying them, process triggers
+        // PatientContactSchedular which is a script running in a seperate process/thread in the background unavaliable
+        // to the user. Should the current session be effected, by outsourcing patient contact to another process, this will
+        // have no reprecussions on patients waiting to be called back.
         public static void ExecuteSchedular(int patientID, double minutes) 
         {
             string email = PatientDBConverter.GetEmail(patientID);

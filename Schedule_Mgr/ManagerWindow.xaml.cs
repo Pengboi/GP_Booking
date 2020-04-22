@@ -379,5 +379,10 @@ namespace Schedule_Mgr
             connection.Close();
             return;
         }
+
+        private void showTOTPButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

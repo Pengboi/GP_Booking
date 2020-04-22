@@ -19,28 +19,29 @@ namespace Schedule_Mgr
     /// </summary>
     public partial class InputDialogBox : Window
     {
+        public string Answer 
+        {
+            get; set;
+        }
+
         public InputDialogBox(string question, int answerLength)
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             OTPQuestion.Content = question;
-            OTPAnswer.MaxLength = answerLength;
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
+            Answer = Number1.Text + Number2.Text + Number3.Text +
+                     Number4.Text + Number5.Text + Number6.Text;
             this.DialogResult = true;
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            OTPAnswer.SelectAll();
-            OTPAnswer.Focus();
-        }
-
-        public string Answer
-        {
-            get { return OTPAnswer.Text; }
+            Number1.SelectAll();
+            Number1.Focus();
         }
     }
 }

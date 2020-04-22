@@ -66,7 +66,9 @@
 
             <Button x:Name="createAccountButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,100,0,0"
                     Height="46" Width="180" FontSize="15.5" Click="createAccount">Create Staff Account</Button>
-            <Button x:Name="deleteAccountButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,180,0,0"
+            <Button x:Name="showTOTPButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,180,0,0"
+                    Height="46" Width="180" FontSize="15.5" Click="showTOTPButton_Click">Get Staff TOTP Code</Button>
+            <Button x:Name="deleteAccountButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,260,0,0"
                     Height="46" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteAccount">Delete Staff Account</Button>
 
             <Button x:Name="updateShiftButton" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,50,35"

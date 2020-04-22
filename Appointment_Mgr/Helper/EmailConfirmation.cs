@@ -56,7 +56,7 @@ namespace Appointment_Mgr.Helper
             }
             catch (Exception ex)
             {
-                var dialog = new Dialog.AlertBoxViewModel("Alert!", "E-mail Success could not be sent, try again later. If issue persists, please speak to IT. \n " +
+                var dialog = new AlertBoxViewModel("Alert!", "E-mail Success could not be sent, try again later. If issue persists, please speak to IT. \n " +
                     "Appointment has been booked and is not effected by this error.");
                 var result = _dialogService.OpenDialog(dialog);
 

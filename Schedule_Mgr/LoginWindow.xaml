@@ -41,7 +41,13 @@
             </StackPanel>
             <Button x:Name="loginButton" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                     MinWidth="230" MinHeight="60" Margin="146,0,146,79"
-                    Content="Log In" FontSize="20" Click="Login_Request"></Button>
+                    Content="Log In" FontSize="20" Click="Login_Request">
+                <Button.InputBindings>
+                    <KeyBinding Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                        AncestorType=Window}}" Key="Enter" 
+                    />
+                </Button.InputBindings>
+            </Button>
         </Grid>
     </Grid>
 

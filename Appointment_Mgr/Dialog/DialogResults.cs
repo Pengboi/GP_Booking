@@ -11,6 +11,5 @@ namespace Appointment_Mgr.Dialog
         Undefined,
         Yes,
         No
-
     }
 }

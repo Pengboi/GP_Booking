@@ -11,7 +11,6 @@ namespace Appointment_Mgr.Dialog
 {
     public class DialogBoxViewModel : ViewModelBase
     {
-
         public DialogBoxViewModel(string title, string message) 
         {
             Title = title;
