@@ -1,4 +1,4 @@
-﻿<Window x:Class="Schedule_Mgr.DeleteEmployeeWindow"
+﻿<Window x:Class="Schedule_Mgr.GetStaffTOTP"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Schedule_Mgr"
         mc:Ignorable="d"
-        Title="Delete Staff Account"
+        Title="View Employee TOTP"
         WindowState="Normal"
         Topmost="True"
         Height="750" Width="800" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" WindowStyle="ToolWindow" >
@@ -16,7 +16,7 @@
             <Image Height="20" Width="20" Margin="-10,0,0,0" Source="Assets/searchicon.png"></Image>
             <TextBox x:Name="searchbox" Margin="5,0,0,0" FontSize="16" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="140"
                      GotFocus="searchbox_GotFocus" LostFocus="searchbox_LostFocus" TextChanged="searchbox_TextChanged" />
-            
+
         </StackPanel>
         <Label Content="Receptionists:" FontSize="20" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="37,100,0,0"/>
         <ListView x:Name="receptionistList" HorizontalAlignment="Left" Height="450" Margin="40,0,0,0" VerticalAlignment="Center" Width="220"
@@ -46,7 +46,7 @@
             </ListView.View>
         </ListView>
         <Button HorizontalAlignment="Center" Margin="0,0,0,40" VerticalAlignment="Bottom" Height="60" Width="165"
-                Content="Delete Account" FontSize="17" FontWeight="Bold" Background="#ff7675" Click="deleteButton_Click"
+                Content="Show TOTP" FontSize="17" FontWeight="Bold" Background="#1abc9c" BorderThickness="0" Click="Button_Click"
         />
     </Grid>
 </Window>

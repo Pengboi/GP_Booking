@@ -79,7 +79,7 @@ namespace Appointment_Mgr.ViewModel
 
         private void SetUserLoggedIn(int id)
         {
-            _userLoggedIn = StaffDBConverter.GetDoctorNameByID(id);
+            _userLoggedIn = StaffDBConverter.GetEmployeeNameByID(id);
         }
 
         private void ExecuteLogoutCommand()

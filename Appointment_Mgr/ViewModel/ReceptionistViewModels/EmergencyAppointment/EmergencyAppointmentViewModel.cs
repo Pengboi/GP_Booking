@@ -21,6 +21,7 @@ namespace Appointment_Mgr.ViewModel
         public string DoorNumber { get; set; }
         public string Postcode { get; set; }
 
+        public RelayCommand ShowHomeView { private set; get; }
         public RelayCommand BookAppointmentCommand { private set; get; }
 
         #region DialogBox Definitions
@@ -50,7 +51,14 @@ namespace Appointment_Mgr.ViewModel
         {
             _dialogService = new DialogBoxService();
 
+            ShowHomeView = new RelayCommand(ShowHome);
+
             BookAppointmentCommand = new RelayCommand(BookAppointment);
+        }
+
+        private void ShowHome()
+        {
+            MessengerInstance.Send<string>("DecideHomeView");
         }
 
         #endregion
@@ -130,6 +138,12 @@ namespace Appointment_Mgr.ViewModel
             }
             else
                 patientID = PatientDBConverter.GetPatientID(patient);
+
+            if (PatientDBConverter.PatientHasAppointment(patientID)) 
+            {
+                Alert("Appointment Found!", "An existing appointment was found. Please cancel or check-in for your existing appointment to proceed.");
+                return;
+            }
 
             PatientDBConverter.BookEmergencyAppointment(patientID);
             Success("Appointment Booked.", "Emergency appointment has been booked. Please ask patient to be seated, the next avaliable doctor will take the session.");

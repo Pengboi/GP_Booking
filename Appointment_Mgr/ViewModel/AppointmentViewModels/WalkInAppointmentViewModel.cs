@@ -1,7 +1,6 @@
 ﻿using Appointment_Mgr.Dialog;
-using Appointment_Mgr.Dialog;
-using Appointment_Mgr.Dialog;
 using Appointment_Mgr.Model;
+using Appointment_Mgr.Helper;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -21,21 +20,12 @@ namespace Appointment_Mgr.ViewModel
         public ICommand ErrorCommand { get; private set; }
         public ICommand SuccessCommand { get; private set; }
 
-        private void Error(string title, string message)
-        {
-            var dialog = new ErrorBoxViewModel(title, message);
-            var result = _dialogService.OpenDialog(dialog);
-        }
         private void Alert(string title, string message)
         {
             var dialog = new AlertBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
-        private void Success(string title, string message)
-        {
-            var dialog = new SuccessBoxViewModel(title, message);
-            var result = _dialogService.OpenDialog(dialog);
-        }
+
 
         #endregion
 
@@ -51,7 +41,7 @@ namespace Appointment_Mgr.ViewModel
             set 
             {
                 _estimatedTime = value;
-                RaisePropertyChanged("EstimatedTime");
+                RaisePropertyChanged(nameof(EstimatedTime));
             }
         }
         public DataRow Timeslot{ get; set; }
@@ -63,7 +53,7 @@ namespace Appointment_Mgr.ViewModel
         {
             _dialogService = new DialogBoxService();
 
-            Timeslot = AppointmentLogic.CalcWalkInTimeslot(StaffDBConverter.GetWalkInTimeslots());
+            Timeslot = AppointmentLogic.CalcWalkInTimeslot();
             if (IsInDesignMode)
             {
                 EstimatedTime = "2 Hours 45 Minutes";
@@ -135,6 +125,10 @@ namespace Appointment_Mgr.ViewModel
 
             PatientDBConverter.BookAppointment(timeslot, doctorID, patientID, false);
             AppointmentLogic.ScheduleWalkInNotification(TimeSpan.Parse(timeslot), patientID);
+
+            var dialog = new SuccessBoxViewModel("Appointment Booked.",      //MOVE THIS
+                            "Appointment has been successfully booked. Please keep an eye on your emails for updates on when we can see you.");
+            var result = _dialogService.OpenDialog(dialog);
 
             MessengerInstance.Unregister(this);
             MessengerInstance.Send<string>("DecideHomeView");

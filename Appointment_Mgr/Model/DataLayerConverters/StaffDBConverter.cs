@@ -11,10 +11,12 @@ namespace Appointment_Mgr.Model
 {
     public class StaffDBConverter
     {
-        private static string LoadConnectionString(string id) { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
+        private static string LoadConnectionString(string id) {
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory); 
+        }
         public static SQLiteConnection OpenConnection(string id = "Staff")
         {
-            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(id));
+            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(id), true);
             connection.Open();
             return connection;
         }
@@ -39,34 +41,7 @@ namespace Appointment_Mgr.Model
             return doctorList;
         }
 
-        // Respondsible for returning all booked appointments for all working doctors on any given working day.
-        public static List<List<int>> GetBookedTimeslots(DateTime date, List<int> ids)
-        {
-            List<List<int>> bookedTimeslots = new List<List<int>>();
-
-            SQLiteConnection conn = OpenConnection("Patients");
-
-            foreach (int id in ids)
-            {
-                List<int> selectedDoctorTimeslots = new List<int>();
-
-                string cmdString = @"SELECT Appointment_Time " +
-                                     "FROM Booked_Appointments WHERE Date = @date AND Assigned_Doctor_ID = @id ";
-                SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
-                cmd.Prepare();
-                cmd.Parameters.Add("@Date", DbType.String).Value = date.ToShortDateString();
-                cmd.Parameters.Add("@id", DbType.String).Value = id;
-                SQLiteDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    selectedDoctorTimeslots.Add(int.Parse(reader.GetString(reader.GetOrdinal("Appointment_Time"))));
-                }
-                reader.Close();
-                bookedTimeslots.Add(selectedDoctorTimeslots);
-            }
-            conn.Close();
-            return bookedTimeslots;
-        }
+       
 
         public static DataTable GetAvaliableTimeslots(DateTime date, string doctor = "None", string gender = "None")
         {
@@ -85,27 +60,7 @@ namespace Appointment_Mgr.Model
                 shiftEnds.Add(int.Parse(row["Shift_End"].ToString()));
             }
 
-            DataTable dt = AppointmentLogic.CalcTimeslots(staffID, shiftStarts, shiftEnds, GetBookedTimeslots(date, staffID), true);
-
-            return dt;
-        }
-        public static DataTable GetWalkInTimeslots()
-        {
-            DataTable workingDoctors = GetWorkingDoctors(DateTime.Today.Date, "None", "None");
-
-            // Doctor shift start & end times stored to be used to calculate 
-            List<int> staffID = new List<int>();
-            List<int> shiftStarts = new List<int>();
-            List<int> shiftEnds = new List<int>();
-            foreach (DataRow row in workingDoctors.Rows)
-            {
-                staffID.Add(int.Parse(row["Id"].ToString()));
-
-                shiftStarts.Add(int.Parse(row["Shift_Start"].ToString()));
-                shiftEnds.Add(int.Parse(row["Shift_End"].ToString()));
-            }
-
-            DataTable dt = AppointmentLogic.CalcTimeslots(staffID, shiftStarts, shiftEnds, GetBookedTimeslots(DateTime.Today.Date, staffID), false);
+            DataTable dt = AppointmentLogic.CalcTimeslots(staffID, shiftStarts, shiftEnds, PatientDBConverter.GetBookedTimeslots(date, staffID), true);
 
             return dt;
         }
@@ -118,7 +73,7 @@ namespace Appointment_Mgr.Model
          *
          *  IF either optional field is fulfilled, those parameters are also included within the SQL Command arguement to filter results
          *  Return Format of DataTable:
-         *  Id | Suffix | Firstname | Middlename | Lastname | Shift Start | Shift End  (shift start & end are stored in Military Time format)
+         *  ID | Suffix | Firstname | Middlename | Lastname | Shift Start | Shift End  
          */
 
         // You might be able to shorten all of this if you dont need all above columns
@@ -138,7 +93,7 @@ namespace Appointment_Mgr.Model
                 cmd.Prepare();
                 cmd.Parameters.Add("@Date", DbType.String).Value = date.ToShortDateString();
                 SQLiteDataAdapter sqlda = new SQLiteDataAdapter(cmd);
-                DataTable dt = new DataTable("Patient_Data");
+                DataTable dt = new DataTable("PatientData");
                 sqlda.Fill(dt);
                 conn.Close();
                 return dt;
@@ -168,7 +123,7 @@ namespace Appointment_Mgr.Model
                 else
                     cmd.Parameters.Add("@Lastname", DbType.String).Value = doctorNames[1];
                 SQLiteDataAdapter sqlda = new SQLiteDataAdapter(cmd);
-                DataTable dt = new DataTable("Patient_Data");
+                DataTable dt = new DataTable("PatientData");
                 sqlda.Fill(dt);
                 conn.Close();
                 return dt;
@@ -184,7 +139,7 @@ namespace Appointment_Mgr.Model
                 cmd.Parameters.Add("@Date", DbType.String).Value = date.ToShortDateString();
                 cmd.Parameters.Add("@Gender", DbType.String).Value = gender;
                 SQLiteDataAdapter sqlda = new SQLiteDataAdapter(cmd);
-                DataTable dt = new DataTable("Patient_Data");
+                DataTable dt = new DataTable("PatientData");
                 sqlda.Fill(dt);
                 conn.Close();
                 return dt;
@@ -213,7 +168,7 @@ namespace Appointment_Mgr.Model
                     cmd.Parameters.Add("@Lastname", DbType.String).Value = doctorNames[1];
                 cmd.Parameters.Add("@Gender", DbType.String).Value = gender;
                 SQLiteDataAdapter sqlda = new SQLiteDataAdapter(cmd);
-                DataTable dt = new DataTable("Patient_Data");
+                DataTable dt = new DataTable("PatientData");
                 sqlda.Fill(dt);
                 conn.Close();
                 return dt;
@@ -229,21 +184,24 @@ namespace Appointment_Mgr.Model
             cmd.Parameters.Add("@dateToday", DbType.String).Value = DateTime.Today.ToShortDateString();
             cmd.Parameters.Add("@id", DbType.Int32).Value = id;
 
-            string shiftEndString = cmd.ExecuteScalar().ToString();
+            object retrievedShiftEnd = cmd.ExecuteScalar();
+            if (retrievedShiftEnd == null)             // If no shift is found, 0 minutes remaining is returned as result
+                return 0;
+            string shiftEndString = retrievedShiftEnd.ToString();
             shiftEndString = shiftEndString.Insert(shiftEndString.Length - 2, ":");
 
             cmd.Dispose();
             conn.Close();
 
-            TimeSpan timeNow = DateTime.Today.TimeOfDay;
+            TimeSpan currentTime = DateTime.Today.TimeOfDay;
             TimeSpan shiftEnd = TimeSpan.Parse(shiftEndString);
 
-            return (int)(shiftEnd - timeNow).TotalMinutes;
+            return (int)(shiftEnd - currentTime).TotalMinutes;
         }
 
-        public static string GetDoctorNameByID(int id) 
+        public static string GetEmployeeNameByID(int id) 
         {
-            string doctorName = "";
+            string employeeName = "";
 
             SQLiteConnection conn = OpenConnection();
             string cmdString = "SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Id = @id;";
@@ -256,12 +214,12 @@ namespace Appointment_Mgr.Model
                 if (!(reader["Middlename"] == null))
                     middlename = reader["Middlename"].ToString();
 
-                doctorName = reader["Suffix"].ToString() + " " + reader["Firstname"].ToString() + " " + (!(string.IsNullOrWhiteSpace(middlename)) ? middlename + " " : "") + reader["Lastname"].ToString();
+                employeeName = reader["Suffix"].ToString() + " " + reader["Firstname"].ToString() + " " + (!(string.IsNullOrWhiteSpace(middlename)) ? middlename + " " : "") + reader["Lastname"].ToString();
             }
             reader.Close();
             conn.Close();
 
-            return doctorName;
+            return employeeName;
         }
 
         public static int GetAccountIDByUsername(string username)

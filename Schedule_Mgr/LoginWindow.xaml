@@ -6,6 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Schedule_Mgr"
         mc:Ignorable="d"
+        d:DesignHeight="1080" d:DesignWidth="1920"
         Background="#8ec5fc" Cursor="Arrow">
     <Grid>
         <Image Source="Assets/Medicine.png" MaxWidth="210" MaxHeight="263"
@@ -17,7 +18,8 @@
                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="260,155"
                FontSize="85" FontFamily="Arial" FontWeight="Bold" Foreground="White"/>
 
-        <Rectangle MinWidth="510" MinHeight="503" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <Rectangle MinWidth="510" MinHeight="530" Margin="0,60,0,0"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" >
             <Rectangle.Effect>
                 <DropShadowEffect Color="#FF838383" Direction="0" RenderingBias="Quality" BlurRadius="10"
                                   ShadowDepth="3" Opacity="0.8"/>
@@ -48,6 +50,12 @@
                     />
                 </Button.InputBindings>
             </Button>
+            <TextBlock x:Name="forgotPassword" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                    Margin="146,0,146,0"
+                    FontSize="15" >
+                Forgot your password?<LineBreak />
+                <Hyperlink Click="Reset_Password" >Reset Password</Hyperlink>
+            </TextBlock>
         </Grid>
     </Grid>
 

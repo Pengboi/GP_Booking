@@ -30,13 +30,13 @@ namespace Schedule_Mgr
 
         private static string LoadConnectionString(string id = "Staff")
         {
-            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
         }
 
         private SQLiteConnection OpenConnection()
         {
             string sqlPath = LoadConnectionString();
-            SQLiteConnection connection = new SQLiteConnection(sqlPath);
+            SQLiteConnection connection = new SQLiteConnection(sqlPath, true);
             connection.Open();
 
             return connection;
@@ -44,9 +44,15 @@ namespace Schedule_Mgr
 
         private string getHonorific() 
         {
-            if (string.IsNullOrEmpty(honorificComboBox.Text))
-                return "null";
-            string honorific = honorificComboBox.SelectedItem.ToString();
+            string honorific = "";
+            if ((bool)MrHonorific.IsChecked)
+                honorific = MrHonorific.Content.ToString();
+            if ((bool)MissHonorific.IsChecked)
+                honorific = MissHonorific.Content.ToString();
+            if ((bool)MrsHonorific.IsChecked)
+                honorific = MrsHonorific.Content.ToString();
+            if ((bool)DrHonorific.IsChecked)
+                honorific = DrHonorific.Content.ToString();
             honorific = honorific.Substring(honorific.LastIndexOf(" ") + 1);
             return honorific;
         }
@@ -54,15 +60,10 @@ namespace Schedule_Mgr
 
         private int? getGender() 
         {
-            if (string.IsNullOrEmpty(genderComboBox.Text))
-                return -1;
-            string userGender = genderComboBox.SelectedItem.ToString();
-            userGender = userGender.Substring(userGender.LastIndexOf(" ") + 1);
-            if (userGender.Equals("Female"))
-                return 0;
-            else if (userGender.Equals("Male"))
-                return 1;
-            return null;
+            if ((bool)Female.IsChecked)
+                return 0; // female
+            else
+                return 1; // male
         }
 
 
@@ -76,7 +77,7 @@ namespace Schedule_Mgr
                 return 1;
             else if (userAccountType.Equals("Doctor"))
                 return 2;
-            else if (userAccountType.Equals("HR and Management"))
+            else if (userAccountType.Equals("Administrator"))
                 return 3;
             return null;
         }
@@ -110,22 +111,77 @@ namespace Schedule_Mgr
             return pass;
         }
 
+        private void Female_Checked(object sender, RoutedEventArgs e)
+        {
+            if (accountTypeBox == null)
+            {
+                MrHonorific.Visibility = Visibility.Visible;
+                MissHonorific.Visibility = Visibility.Collapsed;
+                MrsHonorific.Visibility = Visibility.Collapsed;
+                MrHonorific.IsChecked = true;
+                return;
+            }
+
+            string accountType = accountTypeBox.SelectedItem.ToString();
+            accountType = accountType.Substring(accountType.LastIndexOf(" ") + 1);
+            if (accountType != "Doctor") 
+            {
+                MrHonorific.Visibility = Visibility.Collapsed;
+                MissHonorific.Visibility = Visibility.Visible;
+                MrsHonorific.Visibility = Visibility.Visible;
+                MissHonorific.IsChecked = true;
+            }
+        }
+
+        private void Male_Checked(object sender, RoutedEventArgs e)
+        {
+            if (accountTypeBox == null)
+            {
+                MrHonorific.Visibility = Visibility.Visible;
+                MissHonorific.Visibility = Visibility.Collapsed;
+                MrsHonorific.Visibility = Visibility.Collapsed;
+                MrHonorific.IsChecked = true;
+                return;
+            }
+
+            string accountType = accountTypeBox.SelectedItem.ToString();
+            accountType = accountType.Substring(accountType.LastIndexOf(" ") + 1);
+            if (accountType != "Doctor") 
+            {
+                MrHonorific.Visibility = Visibility.Visible;
+                MissHonorific.Visibility = Visibility.Collapsed;
+                MrsHonorific.Visibility = Visibility.Collapsed;
+                MrHonorific.IsChecked = true;
+            }
+        }
+
         private void AccountType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selection = accountTypeBox.SelectedItem.ToString();
             selection = selection.Substring(selection.LastIndexOf(" ") + 1);
             if (selection == "Doctor")
             {
-                honorificComboBox.Items.Clear();
-                honorificComboBox.Items.Add("Dr.");
+                DrHonorific.IsChecked = true;
+                MrHonorific.Visibility = Visibility.Collapsed;
+                MissHonorific.Visibility = Visibility.Collapsed;
+                MrsHonorific.Visibility = Visibility.Collapsed;
             }
             else 
             {
-                honorificComboBox.Items.Clear();
-                honorificComboBox.Items.Add("Mr.");
-                honorificComboBox.Items.Add("Miss.");
-                honorificComboBox.Items.Add("Mrs.");
-                honorificComboBox.Items.Add("Dr.");
+                if (getGender() == 0)
+                {
+                    MrHonorific.Visibility = Visibility.Collapsed;
+                    MissHonorific.Visibility = Visibility.Visible;
+                    MrsHonorific.Visibility = Visibility.Visible;
+                    MissHonorific.IsChecked = true;
+                }
+                else 
+                {
+                    MrHonorific.Visibility = Visibility.Visible;
+                    MissHonorific.Visibility = Visibility.Collapsed;
+                    MrsHonorific.Visibility = Visibility.Collapsed;
+                    MrHonorific.IsChecked = true;
+                }
             }
             return;
         }
@@ -224,7 +280,6 @@ namespace Schedule_Mgr
             cmd.Parameters.Add("@Account_Type", DbType.String).Value = accountType;
 
             cmd.ExecuteNonQuery();
-            MessageBox.Show("Account Created Successfully", "Account created");
             connection.Close();
         }
 
@@ -283,7 +338,7 @@ namespace Schedule_Mgr
 
             // will not exit function until unique username confirmed.
             string username = createUsername(firstname, middlename, lastname);
-            MessageBox.Show(username); // REMOVE POST-DEBUG.
+            MessageBox.Show("Account Username: " + username, "Account Successfully Created!", MessageBoxButton.OK, MessageBoxImage.Information);
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
             //FORMAT FOR QRCODE
@@ -293,7 +348,6 @@ namespace Schedule_Mgr
             var otpKey = KeyGeneration.GenerateRandomKey(20);
             var otpKeyString = Base32Encoding.ToString(otpKey);
             var otpKeyBytes = Base32Encoding.ToBytes(otpKeyString);
-            Console.WriteLine(otpKeyString); //This should be stored in DB
 
             int accountType = Convert.ToInt32(userAccountType);
             string gender = userGender == 0 ? "Female" : "Male"; 
@@ -310,8 +364,6 @@ namespace Schedule_Mgr
             ShowQRWindow.ShowDialog();
             
         }
-
-
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {

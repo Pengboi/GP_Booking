@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Appointment_Mgr.ViewModel
@@ -17,7 +18,6 @@ namespace Appointment_Mgr.ViewModel
         public string _patientName, _appointmentTime, _appointmentNotes;
 
         public int DoctorID { get; set; }
-        
 
         public DataRow ActiveAppointment 
         {
@@ -34,7 +34,7 @@ namespace Appointment_Mgr.ViewModel
             get { return _patientName; }
             set
             {
-                _patientName = value;
+                _patientName = Regex.Replace(value, @"(^\w)|(\s\w)", m => m.Value.ToUpper());
                 RaisePropertyChanged(nameof(PatientName));
             }
         }
@@ -53,6 +53,8 @@ namespace Appointment_Mgr.ViewModel
             get { return _appointmentNotes; }
             set 
             {
+                if (string.IsNullOrEmpty(value))
+                    value = "No Appointment Notes.";
                 _appointmentNotes = value;
                 RaisePropertyChanged(nameof(AppointmentNotes));
             }
@@ -64,9 +66,9 @@ namespace Appointment_Mgr.ViewModel
         {
             if (IsInDesignMode) 
             {
-
+                PatientName = "John Lee";
+                AppointmentTime = "12:40";
             }
-
             MessengerInstance.Register<int>(this, SetDoctorDetails);
 
             EndAppointmentCommand = new RelayCommand(EndAppointment);
@@ -84,16 +86,12 @@ namespace Appointment_Mgr.ViewModel
 
         public void EndAppointment()
         {
-
             TimeSpan timeNow = DateTime.Now.TimeOfDay;
             string startTimeString = ActiveAppointment[6].ToString();
             TimeSpan startTime = TimeSpan.Parse(startTimeString.Insert(startTimeString.Length - 2, ":"));
-            Console.WriteLine("TIME NOW: " + timeNow.ToString());
-            Console.WriteLine("START TIME: " + startTime);
 
             int appointmentDuration = (int)(timeNow - startTime).TotalMinutes;
-            PatientDBConverter.EndAppointment(ActiveAppointment, appointmentDuration);
-            AppointmentLogic.SetAverage();
+            AppointmentLogic.EndAppointment(ActiveAppointment, appointmentDuration);
 
             MessengerInstance.Send<string>("DoctorHomeView");
             return;

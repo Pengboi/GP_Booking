@@ -19,10 +19,12 @@ namespace Appointment_Mgr.Model
         private int _patientNum, _streetNumber;
         private string _firstname, _middlename, _lastname, _DOB, _gender, _email, _postcode;
 
-        private static string LoadConnectionString(string id = "Patients") { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
+        private static string LoadConnectionString(string id = "Patients") {
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory); 
+        }
         private SQLiteConnection OpenConnection()
         {
-            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString());
+            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(), true);
             connection.Open();
             return connection;
         }
@@ -45,10 +47,10 @@ namespace Appointment_Mgr.Model
             // If middlename is not null, include in search, if ID of patient has been specified, include in search. 
             // (used for when multiple records have same attribute values, so primary key needs to be employed.)
             if (optionalID != null)
-                cmdString = $"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(this._middlename) ? " Middlename = @mname AND" : "") +
+                cmdString = $"SELECT COUNT(*) FROM PatientData WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(this._middlename) ? " Middlename = @mname AND" : "") +
                                  " Lastname = @lname AND DOB = @dob AND ST_Number = @stNum AND Postcode = @postcode AND PatientID = @id";
             else
-                cmdString = $"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(this._middlename) ? " Middlename = @mname AND" : "") +
+                cmdString = $"SELECT COUNT(*) FROM PatientData WHERE Firstname = @fname AND" + (!string.IsNullOrWhiteSpace(this._middlename) ? " Middlename = @mname AND" : "") +
                                  " Lastname = @lname AND DOB = @dob AND ST_Number = @stNum AND Postcode = @postcode";
 
             SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);

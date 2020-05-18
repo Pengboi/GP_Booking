@@ -10,17 +10,17 @@
         Title="New User"
         WindowState="Normal"
         Topmost="True"
-        Height="750" Width="800" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" WindowStyle="ToolWindow" >
+        Height="750" Width="500" Background="#8ec5fc" Cursor="Arrow" ResizeMode="NoResize" WindowStyle="ToolWindow" >
 
     <Grid Margin="10">
         <Grid.Effect>
             <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
         </Grid.Effect>
         <Label Content="CREATE AN ACCOUNT" FontSize="25" Foreground="White" FontFamily="Arial Narrow" 
-               Margin="135, 5, 0, 0" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"/>
+               Margin="0, 5, 0, 0" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"/>
         <Label  FontSize="13" Foreground="White" FontFamily="Arial"
                Margin="2,35,0,0">
-            <StackPanel Orientation="Horizontal" Margin="135,0,0,0">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                 <TextBlock Foreground="White" Text="Please Enter All Required Fields Below"/>
                 <TextBlock Foreground="#c70039" Text=" *"/>
             </StackPanel>
@@ -43,31 +43,29 @@
                 <StackPanel Orientation="Horizontal" Margin="50,0,0,0" Height="62">
                     <TextBlock Foreground="Black" Text="Title :" Margin="0,30,0,0" FontSize="15"></TextBlock>
                     <TextBlock Foreground="Black" Text=" *" Margin="0,25,0,0"></TextBlock>
-                    <ComboBox x:Name="honorificComboBox" Margin="15,10,30,0" HorizontalAlignment="Left" Width="50"
-                              Height="40">
-                        <ComboBoxItem>Mr.</ComboBoxItem>
-                        <ComboBoxItem>Miss.</ComboBoxItem>
-                        <ComboBoxItem>Mrs.</ComboBoxItem>
-                        <ComboBoxItem>Dr.</ComboBoxItem>
-                    </ComboBox>
+                    <StackPanel Margin="10,30,0,0" Orientation="Horizontal">
+                        <RadioButton x:Name="MrHonorific" GroupName="honorific" IsChecked="True" >Mr.</RadioButton>
+                        <RadioButton x:Name="MissHonorific" GroupName="honorific" Margin="10,0,0,0" Visibility="Collapsed" >Miss.</RadioButton>
+                        <RadioButton x:Name="MrsHonorific" GroupName="honorific" Margin="10,0,0,0" Visibility="Collapsed" >Mrs.</RadioButton>
+                        <RadioButton x:Name="DrHonorific" GroupName="honorific" Margin="10,0,0,0" >Dr.</RadioButton>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="40,0,0,0" Height="62">
                     <TextBlock Foreground="Black" Text="Gender : *" Margin="10,20,0,0" FontSize="15"></TextBlock>
-                    <ComboBox x:Name="genderComboBox" Margin="15,10,30,0" HorizontalAlignment="Left" Width="80"
-                              Height="40">
-                        <ComboBoxItem>Female</ComboBoxItem>
-                        <ComboBoxItem>Male</ComboBoxItem>
-                    </ComboBox>
+                    <StackPanel Margin="10,20,0,0" Orientation="Horizontal">
+                        <RadioButton x:Name="Male" GroupName="Gender" Margin="10,0,0,0" IsChecked="True" Checked="Male_Checked">Male</RadioButton>
+                        <RadioButton x:Name="Female" GroupName="Gender" Margin="10,0,0,0" Checked="Female_Checked" >Female</RadioButton>
+                    </StackPanel>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Margin="40,0,0,0" Height="62">
                     <TextBlock Foreground="Black" Text="Account Type : *" Margin="10,13,0,0" FontSize="15"></TextBlock>
                     <ComboBox x:Name="accountTypeBox" Margin="10,10,30,0" HorizontalAlignment="Left" 
-                              Width="130" Height="40" SelectionChanged="AccountType_SelectionChanged">
-                        <ComboBoxItem>Receptionist</ComboBoxItem>
+                              Width="130" Height="40" SelectedIndex="0" SelectionChanged="AccountType_SelectionChanged">
+                        <ComboBoxItem IsSelected="True">Receptionist</ComboBoxItem>
                         <ComboBoxItem>Doctor</ComboBoxItem>
-                        <ComboBoxItem>HR and Management</ComboBoxItem>
+                        <ComboBoxItem>Administrator</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 

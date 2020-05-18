@@ -42,33 +42,37 @@
             </ListView>
 
             <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height ="50" Width="200" Margin="567,0,0,160"
-                   FontSize="20" FontWeight="Bold">Shift Start:</Label>
-            <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="44" Width="40" Margin="571,0,0,130"
-                      Loaded="comboBox_SetTimes" FontSize="15">
-            </ComboBox>
-            <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50" Width="30" Margin="0,0,247,120"
-                   FontSize="25">:</Label>
-            <ComboBox x:Name="minsComboBox" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="44" Width="40" Margin="0,0,217,130"
-                      FontSize="15">
-            </ComboBox>
+                   FontSize="20" FontWeight="Bold">Shift Start:
+            </Label>
+
+            <materialDesign:TimePicker x:Name="ShiftStartTimePicker"
+                                       IsInvalidTextAllowed="False"
+                                       Focusable="False" GotKeyboardFocus="TimePicker_GotKeyboardFocus"
+                                       Is24Hours="True" FontSize="15"
+                                       materialDesign:HintAssist.Hint=""
+                                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                       Width="120" Margin="571,0,0,150" >
+            </materialDesign:TimePicker>
 
             <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Height ="50" Margin="0,0,60,160"
                    FontSize="20" FontWeight="Bold" RenderTransformOrigin="0.97,-1.56">Shift End:
             </Label>
-            <ComboBox x:Name="hoursComboBox2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="44" Width="40" Margin="0,0,115,130"
-                      FontSize="15" RenderTransformOrigin="3.275,-1">
-            </ComboBox>
-            <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50" Width="30" Margin="0,0,80,120"
-                   FontSize="25">:</Label>
-            <ComboBox x:Name="minsComboBox2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="44" Width="40" Margin="0,0,52,130"
-                      FontSize="15">
-            </ComboBox>
+            <materialDesign:TimePicker x:Name="ShiftEndTimePicker"
+                                       IsInvalidTextAllowed="False"
+                                       Focusable="False" GotKeyboardFocus="TimePicker_GotKeyboardFocus"
+                                       Is24Hours="True" FontSize="15"
+                                       materialDesign:HintAssist.Hint=""
+                                       HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                       Width="120" Margin="0,0,35,150" >
+            </materialDesign:TimePicker>
 
             <Button x:Name="createAccountButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,100,0,0"
                     Height="46" Width="180" FontSize="15.5" Click="createAccount">Create Staff Account</Button>
             <Button x:Name="showTOTPButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,180,0,0"
-                    Height="46" Width="180" FontSize="15.5" Click="showTOTPButton_Click">Get Staff TOTP Code</Button>
-            <Button x:Name="deleteAccountButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,260,0,0"
+                    Height="46" Width="180" FontSize="15.5" Click="showAccountTOTP">Get Staff TOTP Code</Button>
+            <Button x:Name="resetPasswordButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,260,0,0"
+                    Height="46" Width="180" FontSize="15.5" Background="#ff7675" Click="resetAccountPassword">Reset Staff Password</Button>
+            <Button x:Name="deleteAccountButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,340,0,0"
                     Height="46" Width="180" FontSize="15.5" Background="#ff7675" Click="deleteAccount">Delete Staff Account</Button>
 
             <Button x:Name="updateShiftButton" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,50,35"

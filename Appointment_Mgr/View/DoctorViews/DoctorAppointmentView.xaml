@@ -62,20 +62,21 @@
         <Grid Width="1350" Height="700" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel  Margin="10,50,10,10">
                 <Label Content="Patient Name:" FontSize="45" FontWeight="Bold"
-                       FontFamily="{StaticResource Montserrat}" />
-                <Label Content="{Binding PatientName}" FontSize="30" 
+                       FontFamily="{StaticResource Montserrat}" Margin="50,0,0,0"
+                />
+                <Label Content="{Binding PatientName}" FontSize="30" Margin="50,0,0,0"
                        FontFamily="{StaticResource Montserrat}" FontWeight="Thin"
                 />
 
-                <Label Margin="0,50,0,0" FontFamily="{StaticResource Montserrat}"
+                <Label Margin="50,50,0,0" FontFamily="{StaticResource Montserrat}"
                        Content="Patient Notes:" FontSize="25"
                 />
-                <TextBlock Margin="5,10,0,0" FontFamily="{StaticResource Montserrat}"
+                <TextBlock Margin="55,10,0,0" FontFamily="{StaticResource Montserrat}"
                            FontSize="20" Text="{Binding AppointmentNotes}"
                 />
             </StackPanel>
             <Label Grid.Row="1" Grid.Column="1"
-                   Content="{Binding AppointmentTime}" Margin="0,111,0,4" HorizontalAlignment="Right" FontSize="30"
+                   Content="{Binding AppointmentTime}" Margin="0,111,50,0" HorizontalAlignment="Right" FontSize="30"
                    FontFamily="{StaticResource Montserrat}"
             />
 

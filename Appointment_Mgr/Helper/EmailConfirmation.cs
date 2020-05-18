@@ -4,14 +4,16 @@ using Appointment_Mgr.Model;
 using System.IO;
 using System.Net.Mail;
 using System.Windows.Input;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Appointment_Mgr.Helper
 {
-    public class EmailSuccess
+    public class EmailConfirmation
     {
         private static IDialogBoxService _dialogService;
 
-        public static void ReservationEmail(int patientID, DateTime date, string timeslot)
+        public static void ReservationConfirmationEmail(int patientID, DateTime date, string timeslot)
         {
             _dialogService = new DialogBoxService();
 
@@ -23,7 +25,7 @@ namespace Appointment_Mgr.Helper
             text = text.Replace("InsertDate1", date.ToShortDateString());
             text = text.Replace("HEADING", "We look forward to seeing you.");
             text = text.Replace("MAINBODY", "Your appointment has been confirmed on the date and time below. For any enquiries, please contact the GP.");
-            text = text.Replace("InsertDate2", date.ToShortDateString() + ", " + timeslot);
+            text = text.Replace("InsertDate2", date.ToShortDateString() + ", <br>" + timeslot);
             File.WriteAllText("appointment_email.html", text);
 
             // Gets patient email
@@ -47,19 +49,13 @@ namespace Appointment_Mgr.Helper
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
                     client.EnableSsl = true;
 
-                    client.Send(message);
-
-                    var dialog = new Dialog.SuccessBoxViewModel("Appointment Booked.", "Appointment has been successfully booked.");
-                    var result = _dialogService.OpenDialog(dialog);
+                    //await 
+                    client.SendMailAsync(message);
                 }
                 File.Delete("appointment_email.html");
             }
             catch (Exception ex)
             {
-                var dialog = new AlertBoxViewModel("Alert!", "E-mail Success could not be sent, try again later. If issue persists, please speak to IT. \n " +
-                    "Appointment has been booked and is not effected by this error.");
-                var result = _dialogService.OpenDialog(dialog);
-
                 // Saves error to error log
                 string exePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                 string logPath = exePath + @"\\logs\\log.txt";
@@ -79,9 +75,10 @@ namespace Appointment_Mgr.Helper
                     }
                 }
             }
+
         }
 
-        public static void SamedaySuccessEmail(int patientID)
+        public static void WalkInConfirmationEmail(int patientID)
         {
             _dialogService = new DialogBoxService();
 
@@ -95,7 +92,6 @@ namespace Appointment_Mgr.Helper
             File.WriteAllText("appointment_email.html", text);
 
             string patientEmail = PatientDBConverter.GetEmail(patientID);
-
             try
             {
                 using (StreamReader reader = File.OpenText("appointment_email.html"))
@@ -114,19 +110,13 @@ namespace Appointment_Mgr.Helper
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
                     client.EnableSsl = true;
 
-                    client.Send(message);
-
-                    var dialog = new Dialog.SuccessBoxViewModel("Appointment Booked.", 
-                        "Appointment has been successfully booked. Please keep an eye on your emails for updates on when we can see you.");
-                    var result = _dialogService.OpenDialog(dialog);
-                }
+                    //await 
+                    client.SendMailAsync(message);
+                    }
+                File.Delete("appointment_email.html");
             }
             catch (Exception ex)
             {
-                var dialog = new Dialog.AlertBoxViewModel("Alert!", "E-mail Success could not be sent, try again later. If issue persists, please speak to IT. \n " +
-                    "Appointment has been booked and is not effected by this error. Please return after the estimated time and speak to the receptionist.");
-                var result = _dialogService.OpenDialog(dialog);
-
                 // Saves error to error log
                 string exePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                 string logPath = exePath + @"\\logs\\log.txt";
@@ -180,17 +170,12 @@ namespace Appointment_Mgr.Helper
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
                     client.EnableSsl = true;
 
-                    client.Send(message);
-
-                    var dialog = new Dialog.SuccessBoxViewModel("Appointment Booked.", "Appointment has been successfully booked. Please check-in.");
-                    var result = _dialogService.OpenDialog(dialog);
+                    //await 
+                    client.SendMailAsync(message);
                 }
             }
             catch (Exception ex)
             {
-                var dialog = new Dialog.AlertBoxViewModel("Alert!", "E-mail Success could not be sent, try again later. If issue persists, please speak to IT. \n " +
-                    "Appointment has been booked and is not effected by this error. Please return after the estimated time and speak to the receptionist.");
-                var result = _dialogService.OpenDialog(dialog);
 
                 // Saves error to error log
                 string exePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);

@@ -4,11 +4,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace Appointment_Mgr.ViewModel
@@ -98,7 +94,7 @@ namespace Appointment_Mgr.ViewModel
         public void SetDoctorDetails(int msg) 
         {
             DoctorID = msg;
-            DoctorName = StaffDBConverter.GetDoctorNameByID(DoctorID);
+            DoctorName = StaffDBConverter.GetEmployeeNameByID(DoctorID);
         }
 
         private void StartAppointment()
@@ -138,26 +134,23 @@ namespace Appointment_Mgr.ViewModel
                     else if (Convert.ToBoolean(dr["isReservation"]) == true && DoctorID.Equals(int.Parse(dr["AppointmentDoctorID"].ToString())))
                     {
                         selectedAppointment = dr;
-                        break;
                     }
                 }
                 else 
                 {
-                    if (Convert.ToBoolean(dr["isReservation"]) == true && DoctorID.Equals(int.Parse(dr["AppointmentDoctorID"].ToString()))) 
+                    TimeSpan selectedAppointmentTime = TimeSpan.Parse(selectedAppointment["AppointmentTime"].ToString());
+                    TimeSpan drAppointmentTime = TimeSpan.Parse(dr["AppointmentTime"].ToString());
+
+                    if (drAppointmentTime.Subtract(selectedAppointmentTime).TotalMinutes <= 10 && (Convert.ToBoolean(dr["isReservation"]) == false))
                     {
-                        TimeSpan selectedAppointmentTime = TimeSpan.Parse(selectedAppointment["AppointmentTime"].ToString());
-                        TimeSpan drAppointmentTime = TimeSpan.Parse(dr["AppointmentTime"].ToString());
-                        if (drAppointmentTime.Subtract(selectedAppointmentTime).TotalMinutes < 10) 
-                        {
-                            selectedAppointment = dr;
-                            break;
-                        }
+                        selectedAppointment = dr;
+                        break;
                     }
 
                 }
             }
 
-            PatientDBConverter.StartAppointment(selectedAppointment);
+            PatientDBConverter.StartAppointment(selectedAppointment, DoctorID);
             MessengerInstance.Send<string>("DoctorAppointmentView");
         }
     }

@@ -76,6 +76,30 @@ namespace Appointment_Mgr.ViewModel
                         if (string.IsNullOrWhiteSpace(dr[col].ToString()))
                             dr[col] = DBNull.Value;
                     }
+                    if (col.ColumnName == "Firstname") 
+                    {
+                        if (!Regex.IsMatch(dr[col].ToString(),  @"^[a-zA-Z]") || string.IsNullOrWhiteSpace(dr[col].ToString()))
+                        {
+                            Error("Changes not saved!", "An invalid Firstname has been entered. Changes have not been saved. Please resolve issue and try again.");
+                            return false;
+                        }
+                    }
+                    if (col.ColumnName == "Middlename")
+                    {
+                        if (!Regex.IsMatch(dr[col].ToString(), @"^[a-zA-Z]") && !string.IsNullOrWhiteSpace(dr[col].ToString()))
+                        {
+                            Error("Changes not saved!", "An invalid Middlename has been entered. Changes have not been saved. Please resolve issue and try again.");
+                            return false;
+                        }
+                    }
+                    if (col.ColumnName == "Lastname")
+                    {
+                        if (!Regex.IsMatch(dr[col].ToString(), @"^[a-zA-Z]") || string.IsNullOrWhiteSpace(dr[col].ToString()))
+                        {
+                            Error("Changes not saved!", "An invalid Lastname has been entered. Changes have not been saved. Please resolve issue and try again.");
+                            return false;
+                        }
+                    }
                     if (col.ColumnName == "Postcode")
                     {
                         if (!Regex.IsMatch(dr[col].ToString(),

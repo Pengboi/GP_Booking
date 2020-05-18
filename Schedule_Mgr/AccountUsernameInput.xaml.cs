@@ -15,16 +15,16 @@ using System.Windows.Shapes;
 namespace Schedule_Mgr
 {
     /// <summary>
-    /// Interaction logic for InputDialogBox.xaml
+    /// Interaction logic for AccountUsernameInput.xaml
     /// </summary>
-    public partial class InputDialogBox : Window
+    public partial class AccountUsernameInput : Window
     {
-        public string Answer 
+        public string Answer
         {
             get; set;
         }
 
-        public InputDialogBox(string question)
+        public AccountUsernameInput(string question)
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -33,15 +33,14 @@ namespace Schedule_Mgr
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            Answer = Number1.Text + Number2.Text + Number3.Text +
-                     Number4.Text + Number5.Text + Number6.Text;
+            Answer = AccountUsername.Text;
             this.DialogResult = true;
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            Number1.SelectAll();
-            Number1.Focus();
+            AccountUsername.SelectAll();
+            AccountUsername.Focus();
         }
     }
 }

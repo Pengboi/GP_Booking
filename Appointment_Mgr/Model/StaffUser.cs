@@ -21,11 +21,13 @@ namespace Appointment_Mgr.Model
 
         private SQLiteConnection OpenConnection()
         {
-            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString());
+            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(), true);
             connection.Open();
             return connection;
         }
-        private static string LoadConnectionString(string id = "Staff") { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
+        private static string LoadConnectionString(string id = "Staff") {
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory); 
+        }
 
         public StaffUser(string username, string password)
         {

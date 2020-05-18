@@ -71,7 +71,7 @@
     <Grid>
         
         <!-- Appointment UI Content -->
-        <Rectangle Width="1650" Height="700" 
+        <Rectangle Width="1650" Height="750" 
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    RadiusX="80" RadiusY="80">
             <Rectangle.Effect>
@@ -85,42 +85,58 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Grid Width="1650" Height="850" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
+        <Grid Width="1650" Height="1000" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="120" />
+                <RowDefinition Height="170" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="120" />
             </Grid.RowDefinitions>
+            
+            <!-- Filter Cancelled Elements -->
+            <StackPanel  Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <ToggleButton Grid.Row="0" Margin="25,0,0,10" HorizontalAlignment="Left" Width="70" Height="70"
+                              Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                              IsChecked="{Binding CancelledFilter}"
+                />
+                <Label Grid.Row="0" HorizontalAlignment="Left" Width="260" Height="100" Margin="0,35,95,0"
+                       Content="Filter By Cancelled" FontSize="30"
+                />
+            </StackPanel>
+            
 
             <!-- Search element -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0">
                 <Image Height="50" Width="50" Margin="-10,0,0,0"
-                   Source="pack://application:,,,/Assets/Search-icon.png" 
-            />
+                       Source="pack://application:,,,/Assets/Search-icon.png" 
+                />
                 <TextBox x:Name="SearchBox"
                          Focusable="False"
                          Margin="5,0,0,0" VerticalAlignment="Center" Width="300"
                          FontSize="25" TextWrapping="Wrap"
                          Style="{StaticResource placeHolder}" Tag="Search Patient"
-                         TextChanged="TextBox_TextChanged"/>
+                         TextChanged="TextBox_TextChanged"
+                />
             </StackPanel>
-
-            <DataGrid Grid.Row="1" Grid.Column="1" Margin="10,10,10,10"
+        
+            <DataGrid Grid.Row="1" Grid.Column="1" Margin="10,20,10,10"
                       HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"
                       HeadersVisibility="All" IsReadOnly="True"
                       AutoGenerateColumns="False" CanUserAddRows="False"
                       SelectionMode="Single" SelectionUnit="FullRow"
                       RowBackground="Transparent" Background="Transparent"
                       ItemsSource="{Binding FilteredAppointments, Mode=TwoWay}" SelectedIndex="{Binding SelectedIndex}" >
+                <DataGrid.Resources>
+                    <helper:DataGridBindingProxy x:Key="proxy" Data="{Binding}" />
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="*" IsReadOnly="True"  >
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <TextBlock Text="Appointment Date" 
-                                           FontSize="30" FontWeight="DemiBold" Background="Transparent"
+                                           FontSize="25" FontWeight="DemiBold" Background="Transparent"
                                            Foreground="#3d3d3d"
                                 />
                             </DataTemplate>
@@ -139,7 +155,7 @@
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <TextBlock Text="Patient Name" 
-                                           FontSize="30" FontWeight="DemiBold" Background="Transparent"
+                                           FontSize="25" FontWeight="DemiBold" Background="Transparent"
                                            Foreground="#3d3d3d"
                                 />
                             </DataTemplate>
@@ -158,7 +174,7 @@
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <TextBlock Text="Appointment Time" 
-                                           FontSize="30" FontWeight="DemiBold" Background="Transparent"
+                                           FontSize="25" FontWeight="DemiBold" Background="Transparent"
                                            Foreground="#3d3d3d"
                                 />
                             </DataTemplate>
@@ -167,7 +183,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding AppointmentTime, Mode=TwoWay}" TextAlignment="Left"
-                                           FontSize="20" FontWeight="SemiBold"
+                                           FontSize="25" FontWeight="SemiBold"
                                 />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -177,7 +193,7 @@
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <TextBlock Text="Appointment Doctor" 
-                                           FontSize="30" FontWeight="DemiBold" Background="Transparent"
+                                           FontSize="25" FontWeight="DemiBold" Background="Transparent"
                                            Foreground="#3d3d3d"
                                 />
                             </DataTemplate>
@@ -192,13 +208,35 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="" Width="SizeToCells"
-                                            IsReadOnly="True">
+                    <DataGridTemplateColumn Width="SizeToHeader" IsReadOnly="True" >
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Cancellation Reason" 
+                                           FontSize="25" FontWeight="DemiBold" Background="Transparent"
+                                           Foreground="#3d3d3d"
+                                           DataContext="{Binding ManageAppointments, Source={StaticResource Locator}}" Visibility="{Binding CancellationVisibility, Mode=TwoWay}"
+                                />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
+                                <TextBlock Text="{Binding Reason, Mode=TwoWay}" TextAlignment="Left"
+                                           FontSize="20" FontWeight="SemiBold" 
+                                />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="" Width="SizeToCells" 
+                                            IsReadOnly="True" >
+                        <DataGridTemplateColumn.CellTemplate >
+                            <DataTemplate>
                                 <materialDesign:PopupBox Width="30" HorizontalAlignment="Center" PlacementMode="BottomAndAlignRightEdges"
-                                                         Background="Transparent" StaysOpen="False">
-                                    <StackPanel Width="250">
+                                                         Background="Transparent" StaysOpen="False" 
+                                                         DataContext="{Binding ManageAppointments, Source={StaticResource Locator}}" Visibility="{Binding EditOptionsVisibility, Mode=TwoWay}" >
+                                    <StackPanel Width="250" 
+                                                DataContext="{Binding ManageAppointments, Source={StaticResource Locator}}" Visibility="{Binding EditOptionsVisibility, Mode=TwoWay}">
                                         <Button Content="Check-in Patient" DataContext="{Binding ManageAppointments, Source={StaticResource Locator}}"
                                                 Command="{Binding CheckInPatientCommand}" />
                                         <Separator />

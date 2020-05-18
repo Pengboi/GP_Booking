@@ -179,7 +179,11 @@ namespace Appointment_Mgr.ViewModel
             PatientDBConverter.BookAppointment(selectedTimeslot, reservationDoctorID, patientID, true, Comment, SelectedDate.ToShortDateString());
 
             // Sends email Success
-            EmailSuccess.ReservationEmail(patientID, SelectedDate, selectedTimeslot);
+            EmailConfirmation.ReservationConfirmationEmail(patientID, SelectedDate, selectedTimeslot);
+
+            var dialog = new SuccessBoxViewModel("Appointment Booked.",      //MOVE THIS
+                            "Appointment has been successfully booked. Please keep an eye on your emails for updates on when we can see you.");
+            var result = _dialogService.OpenDialog(dialog);
 
             MessengerInstance.Unregister(this);
             MessengerInstance.Send<string>("DecideHomeView");

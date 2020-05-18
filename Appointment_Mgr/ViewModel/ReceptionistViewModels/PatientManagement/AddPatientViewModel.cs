@@ -29,15 +29,17 @@ namespace Appointment_Mgr.ViewModel
 
         private SQLiteConnection OpenConnection(string id = "Staff")
         {
-            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(id));
+            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(id), true);
             connection.Open();
             return connection;
         }
 
-        private static string LoadConnectionString(string id) 
-        { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
+        private static string LoadConnectionString(string id)
+        {
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory); 
+        }
 
-        
+
         private IDialogBoxService _dialogService;
         public ICommand AlertCommand { get; private set; }
         public ICommand ErrorCommand { get; private set; }
@@ -93,10 +95,10 @@ namespace Appointment_Mgr.ViewModel
 
             string cmdString = "";
             if (string.IsNullOrWhiteSpace(Middlename))
-                cmdString = @"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @firstname" +
+                cmdString = @"SELECT COUNT(*) FROM PatientData WHERE Firstname = @firstname" +
                             " AND Lastname = @lastname AND DOB = @dob AND Gender = @gender AND ST_Number = @streetNumber AND Postcode = @postcode";
             else
-                cmdString = @"SELECT COUNT(*) FROM Patient_Data WHERE Firstname = @firstname AND Middlename = @middlename " +
+                cmdString = @"SELECT COUNT(*) FROM PatientData WHERE Firstname = @firstname AND Middlename = @middlename " +
                             " AND Lastname = @lastname AND DOB = @dob AND Gender = @gender AND ST_Number = @streetNumber AND Postcode = @postcode";
 
             SQLiteCommand cmd = new SQLiteCommand(cmdString, connection); 
@@ -125,10 +127,10 @@ namespace Appointment_Mgr.ViewModel
             // Record added to patient database.
 
             if (string.IsNullOrWhiteSpace(Middlename))
-                cmdString = @"INSERT INTO Patient_Data (Firstname, Lastname, DOB, Gender, ST_Number, Postcode) 
+                cmdString = @"INSERT INTO PatientData (Firstname, Lastname, DOB, Gender, ST_Number, Postcode) 
                             VALUES (@firstname, @lastname, @dob, @gender, @streetNumber, @postcode)";
             else
-                cmdString = @"INSERT INTO Patient_Data (Firstname, Middlename, Lastname, DOB, Gender, ST_Number, Postcode) 
+                cmdString = @"INSERT INTO PatientData (Firstname, Middlename, Lastname, DOB, Gender, ST_Number, Postcode) 
                             VALUES (@firstname, @middlename, @lastname, @dob, @gender, @streetNumber, @postcode)";
 
             cmd = new SQLiteCommand(cmdString, connection);

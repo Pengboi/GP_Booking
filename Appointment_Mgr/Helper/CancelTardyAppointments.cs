@@ -9,10 +9,13 @@ namespace Appointment_Mgr.Helper
 {
     public static class CancelTardyAppointments
     {
-        private static string LoadConnectionString(string id) { return ConfigurationManager.ConnectionStrings[id].ConnectionString; }
+        private static string LoadConnectionString(string id) {
+
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory); 
+        }
         public static SQLiteConnection OpenConnection(string id = "Patients")
         {
-            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(id));
+            SQLiteConnection connection = new SQLiteConnection(LoadConnectionString(id), true);
             connection.Open();
             return connection;
         }
@@ -23,11 +26,11 @@ namespace Appointment_Mgr.Helper
             {
                 await Task.Run(() =>
                 {
-                    // While application is active, every minute a connection occurs with Booked_Appointments Schema and if 15 minutes passes
+                    // While application is active, every minute a connection occurs with BookedAppointments Schema and if 15 minutes passes
                     // from when the patient is expected to be seen the appointment is deleted from the Database in order to free avaliability
                     for (; ; )
                     {
-                        string cmdString = "SELECT COUNT(*) FROM Booked_Appointments WHERE Date= @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\";";
+                        string cmdString = "SELECT COUNT(*) FROM BookedAppointments WHERE Date= @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\";";
                         SQLiteConnection conn = OpenConnection();
                         SQLiteCommand cmd = new SQLiteCommand(cmdString, conn);
                         cmd.Parameters.Add("@date", DbType.String).Value = DateTime.Today.ToShortDateString();
@@ -37,17 +40,17 @@ namespace Appointment_Mgr.Helper
                         cmd.Dispose();
                         if (recordsFound > 0) 
                         {
-                            cmdString = "INSERT INTO Cancelled_Appointments " +
+                            cmdString = "INSERT INTO CancelledAppointments " +
                                         "VALUES(" +
-                                              "(SELECT AppointmentID FROM Booked_Appointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
-                                              "(SELECT Date FROM Booked_Appointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
-                                              "(SELECT Appointment_Time FROM Booked_Appointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
-                                              "(SELECT Patient_ID FROM Booked_Appointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
-                                              "(SELECT Patient_Notes FROM Booked_Appointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
-                                              "(SELECT Assigned_Doctor_ID FROM Booked_Appointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\")," +
+                                              "(SELECT AppointmentID FROM BookedAppointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
+                                              "(SELECT Date FROM BookedAppointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
+                                              "(SELECT Appointment_Time FROM BookedAppointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
+                                              "(SELECT PatientID FROM BookedAppointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
+                                              "(SELECT Patient_Notes FROM BookedAppointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"), " +
+                                              "(SELECT Assigned_DoctorID FROM BookedAppointments WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\")," +
                                               "\"Tardy\"" +
                                               ");" +
-                                        "DELETE FROM Booked_Appointments " +
+                                        "DELETE FROM BookedAppointments " +
                                         "WHERE Date = @date AND @time - Appointment_Time > 15 AND Checked_In = \"NO\"; ";
                             SQLiteCommand cmd2 = new SQLiteCommand(cmdString, conn);
                             cmd2.Parameters.Add("@date", DbType.String).Value = DateTime.Today.ToShortDateString();

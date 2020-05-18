@@ -30,14 +30,14 @@ namespace Schedule_Mgr
 
         private static string LoadConnectionString(string id = "Staff") 
         {
-            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
         }
 
         private bool Validate_Credentials(String user, String pass) {
             String sqlPath = LoadConnectionString();    //Retrieves path from App.config
-            SQLiteConnection connection = new SQLiteConnection(sqlPath);
+            SQLiteConnection connection = new SQLiteConnection(sqlPath, true);
 
-            //Can refactor to select user, pass, account type from Accounts WHERE username = args user ---> check other code behinds on how to
+            //Can refactor to select user, pass, account type from Accounts WHERE username = args user
             string sqlQuery = $"SELECT Username, Password, Account_Type From Accounts;";
 
             connection.Open();
@@ -78,7 +78,7 @@ namespace Schedule_Mgr
         private String Get_OTPKEY(String user) 
         {
             String sqlPath = LoadConnectionString();    //Retrieves path from App.config
-            SQLiteConnection connection = new SQLiteConnection(sqlPath);
+            SQLiteConnection connection = new SQLiteConnection(sqlPath, true);
             string sqlQuery = $"SELECT OTP_Token FROM Accounts WHERE Username =  \"" + user + "\";";
             connection.Open();
 
@@ -114,7 +114,7 @@ namespace Schedule_Mgr
             if (Validate_Credentials(username, password)) 
             {
                 String inputOTP = "";
-                InputDialogBox inputDialog = new InputDialogBox("Enter Your OTP Code:", 6);
+                InputDialogBox inputDialog = new InputDialogBox("Enter Your OTP Code:");
                 if (inputDialog.ShowDialog() == true)
                     inputOTP = inputDialog.Answer;
 
@@ -123,6 +123,11 @@ namespace Schedule_Mgr
                     Messenger.Default.Send<string>("GrantedView");
                 }
             }
+        }
+
+        private void Reset_Password(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Send<string>("AdminReset");
         }
     }
 }

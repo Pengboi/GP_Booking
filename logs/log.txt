@@ -1,0 +1,121 @@
+-----------------------------------------------------------------------------
+Date : 17/05/2020 21:26:22
+
+System.Reflection.TargetInvocationException
+Message : Exception has been thrown by the target of an invocation.
+StackTrace :    at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   at System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at GalaSoft.MvvmLight.Helpers.WeakAction.Execute() in C:\Users\lbugn\Documents\MVVMLight\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:line 338
+   at GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) in C:\Users\lbugn\Documents\MVVMLight\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:line 228
+   at MS.Internal.Commands.CommandHelpers.CriticalExecuteCommandSource(ICommandSource commandSource, Boolean userInitiated)
+   at System.Windows.Controls.Primitives.ButtonBase.OnClick()
+   at System.Windows.Controls.Button.OnClick()
+   at System.Windows.Controls.Primitives.ButtonBase.OnMouseLeftButtonUp(MouseButtonEventArgs e)
+   at System.Windows.UIElement.OnMouseLeftButtonUpThunk(Object sender, MouseButtonEventArgs e)
+   at System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   at System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   at System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   at System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   at System.Windows.Input.InputManager.ProcessStagingArea()
+   at System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   at System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   at System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   at System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+System.FormatException
+Message : Input string was not in a correct format.
+StackTrace :    at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at Appointment_Mgr.Model.AppointmentLogic.GetAverage() in C:\Users\Lidio\iCloudDrive\Desktop\Software_Development\GP_Booking\Appointment_Mgr\Model\AppointmentLogic.cs:line 42
+   at Appointment_Mgr.ViewModel.DoctorHomeViewModel.StartAppointment() in C:\Users\Lidio\iCloudDrive\Desktop\Software_Development\GP_Booking\Appointment_Mgr\ViewModel\DoctorViewModels\DoctorHomeViewModel.cs:line 158
+-----------------------------------------------------------------------------
+Date : 17/05/2020 21:59:31
+
+System.Reflection.TargetInvocationException
+Message : Exception has been thrown by the target of an invocation.
+StackTrace :    at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   at System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at GalaSoft.MvvmLight.Helpers.WeakAction.Execute() in C:\Users\lbugn\Documents\MVVMLight\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:line 338
+   at GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) in C:\Users\lbugn\Documents\MVVMLight\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:line 228
+   at MS.Internal.Commands.CommandHelpers.CriticalExecuteCommandSource(ICommandSource commandSource, Boolean userInitiated)
+   at System.Windows.Controls.Primitives.ButtonBase.OnClick()
+   at System.Windows.Controls.Button.OnClick()
+   at System.Windows.Controls.Primitives.ButtonBase.OnMouseLeftButtonUp(MouseButtonEventArgs e)
+   at System.Windows.UIElement.OnMouseLeftButtonUpThunk(Object sender, MouseButtonEventArgs e)
+   at System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.ReRaiseEventAs(DependencyObject sender, RoutedEventArgs args, RoutedEvent newEvent)
+   at System.Windows.UIElement.OnMouseUpThunk(Object sender, MouseButtonEventArgs e)
+   at System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   at System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   at System.Windows.Input.InputManager.ProcessStagingArea()
+   at System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   at System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   at System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   at System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+System.InvalidCastException
+Message : Specified cast is not valid.
+StackTrace :    at System.Data.SQLite.SQLiteDataReader.VerifyType(Int32 i, DbType typ)
+   at System.Data.SQLite.SQLiteDataReader.GetInt32(Int32 i)
+   at Appointment_Mgr.Model.PatientDBConverter.GetCheckedInAppointments() in C:\Users\Lidio\iCloudDrive\Desktop\Software_Development\GP_Booking\Appointment_Mgr\Model\DataLayerConverters\PatientDBConverter.cs:line 477
+   at Appointment_Mgr.ViewModel.DoctorHomeViewModel.StartAppointment() in C:\Users\Lidio\iCloudDrive\Desktop\Software_Development\GP_Booking\Appointment_Mgr\ViewModel\DoctorViewModels\DoctorHomeViewModel.cs:line 103
+-----------------------------------------------------------------------------
+Date : 18/05/2020 21:22:10
+
+System.Reflection.TargetInvocationException
+Message : Exception has been thrown by the target of an invocation.
+StackTrace :    at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   at System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at GalaSoft.MvvmLight.Helpers.WeakAction.Execute() in C:\Users\lbugn\Documents\MVVMLight\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Helpers\WeakAction.cs:line 338
+   at GalaSoft.MvvmLight.Command.RelayCommand.Execute(Object parameter) in C:\Users\lbugn\Documents\MVVMLight\GalaSoft.MvvmLight\GalaSoft.MvvmLight (PCL)\Command\RelayCommand.cs:line 228
+   at System.Windows.Input.CommandManager.TranslateInput(IInputElement targetElement, InputEventArgs inputEventArgs)
+   at System.Windows.UIElement.OnKeyDownThunk(Object sender, KeyEventArgs e)
+   at System.Windows.Input.KeyEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   at System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   at System.Windows.Input.InputManager.ProcessStagingArea()
+   at System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   at System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   at System.Windows.Interop.HwndKeyboardInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawKeyboardActions actions, Int32 scanCode, Boolean isExtendedKey, Boolean isSystemKey, Int32 virtualKey)
+   at System.Windows.Interop.HwndKeyboardInputProvider.ProcessKeyAction(MSG& msg, Boolean& handled)
+   at System.Windows.Interop.HwndSource.CriticalTranslateAccelerator(MSG& msg, ModifierKeys modifiers)
+   at System.Windows.Interop.HwndSource.OnPreprocessMessage(Object param)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+BCrypt.Net.SaltParseException
+Message : Invalid salt version
+StackTrace :    at BCrypt.Net.BCrypt.HashPassword(String input, String salt) in C:\a\0492fe5\src\BCrypt.Net-Core\BCrypt.cs:line 453
+   at Appointment_Mgr.Model.StaffUser.verifyPassword() in C:\Users\Lidio\iCloudDrive\Desktop\Software_Development\GP_Booking\Appointment_Mgr\Model\StaffUser.cs:line 71
+   at Appointment_Mgr.ViewModel.LoginViewModel.SignInValidation() in C:\Users\Lidio\iCloudDrive\Desktop\Software_Development\GP_Booking\Appointment_Mgr\ViewModel\HomeViewModels\LoginViewModel.cs:line 105

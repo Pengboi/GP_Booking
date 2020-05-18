@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,18 +14,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Configuration;
-using System.Data.SQLite;
-using System.Data;
 
 namespace Schedule_Mgr
 {
     /// <summary>
-    /// Interaction logic for DeleteEmployeeWindow.xaml
+    /// Interaction logic for GetStaffTOTP.xaml
     /// </summary>
-    public partial class DeleteEmployeeWindow : Window
+    public partial class GetStaffTOTP : Window
     {
-        public DeleteEmployeeWindow()
+        public GetStaffTOTP()
         {
             InitializeComponent();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
@@ -49,7 +49,7 @@ namespace Schedule_Mgr
                 searchbox.Clear();
         }
 
-        private void getAccounts(int type) 
+        private void getAccounts(int type)
         {
             SQLiteConnection connection = OpenConnection();
             string sqlQuery = $"SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Account_Type = " + type.ToString() + ";";
@@ -74,7 +74,7 @@ namespace Schedule_Mgr
             connection.Close();
         }
 
-        private void filterAccounts(string searchtext) 
+        private void filterAccounts(string searchtext)
         {
             string searchRequest = searchtext.Replace(" ", String.Empty).ToLower(new System.Globalization.CultureInfo("en-UK", false));   //Removes whitespace
 
@@ -94,10 +94,10 @@ namespace Schedule_Mgr
                 string middlename = "";
                 if (!(row["Middlename"] == null))
                     middlename = row["Middlename"].ToString();
-                string name = row["Suffix"].ToString() + " " + row["Firstname"].ToString() + " " + (!(string.IsNullOrWhiteSpace(middlename)) ? middlename + " " : "" ) + row["Lastname"].ToString();
+                string name = row["Suffix"].ToString() + " " + row["Firstname"].ToString() + " " + (!(string.IsNullOrWhiteSpace(middlename)) ? middlename + " " : "") + row["Lastname"].ToString();
 
                 string searchResult = name.Replace(" ", String.Empty).ToLower(new System.Globalization.CultureInfo("en-UK", false));
-                if (searchResult.Contains(searchRequest)) 
+                if (searchResult.Contains(searchRequest))
                 {
                     if (accountType == 1)
                         receptionistList.Items.Add(name);
@@ -110,7 +110,7 @@ namespace Schedule_Mgr
             connection.Close();
         }
 
-        private void deleteAccount(string fullname) 
+        private void getTOTP(string fullname)
         {
             SQLiteConnection connection = OpenConnection();
             string cmdString = ""; string middlename = ""; string lastname = "";
@@ -122,13 +122,13 @@ namespace Schedule_Mgr
                 lastname = names[1];
                 cmdString = @"SELECT COUNT(*) FROM Accounts WHERE Firstname = @fname AND Lastname = @lname";
             }
-            else 
+            else
             {
                 middlename = names[1];
                 lastname = names[2];
                 cmdString = @"SELECT COUNT(*) FROM Accounts WHERE Firstname = @fname AND Middlename = @mname AND Lastname = @lname";
             }
-            
+
             SQLiteCommand cmd = new SQLiteCommand(cmdString, connection);
             cmd.Prepare();
             cmd.Parameters.Add("@fname", DbType.String).Value = firstname;
@@ -142,51 +142,61 @@ namespace Schedule_Mgr
                 string username = "";
                 MessageBox.Show("More than 1 Account was found with these credentials. Please type in the username of the account to confirm.", "Caution! Attention Required!");
                 bool foundAccount = false;
-                while (!foundAccount) 
+                while (!foundAccount)
                 {
-                    AccountUsernameInput inputDialog = new AccountUsernameInput("Enter The Account Username:");
+                    InputDialogBox inputDialog = new InputDialogBox("Enter The Account Username:");
                     if (inputDialog.ShowDialog() == true)
                         username = inputDialog.Answer;
-                    cmd = new SQLiteCommand(@"SELECT COUNT(*) FROM Accounts WHERE Username = @user AND Firstname = @fname" + 
+                    cmd = new SQLiteCommand(@"SELECT COUNT(*) FROM Accounts WHERE Username = @user AND Firstname = @fname" +
                         ((!string.IsNullOrEmpty(middlename) ? " AND Middlename = @mname" : "")) + " AND Lastname = @lname", connection);
                     cmd.Prepare();
                     cmd.Parameters.Add("@user", DbType.String).Value = username;
                     cmd.Parameters.Add("@fname", DbType.String).Value = firstname;
                     if (!string.IsNullOrEmpty(middlename))
-                     cmd.Parameters.Add("@mname", DbType.String).Value = middlename;
+                        cmd.Parameters.Add("@mname", DbType.String).Value = middlename;
                     cmd.Parameters.Add("@lname", DbType.String).Value = lastname;
 
                     int userExists = Convert.ToInt32(cmd.ExecuteScalar());
                     if (userExists == 1)
                         foundAccount = true;
-                    else 
+                    else
                     {
                         MessageBox.Show("User not found. Confirm username of the account and try again later.", "Error!");
                         return;
                     }
-                        
+
                 }
-                cmd = new SQLiteCommand(@"DELETE FROM Accounts WHERE Username = @Username", connection);
+                cmd = new SQLiteCommand(@"SELECT OTP_Token FROM Accounts WHERE Username = @Username", connection);
                 cmd.Prepare();
                 cmd.Parameters.Add("@Username", DbType.String).Value = username;
-                cmd.ExecuteNonQuery();
+                string totpToken = cmd.ExecuteScalar().ToString();
+                ShowQRWindow showQR = new ShowQRWindow(totpToken, username);
+                showQR.Show();
+                this.Close();
             }
-            else 
+            else
             {
-                cmdString = cmdString.Replace("SELECT COUNT(*) ", "DELETE ");
+                cmdString = cmdString.Replace("COUNT(*)", "OTP_Token, Username");
                 cmd = new SQLiteCommand(cmdString, connection);
                 cmd.Prepare();
                 cmd.Parameters.Add("@fname", DbType.String).Value = firstname;
                 if (names.Length == 3)
                     cmd.Parameters.Add("@mname", DbType.String).Value = middlename;
                 cmd.Parameters.Add("@lname", DbType.String).Value = lastname;
-                cmd.ExecuteNonQuery();
+                SQLiteDataReader reader = cmd.ExecuteReader();
+
+                string totpToken = ""; string username = "";
+                while (reader.Read()) 
+                {
+                    totpToken = reader[0].ToString();
+                    username = reader[1].ToString();
+                }
+                ShowQRWindow showQR = new ShowQRWindow(totpToken, username);
+                showQR.Show();
+                this.Close();
             }
-            MessageBox.Show("Account Deleted Successfully", "Account Deleted.");
             connection.Close();
-            receptionistList.Items.Clear(); doctorsList.Items.Clear(); HRMList.Items.Clear();
-            getAccounts(1); getAccounts(2); getAccounts(3);
-            return;
+            
         }
 
         private void receptionistList_Loaded(object sender, RoutedEventArgs e)
@@ -236,13 +246,13 @@ namespace Schedule_Mgr
             }
         }
 
-        private void searchbox_TextChanged(object sender, TextChangedEventArgs e) 
+        private void searchbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (searchbox.Text.Equals("Search")) 
+            if (searchbox.Text.Equals("Search"))
             {
                 return;
             }
-            if (string.IsNullOrEmpty(searchbox.Text)) 
+            if (string.IsNullOrEmpty(searchbox.Text))
             {
                 receptionistList_Loaded(sender, e);
                 doctorsList_Loaded(sender, e);
@@ -254,26 +264,26 @@ namespace Schedule_Mgr
             filterAccounts(searchbox.Text);
         }
 
-        private void deleteButton_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (receptionistList.SelectedItems.Count == 0 &&
                 doctorsList.SelectedItems.Count == 0 &&
-                HRMList.SelectedItems.Count == 0) 
+                HRMList.SelectedItems.Count == 0)
             {
-                MessageBox.Show("No Account Has Been Selected.", "Could Not Delete Account");
+                MessageBox.Show("No Account Has Been Selected.", "Could Not Delete Account", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (receptionistList.SelectedItems.Count == 1) 
+            if (receptionistList.SelectedItems.Count == 1)
             {
-                deleteAccount(receptionistList.SelectedItems[0].ToString());
+                getTOTP(receptionistList.SelectedItems[0].ToString());
             }
-            else if (doctorsList.SelectedItems.Count == 1) 
+            else if (doctorsList.SelectedItems.Count == 1)
             {
-                deleteAccount(doctorsList.SelectedItems[0].ToString());
+                getTOTP(doctorsList.SelectedItems[0].ToString());
             }
-            else if (HRMList.SelectedItems.Count == 1) 
+            else if (HRMList.SelectedItems.Count == 1)
             {
-                deleteAccount(HRMList.SelectedItems[0].ToString());
+                getTOTP(HRMList.SelectedItems[0].ToString());
             }
         }
     }

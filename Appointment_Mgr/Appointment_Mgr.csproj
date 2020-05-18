@@ -39,7 +39,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Build\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -48,6 +48,28 @@
     <ApplicationIcon>App-Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BCrypt.Net-Core, Version=1.6.0.0, Culture=neutral, PublicKeyToken=4d63bfbfdfd3c6e4, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt.Net-Core.1.6.0\lib\net452\BCrypt.Net-Core.dll</HintPath>
@@ -110,6 +132,10 @@
       <DependentUpon>AlertBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\Alert\AlertBoxViewModel.cs" />
+    <Compile Include="Dialog\Cancellation Reason\CancellationReasonBoxView.xaml.cs">
+      <DependentUpon>CancellationReasonBoxView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\Cancellation Reason\CancellationReasonBoxViewModel.cs" />
     <Compile Include="Dialog\Confirmation\ConfirmationBoxView.xaml.cs">
       <DependentUpon>ConfirmationBoxView.xaml</DependentUpon>
     </Compile>
@@ -137,6 +163,7 @@
     <Compile Include="Dialog\PatientID\PatientIDBoxViewModel.cs" />
     <Compile Include="Helper\CallSchedular.cs" />
     <Compile Include="Helper\CancelTardyAppointments.cs" />
+    <Compile Include="Helper\DataGridBindingProxy.cs" />
     <Compile Include="Helper\EmailConfirmation.cs" />
     <Compile Include="Helper\GenderConverter.cs" />
     <Compile Include="Helper\NumberOnlyRule.cs" />
@@ -222,6 +249,10 @@
     <Page Include="Dialog\Alert\AlertBoxView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialog\Cancellation Reason\CancellationReasonBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialog\Confirmation\ConfirmationBoxView.xaml">
       <SubType>Designer</SubType>
@@ -386,9 +417,9 @@
     <Resource Include="Assets\Fonts\Montserrat-Thin.ttf" />
     <Resource Include="Assets\Fonts\Montserrat-ThinItalic.ttf" />
     <None Include="packages.config" />
-    <None Include="Patient_Records\Patients.db">
+    <Content Include="Patient_Records\Patients.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -451,9 +482,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Assets\Back-icon.png" />
-    <Content Include="AverageTAT\AvgApptDuration.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

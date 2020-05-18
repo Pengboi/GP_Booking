@@ -26,6 +26,14 @@ namespace Appointment_Mgr.ViewModel
             var dialog = new SuccessBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
         }
+        private string CancellationReason(string title)
+        {
+            var dialog = new CancellationReasonBoxViewModel(title, "");
+            var result = _dialogService.OpenDialog(dialog);
+            if (result == null)
+                result = "";
+            return result.ToString();
+        }
 
         public DataTable AllAppointments
         {
@@ -55,7 +63,7 @@ namespace Appointment_Mgr.ViewModel
             }
         }
 
-        public RelayCommand CheckInPatientCommand { get; set; }
+        public RelayCommand UncheckInPatientCommand { get; set; }
         public RelayCommand CancelAppointmentCommand { get; set; }
 
         public WaitingListViewModel()
@@ -73,7 +81,7 @@ namespace Appointment_Mgr.ViewModel
 
             MessengerInstance.Register<NotificationMessage>(this, FilterRecords);
 
-            CheckInPatientCommand = new RelayCommand(CheckInPatient);
+            UncheckInPatientCommand = new RelayCommand(UncheckInPatient);
             CancelAppointmentCommand = new RelayCommand(CancelAppointment);
         }
 
@@ -83,15 +91,15 @@ namespace Appointment_Mgr.ViewModel
             FilteredAppointments = AllAppointments.Copy();
         }
 
-        private void CheckInPatient()
+        private void UncheckInPatient()
         {
 
             if (SelectedIndex == null) //shouldnt be able to happen but to prevent crash --> return.
                 return;
             int index = int.Parse(SelectedIndex.ToString(), System.Globalization.CultureInfo.InvariantCulture);
             int appointmentID = int.Parse(FilteredAppointments.Rows[index]["AppointmentID"].ToString(), System.Globalization.CultureInfo.InvariantCulture);
-            PatientDBConverter.CheckInPatient(appointmentID);
-            Success("Success!", "Patient has been checked-in.");
+            PatientDBConverter.UncheckInPatient(appointmentID);
+            Success("Success!", "Patient has been unchecked-in.");
             InitialiseDataTable(); // To refresh table after adjustments --> triggering onpropertychange
         }
         private void CancelAppointment()
@@ -100,7 +108,12 @@ namespace Appointment_Mgr.ViewModel
                 return;
             int index = int.Parse(SelectedIndex.ToString(), System.Globalization.CultureInfo.InvariantCulture);
             int appointmentID = int.Parse(FilteredAppointments.Rows[index]["AppointmentID"].ToString(), System.Globalization.CultureInfo.InvariantCulture);
-            PatientDBConverter.DeleteAppointment(appointmentID);
+
+            string reason = CancellationReason("Reason For Appointment Cancellation?");
+            if (reason == "")   // If user closes dialog box, operation is cancelled and appointment remains active
+                return;
+
+            PatientDBConverter.DeleteAppointment(appointmentID, reason);     // Appointment Moved To Cancelled Schema
             Success("Success!", "Patient appointment has been cancelled.");
             InitialiseDataTable(); // To refresh table after adjustments --> triggering onpropertychange
         }

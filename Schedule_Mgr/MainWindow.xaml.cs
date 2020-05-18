@@ -23,6 +23,11 @@ namespace Schedule_Mgr
             get { return new LoginWindow(); }
         }
 
+        public static ResetAdminPasswordWindow ResetAdminPassword 
+        {
+            get { return new ResetAdminPasswordWindow(); }
+        }
+
         public static ManagerWindow ManageView 
         {
             get { return new ManagerWindow(); }
@@ -42,6 +47,8 @@ namespace Schedule_Mgr
                 this.CurrentView.Content = LoginView;
             else if (msg == "GrantedView")
                 this.CurrentView.Content = ManageView;
+            else if (msg == "AdminReset")
+                this.CurrentView.Content = ResetAdminPassword;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Appointment_Mgr.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Appointment_Mgr.ViewModel
             }
             else 
             {
-                ScreenMessage = "Placeholder";
+                ScreenMessage = "Welcome Back.";
             }
             BookAppointmentCommand = new RelayCommand(SetBookingView);
             EmergencyBookAppointmentCommand = new RelayCommand(SetEmergencyBookingVIew);

@@ -19,12 +19,66 @@ namespace Appointment_Mgr.ViewModel
         private DataTable _allAppointments = new DataTable();
         private DataTable _filteredAppointments = new DataTable();
         private int? _selectedIndex;
+        private string _cancelledFilter = "False";
+        private Visibility _cancellationVisibility = Visibility.Collapsed, _editOptionsVisibility = Visibility.Visible;
         private IDialogBoxService _dialogService;
 
         private void Success(string title, string message)
         {
             var dialog = new SuccessBoxViewModel(title, message);
             var result = _dialogService.OpenDialog(dialog);
+        }
+
+        private string CancellationReason(string title)
+        {
+            var dialog = new CancellationReasonBoxViewModel(title, "");
+            var result = _dialogService.OpenDialog(dialog);
+            if (result == null)
+                result = "";
+            return result.ToString();
+        }
+
+        public string CancelledFilter 
+        {
+            get { return _cancelledFilter; }
+            set 
+            {
+                _cancelledFilter = value;
+                if (_cancelledFilter == "False")
+                {
+                    CancellationVisibility = Visibility.Collapsed;
+                    EditOptionsVisibility = Visibility.Visible;
+                    InitialiseDataTable();
+                }
+                else 
+                {
+                    CancellationVisibility = Visibility.Visible;
+                    EditOptionsVisibility = Visibility.Collapsed;
+                    InitialiseDataTable();
+                }
+                RaisePropertyChanged(nameof(CancelledFilter));
+            }
+        }
+
+        public Visibility CancellationVisibility
+        {
+            get { return _cancellationVisibility; }
+            set 
+            {
+                _cancellationVisibility = value;
+                RaisePropertyChanged(nameof(CancellationVisibility));
+            }
+        }
+
+        // If cancelled appointments are being viewed, appointment edit options are collapsed.
+        public Visibility EditOptionsVisibility 
+        {
+            get { return _editOptionsVisibility; }
+            set 
+            {
+                _editOptionsVisibility = value;
+                RaisePropertyChanged(nameof(EditOptionsVisibility));
+            }
         }
 
         public DataTable AllAppointments 
@@ -62,13 +116,9 @@ namespace Appointment_Mgr.ViewModel
         {
             _dialogService = new DialogBoxService();
 
-            AllAppointments.Columns.Add("AppointmentID");
-            AllAppointments.Columns.Add("PatientID");
-            AllAppointments.Columns.Add("PatientName");
-            AllAppointments.Columns.Add("AppointmentTime");
-            AllAppointments.Columns.Add("AppointmentDoctor");
-            AllAppointments.Columns.Add("AppointmentDate");
-
+            // By default, non-cancelled appointments are shown.
+            CancelledFilter = "False"; 
+            CancellationVisibility = Visibility.Collapsed; EditOptionsVisibility = Visibility.Visible;
             InitialiseDataTable();
 
             MessengerInstance.Register<NotificationMessage>(this, FilterRecords);
@@ -79,7 +129,18 @@ namespace Appointment_Mgr.ViewModel
 
         public void InitialiseDataTable() 
         {
-            AllAppointments = PatientDBConverter.GetBookedAppointments().Copy();
+            if (CancelledFilter == "True")
+            {
+                AllAppointments = PatientDBConverter.GetCancelledAppointments().Copy();
+                CancellationVisibility = Visibility.Visible;
+                EditOptionsVisibility = Visibility.Collapsed;
+            }
+            else 
+            {
+                AllAppointments = PatientDBConverter.GetBookedAppointments().Copy();
+                CancellationVisibility = Visibility.Collapsed;
+                EditOptionsVisibility = Visibility.Visible;
+            }
             FilteredAppointments = AllAppointments.Copy();
         }
 
@@ -100,7 +161,12 @@ namespace Appointment_Mgr.ViewModel
                 return;
             int index = int.Parse(SelectedIndex.ToString(), System.Globalization.CultureInfo.InvariantCulture);
             int appointmentID = int.Parse(FilteredAppointments.Rows[index][0].ToString(), System.Globalization.CultureInfo.InvariantCulture);
-            PatientDBConverter.DeleteAppointment(appointmentID);
+
+            string reason = CancellationReason("Reason For Appointment Cancellation?");
+            if (reason == "")   // If user closes dialog box, operation is cancelled and appointment remains active
+                return;
+
+            PatientDBConverter.DeleteAppointment(appointmentID, reason);     // Appointment Moved To Cancelled Schema
             Success("Success!", "Patient appointment has been cancelled.");
             InitialiseDataTable(); // To refresh table after adjustments --> triggering onpropertychange
         }

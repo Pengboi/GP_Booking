@@ -21,10 +21,11 @@ namespace PatientContactSchedular
             patientContacted = false;
             email = args[0];
             minutes = double.Parse(args[1]);
-            // If patient estimated to wait 10 or more minutes, they are notified to return 5 minutes before when they are expected to be seen.
-            if (minutes >= 10) 
+            // If patient estimated to wait 20 or more minutes, they are notified to return 15 minutes before when they are expected to be seen.
+            // E.G. Patient appointment expected in 35 mins, patient receives email in 20 mins to return.
+            if (minutes >= 20) 
             {
-                minutes -= 5;
+                minutes -= 15;
             }
             var timeToNotify = TimeSpan.FromMinutes(minutes);
             var timer = new System.Threading.Timer((e) =>

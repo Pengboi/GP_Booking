@@ -99,12 +99,12 @@ namespace Appointment_Mgr.ViewModel
         {
             if (IsInDesignMode)
             {
-                Title = "GP Booking (Design Mode)";
+                Title = "Appointment Manager (Design Mode)";
                 UserLogin = _userLogin;
             }
             else
             {
-                Title = "GP Booking";
+                Title = "Appointment Manager";
                 UserLogin = _userLogin;
                 CurrentToolbarViewModel = HomeToolbarVM;
                 CurrentViewModel = HomeVM;

@@ -37,14 +37,14 @@ namespace Schedule_Mgr
 
         private static string LoadConnectionString(string id = "Staff")
         {
-            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
         }
 
 
         private SQLiteConnection OpenConnection()
         {
             string sqlPath = LoadConnectionString();
-            SQLiteConnection connection = new SQLiteConnection(sqlPath);
+            SQLiteConnection connection = new SQLiteConnection(sqlPath, true);
             connection.Open();
 
             return connection;
@@ -92,21 +92,6 @@ namespace Schedule_Mgr
             reader.Close();
             connection.Close();
 
-        }
-
-
-        private void comboBox_SetTimes(object sender, RoutedEventArgs e)
-        {
-            for (int i = 6; i <= 19; i++)
-            {
-                hoursComboBox.Items.Add(i.ToString("00"));
-                hoursComboBox2.Items.Add(i.ToString("00"));
-            }
-            for (int i = 0; i <= 55; i = i + 5)
-            {
-                minsComboBox.Items.Add(i.ToString("00"));
-                minsComboBox2.Items.Add(i.ToString("00"));
-            }
         }
 
 
@@ -162,23 +147,13 @@ namespace Schedule_Mgr
 
         private string getShiftStart()
         {
-            if ((hoursComboBox.SelectedIndex == -1) || (minsComboBox.SelectedIndex == -1))
-            {
-                MessageBox.Show("Please select a valid starting time for your shift", "Could not create shift");
-                return null;
-            }
-            return hoursComboBox.SelectedItem.ToString() + minsComboBox.SelectedItem.ToString();
+            return ShiftStartTimePicker.Text.Replace(":","");
         }
 
 
         private string getShiftEnd()
         {
-            if ((hoursComboBox2.SelectedIndex == -1) || (minsComboBox2.SelectedIndex == -1))
-            {
-                MessageBox.Show("Please select a valid ending time for your shift", "Could not create shift");
-                return null;
-            }
-            return hoursComboBox2.SelectedItem.ToString() + minsComboBox2.SelectedItem.ToString();
+            return ShiftEndTimePicker.Text.Replace(":", "");
         }
 
 
@@ -221,14 +196,14 @@ namespace Schedule_Mgr
             DateTime shiftDate = getDate().Date;
             if (shiftDate == DateTime.Parse("01/01/1990"))
             {
-                MessageBox.Show("Please select the date for your shift", "Could not create shift");
+                MessageBox.Show("Please select the date for your shift", "Could not create shift", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
 
             string doctorSelected = getSelectedDoctor();
             if (doctorSelected == null)
             {
-                MessageBox.Show("Please select a doctor for your shift", "Could not create shift");
+                MessageBox.Show("Please select a doctor for your shift", "Could not create shift", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
 
@@ -241,12 +216,12 @@ namespace Schedule_Mgr
 
             if (Int32.Parse(shiftStart) > Int32.Parse(shiftEnd))
             {
-                MessageBox.Show("Shift start CANNOT be after shift end", "Could not create shift");
+                MessageBox.Show("Shift starting time cannot be after ending time", "Could not create shift", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             string sqlPath = LoadConnectionString();
-            SQLiteConnection connection = new SQLiteConnection(sqlPath);
+            SQLiteConnection connection = new SQLiteConnection(sqlPath, true);
             connection.Open();
             string doctorUsername = getDoctorUsername(doctorSelected, connection);
             if (shiftExists(shiftDate.ToString("dd/MM/yyyy"), doctorUsername, connection))
@@ -315,6 +290,25 @@ namespace Schedule_Mgr
             return;
         }
 
+        private void showAccountTOTP(object sender, RoutedEventArgs e)
+        {
+            GetStaffTOTP getStaffTOTP = new GetStaffTOTP();
+            getStaffTOTP.ShowDialog();
+            doctorList.DataContext = null;
+            doctorList.Items.Clear();
+            doctorList_GetDoctors(sender, e);
+            return;
+        }
+
+        public void resetAccountPassword(object sender, RoutedEventArgs e) 
+        {
+            ResetStaffPasswordWindow resetStaffPassword = new ResetStaffPasswordWindow();
+            resetStaffPassword.ShowDialog();
+            doctorList.DataContext = null;
+            doctorList.Items.Clear();
+            doctorList_GetDoctors(sender, e);
+            return;
+        }
 
         private void deleteAccount(object sender, RoutedEventArgs e)
         {
@@ -333,7 +327,7 @@ namespace Schedule_Mgr
         }
 
 
-        private string GetDoctorNameByID(string username, SQLiteConnection connection)
+        private string GetEmployeeNameByID(string username, SQLiteConnection connection)
         {
             string doctorName = "";
             SQLiteCommand cmd = new SQLiteCommand($"SELECT Suffix, Firstname, Middlename, Lastname FROM Accounts WHERE Username = @Username", connection);
@@ -369,9 +363,12 @@ namespace Schedule_Mgr
             SQLiteDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                string doctorName = GetDoctorNameByID(reader["Username"].ToString(), connection);
-                string shiftStart = reader["Shift_Start"].ToString().Insert(2, ":");
-                string shiftEnd = reader["Shift_End"].ToString().Insert(2, ":");
+                string doctorName = GetEmployeeNameByID(reader["Username"].ToString(), connection);
+                
+                // Adds ":" to times
+                string shiftStart = reader["Shift_Start"].ToString().Insert(reader["Shift_Start"].ToString().Length - 2, ":");
+                string shiftEnd = reader["Shift_End"].ToString().Insert(reader["Shift_End"].ToString().Length - 2, ":");
+
                 var doctorShiftRow = new ShiftRow { DoctorHeader = doctorName, ShiftStartHeader = shiftStart, ShiftEndHeader = shiftEnd };
                 dailyScheduleGrid.Items.Add(doctorShiftRow);
             }
@@ -380,9 +377,9 @@ namespace Schedule_Mgr
             return;
         }
 
-        private void showTOTPButton_Click(object sender, RoutedEventArgs e)
+        private void TimePicker_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-
+            Keyboard.ClearFocus();
         }
     }
 }

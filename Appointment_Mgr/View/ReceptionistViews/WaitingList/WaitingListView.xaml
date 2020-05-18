@@ -94,7 +94,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="120" />
             </Grid.RowDefinitions>
-
+            
             <!-- Search element -->
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0">
                 <Image Height="50" Width="50" Margin="-10,0,0,0"
@@ -199,7 +199,11 @@
                                 <materialDesign:PopupBox Width="30" HorizontalAlignment="Center" PlacementMode="BottomAndAlignRightEdges"
                                                          Background="Transparent" StaysOpen="False">
                                     <StackPanel Width="250">
-
+                                        <Button Content="Uncheck-in Patient" DataContext="{Binding WaitingList, Source={StaticResource Locator}}"
+                                                Command="{Binding UncheckInPatientCommand}" />
+                                        <Separator />
+                                        <Button Content="Cancel Appointment" DataContext="{Binding WaitingList, Source={StaticResource Locator}}"
+                                                Foreground="#b33939" Command="{Binding CancelAppointmentCommand}" />
                                     </StackPanel>
                                 </materialDesign:PopupBox>
                             </DataTemplate>
